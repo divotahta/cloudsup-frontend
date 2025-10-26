@@ -17,21 +17,19 @@ const GlobalNavbar: React.FC = () => {
   };
 
   return (
-    <nav className="bg-gradient-to-r from-[#0066FF] to-[#0066FF] shadow-sm sticky top-0 z-10 h-[84px]">
-      {/* <div className="px-[40px]"> */}
-        <div className="flex justify-end items-center h-16 pt-[10px] px-[40px]">
-          {/* User Menu */}
-          <div className="flex items-center gap-[10px]">
-            <CameraButton />
-            <ProfileButton 
-              name={user?.name || "Dina Mustawati"} 
-              role="Tenaga Pendidik"
-              onLogout={handleLogout}
-              onSettings={handleSettings}
-            />
-          </div>
+    <nav className="bg-gradient-to-r from-[#0066FF] to-[#0066FF] shadow-md w-full h-full">
+      <div className="flex justify-end items-center h-full px-[40px]">
+        {/* User Menu */}
+        <div className="flex items-center gap-[10px]">
+          <CameraButton />
+          <ProfileButton 
+            name={user?.name || "Dina Mustawati"} 
+            role="Tenaga Pendidik"
+            onLogout={handleLogout}
+            onSettings={handleSettings}
+          />
         </div>
-      {/* </div> */}
+      </div>
     </nav>
   );
 };

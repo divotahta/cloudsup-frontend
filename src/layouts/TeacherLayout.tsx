@@ -8,24 +8,22 @@ interface TeacherLayoutProps {
 
 const TeacherLayout: React.FC<TeacherLayoutProps> = ({ children }) => {
   return (
-    <div className="min-h-screen bg-white">
-      <div className="flex h-screen">
-        {/* Left Sidebar */}
-        <div className="w-[288px] flex-shrink-0">
-          <GlobalSidebar />
+    <div className="bg-white h-screen flex overflow-hidden">
+      {/* Sidebar - Fixed di kiri */}
+      <div className="w-[288px] flex-shrink-0 z-50">
+        <GlobalSidebar />
+      </div>
+
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        {/* Navbar - Fixed di atas */}
+        <div className="h-[84px] flex-shrink-0 z-40">
+          <GlobalNavbar />
         </div>
 
-        {/* Main Content Area */}
-        <div className="flex-1 flex flex-col min-w-0">
-          {/* Top Navbar */}
-          <div className="h-16 flex-shrink-0">
-            <GlobalNavbar />
-          </div>
-
-          {/* Scrollable Content */}
-          <div className="flex-1 overflow-y-auto">
-            {children}
-          </div>
+        {/* Content - Scrollable */}
+        <div className="flex-1 overflow-y-auto">
+          {children}
         </div>
       </div>
     </div>
@@ -33,5 +31,3 @@ const TeacherLayout: React.FC<TeacherLayoutProps> = ({ children }) => {
 };
 
 export default TeacherLayout;
-
-

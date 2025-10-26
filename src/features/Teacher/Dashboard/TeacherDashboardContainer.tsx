@@ -48,9 +48,9 @@ const TeacherDashboardContainer: React.FC = () => {
     : games.filter(game => game.skills.includes(activeFilter));
 
   return (
-    <div className="w-full font-raleway py-[40px]">
+    <div className="w-full font-raleway py-[40px] ">
       {/* Right Bar - Two Column Layout */}
-      <div className="flex gap-6">
+      <div className="flex gap-6 px-[40px]">
         {/* Left Column - Games List */}
         <div className="flex-1 min-w-0 p">
           {/* Header with Title and Filter */}

@@ -8,19 +8,23 @@ interface MainLayoutProps {
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Navbar */}
-      <GlobalNavbar/> 
+    <div className="bg-gray-50 h-screen flex overflow-hidden">
+      {/* Sidebar - Fixed di kiri */}
+      <div className="w-[288px] flex-shrink-0 z-50 lg:block hidden">
+        <GlobalSidebar />
+      </div>
 
-      {/* Main Container - Full width to accommodate fixed sidebar */}
-      <div className="flex">
-        {/* Sidebar - Fixed width */}
-        <div className="fixed inset-y-0 left-0 z-40 lg:w-[288px]">
-          <GlobalSidebar />
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        {/* Navbar - Fixed di atas */}
+        <div className="h-[84px] flex-shrink-0 z-40">
+          <GlobalNavbar />
         </div>
 
-        {/* Main Content Area */}
-        <main className="flex-1 lg:ml-72 min-h-screen">{children}</main>
+        {/* Content - Scrollable */}
+        <main className="flex-1 overflow-y-auto">
+          {children}
+        </main>
       </div>
     </div>
   );

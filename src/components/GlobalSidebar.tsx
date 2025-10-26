@@ -32,7 +32,7 @@ const GlobalSidebar: React.FC = () => {
           {/* Dashboard */}
           <Link
             to="/teacher/dashboard"
-            className={`flex items-center h-[40px] w-[240px] px-4 py-3 text-sm font-bold rounded-[32.63px] transition-all duration-300 ${
+            className={`flex items-center h-[40px] w-[240px] px-4 py-3 text-[18px] font-semibold rounded-[32.63px] transition-all duration-300 ${
               isActive('/teacher/dashboard') || isActive('/teacher')
                 ? 'bg-white text-[#E82D2F] shadow-md'
                 : 'text-white hover:bg-white hover:bg-opacity-10'
@@ -45,7 +45,7 @@ const GlobalSidebar: React.FC = () => {
           {/* Reports */}
           <Link
             to="/admin/reports"
-            className={`flex items-center px-4 py-3 text-sm font-bold rounded-[32.63px] transition-all duration-300 ${
+            className={`flex items-center px-4 py-3 text-[18px] font-semibold rounded-[32.63px] transition-all duration-300 ${
               isActive('/admin/reports')
                 ? 'bg-white text-[#E82D2F] shadow-md'
                 : 'text-white hover:bg-white hover:bg-opacity-10'
@@ -58,7 +58,7 @@ const GlobalSidebar: React.FC = () => {
           {/* Settings */}
           <Link
             to="/admin/settings"
-            className={`flex items-center px-4 py-3 text-sm font-bold rounded-[32.63px] transition-all duration-300 ${
+            className={`flex items-center px-4 py-3 text-[18px] font-semibold rounded-[32.63px] transition-all duration-300 ${
               isActive('/admin/settings')
                 ? 'bg-white text-[#E82D2F] shadow-md'
                 : 'text-white hover:bg-white hover:bg-opacity-10'

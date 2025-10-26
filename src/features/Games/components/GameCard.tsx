@@ -116,7 +116,7 @@ const GameCard: React.FC<GameCardProps> = ({
           <div className="opacity-100">
             <button
               onClick={handleStartPlaying}
-              className="w-[364.4px] h-[46px] bg-[#0066FF] border border-[#0066FF] rounded-lg shadow-[inset_0_8px_16px_rgba(255,255,255,0.16),inset_0_2px_0_rgba(255,255,255,0.1)] opacity-100 cursor-pointer transition-all duration-200 hover:bg-[#0052CC]"
+              className="w-full h-[46px] bg-[#0066FF] border border-[#0066FF] rounded-lg shadow-[inset_0_8px_16px_rgba(255,255,255,0.16),inset_0_2px_0_rgba(255,255,255,0.1)] opacity-100 cursor-pointer transition-all duration-200 hover:bg-[#0052CC]"
             >
               <div className="justify-center items-center opacity-100 ">
                 <p className="font-raleway font-bold text-sm leading-[14px] text-center text-white capitalize m-0">
