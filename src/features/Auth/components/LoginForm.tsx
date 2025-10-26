@@ -1,148 +1,281 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../hooks/useAuth';
 
-const LoginForm: React.FC = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
+// --- FUNGSI VALIDASI ---
+const validateEmail = (email: string) => {
+    if (typeof email !== 'string' || !email) return false;
+    return /\S+@\S+\.\S+/.test(email);
+};
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+const validateNotEmpty = (value: string) => {
+    if (typeof value !== 'string') return false;
+    return value.trim() !== '';
+};
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Login attempt:', formData);
-  };
+// --- IKON ---
+const EyeIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+        <circle cx="12" cy="12" r="3" />
+    </svg>
+);
 
-  return (
-    <div>
-      <div className="text-center mb-6">
-        <h2 className="text-3xl font-extrabold text-gray-900">
-          Sign in to your account
-        </h2>
-        <p className="mt-2 text-sm text-gray-600">
-          Or{' '}
-          <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-            start your 14-day free trial
-          </a>
-        </p>
-      </div>
+const EyeOffIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+        <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
+        <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
+        <line x1="2" x2="22" y1="2" y2="22" />
+    </svg>
+);
 
-      <form className="space-y-6" onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-            Email address
-          </label>
-          <div className="mt-1">
-            <input
-              id="email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              required
-              value={formData.email}
-              onChange={handleChange}
-              className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              placeholder="Enter your email"
-            />
-          </div>
-        </div>
+// --- KOMPONEN INPUT EMAIL ---
+function EmailInput({ 
+    value, 
+    onChange, 
+    isInvalid, 
+    placeholder 
+}: { 
+    value: string; 
+    onChange: (value: string) => void; 
+    isInvalid: boolean;
+    placeholder: string;
+}) {
+    const [isFocused, setIsFocused] = useState(false);
+    const isEmailFormatValid = value === '' || validateEmail(value);
+    const isFormatInvalid = value !== '' && !isEmailFormatValid;
 
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-            Password
-          </label>
-          <div className="mt-1">
-            <input
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              value={formData.password}
-              onChange={handleChange}
-              className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              placeholder="Enter your password"
-            />
-          </div>
-        </div>
+    const baseClass = 'w-full h-14 px-5 rounded-lg border transition-all duration-300 outline-none font-normal text-base text-gray-900';
+    const dynamicClass = isInvalid || isFormatInvalid
+        ? 'bg-red-50 border-red-500 placeholder-red-500' 
+        : isFocused 
+        ? 'bg-blue-50 border-blue-500' 
+        : 'bg-white border-gray-300 focus:border-blue-500 focus:bg-blue-50';
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            <input
-              id="remember-me"
-              name="remember-me"
-              type="checkbox"
-              className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-            />
-            <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-              Remember me
+    return (
+        <div className="w-full flex flex-col gap-2">
+            <label className="font-bold text-sm text-gray-900">
+                Email <span className="text-red-500 ml-1">*</span>
             </label>
-          </div>
-
-          <div className="text-sm">
-            <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-              Forgot your password?
-            </a>
-          </div>
+            <input
+                type="email"
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
+                placeholder={placeholder}
+                className={`${baseClass} ${dynamicClass}`}
+            />
+            {(isInvalid || isFormatInvalid) && (
+                <p className="text-xs text-red-500 mt-1 opacity-100 max-h-8">
+                    {isFormatInvalid ? 'Format email tidak valid' : 'Email harus diisi'}
+                </p>
+            )}
         </div>
+    );
+}
 
-        <div>
-          <button
-            type="submit"
-            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
-          >
-            <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-              <svg className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
-              </svg>
-            </span>
-            Sign in
-          </button>
-        </div>
+// --- KOMPONEN INPUT PASSWORD ---
+function PasswordInput({ 
+    value, 
+    onChange, 
+    isInvalid,
+    placeholder 
+}: { 
+    value: string; 
+    onChange: (value: string) => void; 
+    isInvalid: boolean;
+    placeholder: string;
+}) {
+    const [isVisible, setIsVisible] = useState(false);
+    const [isFocused, setIsFocused] = useState(false);
 
-        <div className="mt-6">
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300" />
+    const baseClass = 'w-full h-14 px-5 pr-12 rounded-lg border transition-all duration-300 outline-none font-normal text-base text-gray-900';
+    const dynamicClass = isInvalid
+        ? 'bg-red-50 border-red-500 placeholder-red-500' 
+        : isFocused 
+        ? 'bg-blue-50 border-blue-500' 
+        : 'bg-white border-gray-300 focus:border-blue-500 focus:bg-blue-50';
+
+    return (
+        <div className="w-full flex flex-col gap-2">
+            <label className="font-bold text-sm text-gray-900">
+                Password <span className="text-red-500 ml-1">*</span>
+            </label>
+            <div className="relative">
+                <input
+                    type={isVisible ? 'text' : 'password'}
+                    value={value}
+                    onChange={(e) => onChange(e.target.value)}
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
+                    placeholder={placeholder}
+                    className={`${baseClass} ${dynamicClass}`}
+                />
+                <button
+                    type="button"
+                    onClick={() => setIsVisible(!isVisible)}
+                    className={`absolute right-4 top-1/2 -translate-y-1/2 transition-colors ${
+                        isInvalid
+                            ? 'text-red-500'
+                            : isFocused
+                            ? 'text-blue-500'
+                            : 'text-gray-500'
+                    }`}
+                >
+                    {isVisible ? <EyeOffIcon /> : <EyeIcon />}
+                </button>
             </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">Or continue with</span>
-            </div>
-          </div>
-
-          <div className="mt-6 grid grid-cols-2 gap-3">
-            <button
-              type="button"
-              className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors"
-            >
-              <svg className="h-5 w-5" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-              </svg>
-              <span className="ml-2">Google</span>
-            </button>
-
-            <button
-              type="button"
-              className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors"
-            >
-              <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-              </svg>
-              <span className="ml-2">Facebook</span>
-            </button>
-          </div>
+            {isInvalid && (
+                <p className="text-xs text-red-500 mt-1 opacity-100 max-h-8">
+                    Kata sandi harus diisi
+                </p>
+            )}
         </div>
-      </form>
-    </div>
-  );
+    );
+}
+
+// --- KOMPONEN LINK BUTTON ---
+function LinkButton({ text, onClick }: { text: string; onClick: () => void }) {
+    const [isHovered, setIsHovered] = useState(false);
+
+    return (
+        <button
+            onClick={onClick}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            className="text-right text-sm font-bold transition-colors text-blue-600 hover:text-blue-700"
+            style={{ textDecoration: isHovered ? 'underline' : 'none' }}
+        >
+            {text}
+        </button>
+    );
+}
+
+// --- KOMPONEN BUTTON ---
+function Button({ 
+    text, 
+    onClick, 
+    isDisabled, 
+    isLoading 
+}: { 
+    text: string; 
+    onClick: () => void; 
+    isDisabled: boolean; 
+    isLoading: boolean;
+}) {
+    return (
+        <button
+            onClick={onClick}
+            disabled={isDisabled || isLoading}
+            className="w-full h-14 px-6 rounded-lg border-none font-bold text-base transition-all duration-300 
+                disabled:cursor-not-allowed disabled:opacity-50 
+                bg-blue-600 text-white hover:bg-blue-700 hover:scale-[1.02] 
+                focus:outline-none focus:ring-4 focus:ring-blue-200"
+        >
+            {isLoading ? (
+                <div className="flex items-center justify-center h-full">
+                    <div className="flex gap-1">
+                        <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '-0.32s' }}></div>
+                        <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '-0.16s' }}></div>
+                        <div className="w-2 h-2 bg-white rounded-full animate-bounce"></div>
+                    </div>
+                </div>
+            ) : (
+                text
+            )}
+        </button>
+    );
+}
+
+// --- KOMPONEN UTAMA ---
+const LoginForm: React.FC = () => {
+    const navigate = useNavigate();
+    const { login } = useAuth();
+    
+    // --- STATE ---
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [isSubmitted, setIsSubmitted] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
+
+    // --- VALIDASI ---
+    const isEmailFormatValid = validateEmail(email);
+    const isPasswordValid = validateNotEmpty(password);
+    const isButtonDisabled = !(isEmailFormatValid && isPasswordValid);
+    
+    // Tampilkan invalid HANYA setelah submit
+    const isEmailInvalid = isSubmitted && (email === '' || !isEmailFormatValid);
+    const isPasswordInvalid = isSubmitted && !isPasswordValid;
+
+    // --- HANDLERS ---
+    const handleSubmit = async () => {
+        setIsSubmitted(true);
+        setError('');
+
+        if (isEmailFormatValid && isPasswordValid) {
+            setIsLoading(true);
+            try {
+                await login(email, password);
+                navigate('/admin/dashboard');
+            } catch (err) {
+                setError('Login gagal. Silakan cek kredensial Anda.');
+                console.error('Login error:', err);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+    };
+
+    const handleForgotPassword = () => {
+        // TODO: Implement forgot password
+        console.log('Forgot password clicked');
+    };
+
+    return (
+        <div className="w-full flex flex-col gap-4">
+            {error && (
+                <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+                    {error}
+                </div>
+            )}
+
+            {/* Email & Password dalam satu baris horizontal di desktop, vertikal di mobile */}
+            <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex-1 min-w-0">
+                    <EmailInput
+                        value={email}
+                        onChange={setEmail}
+                        isInvalid={isEmailInvalid}
+                        placeholder="Enter your email"
+                    />
+                </div>
+                <div className="flex-1 min-w-0">
+                    <PasswordInput
+                        value={password}
+                        onChange={setPassword}
+                        isInvalid={isPasswordInvalid}
+                        placeholder="Enter your password"
+                    />
+                </div>
+            </div>
+
+            {/* Link Lupa Password */}
+            <div className="flex justify-end">
+                <LinkButton text="Lupa Password?" onClick={handleForgotPassword} />
+            </div>
+
+            {/* Tombol Submit */}
+            <Button
+                text="Masuk"
+                onClick={handleSubmit}
+                isDisabled={isButtonDisabled}
+                isLoading={isLoading}
+            />
+        </div>
+    );
 };
 
 export default LoginForm;

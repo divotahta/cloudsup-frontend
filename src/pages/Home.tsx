@@ -104,7 +104,7 @@ const Home: React.FC = () => {
 
        {/* Right Panel - Registration Form */}
        <div className="flex-1 flex items-center justify-center px-[48px] min-w-0">
-         <div className="w-full max-w-[611.48] space-y-8">
+         <div className="w-full space-y-8">
           {/* Logo */}
           <div className="flex items-center justify-start gap-1">
           <img src={logo} alt="logo" className="w-[287px]" />
