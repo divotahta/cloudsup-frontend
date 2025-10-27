@@ -15,6 +15,7 @@ import DashboardPage from './pages/admin/DashboardPage';
 import TeacherDashboardPage from './pages/teacher/DashboardPage';
 import TeacherReportPage from './pages/teacher/ReportPage';
 import TeacherGameDetailPage from './pages/teacher/GameDetailPage';
+import AdminGamesPage from './pages/admin/Games/AdminGamesPage'
 import './App.css';
 
 function App() {
@@ -34,14 +35,17 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
 
           {/* Protected Routes (Need to login) */}
-          <Route path="/admin" element={<MainLayout><DashboardPage /></MainLayout>} />
-          <Route path="/admin/dashboard" element={<MainLayout><DashboardPage /></MainLayout>} />
+          {/* Untuk development: tambahkan devRole="admin" untuk test menu admin */}
+          <Route path="/admin" element={<MainLayout devRole="admin"><DashboardPage /></MainLayout>} />
+          <Route path="/admin/dashboard" element={<MainLayout devRole="admin"><DashboardPage /></MainLayout>} />
+          <Route path="admin/games" element={<MainLayout devRole="admin"><AdminGamesPage /> </MainLayout>} />
           
           {/* Teacher */}
-          <Route path="/teacher" element={<MainLayout><TeacherDashboardPage /></MainLayout>} />
-          <Route path="/teacher/dashboard" element={<MainLayout><TeacherDashboardPage /></MainLayout>} />
-          <Route path="/teacher/reports" element={<MainLayout><TeacherReportPage /></MainLayout>} />
-          <Route path="/teacher/games/:id" element={<MainLayout><TeacherGameDetailPage /></MainLayout>} />
+          {/* Untuk development: tambahkan devRole="teacher" untuk test menu teacher */}
+          <Route path="/teacher" element={<MainLayout devRole="teacher"><TeacherDashboardPage /></MainLayout>} />
+          <Route path="/teacher/dashboard" element={<MainLayout devRole="teacher"><TeacherDashboardPage /></MainLayout>} />
+          <Route path="/teacher/reports" element={<MainLayout devRole="teacher"><TeacherReportPage /></MainLayout>} />
+          <Route path="/teacher/games/:id" element={<MainLayout devRole="teacher"><TeacherGameDetailPage /></MainLayout>} />
           
           {/* Student */}
           {/* <Route path="/student/game" element={<MainLayout><GamePlayContainer /></MainLayout>} /> */}

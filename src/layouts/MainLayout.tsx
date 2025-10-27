@@ -4,14 +4,15 @@ import GlobalNavbar from "../components/GlobalNavbar";
 
 interface MainLayoutProps {
   children: React.ReactNode;
+  devRole?: 'admin' | 'teacher' | 'student'; // Untuk development/testing
 }
 
-const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+const MainLayout: React.FC<MainLayoutProps> = ({ children, devRole }) => {
   return (
     <div className="bg-gray-50 h-screen flex overflow-hidden">
       {/* Sidebar - Fixed di kiri */}
       <div className="w-[288px] flex-shrink-0 z-50 lg:block hidden">
-        <GlobalSidebar />
+        <GlobalSidebar devRole={devRole} />
       </div>
 
       {/* Main Content Area */}
