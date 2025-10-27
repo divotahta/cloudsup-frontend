@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface GameCardProps {
   id: string;
@@ -16,11 +17,16 @@ const GameCard: React.FC<GameCardProps> = ({
   imageUrl, 
   skills
 }) => {
+  const navigate = useNavigate();
   const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
 
   const handleStartPlaying = () => {
     // Redirect to game URL
     window.open(`https://cloudsup.bayangan.xyz/${id}`, '_blank');
+  };
+
+  const handleViewDetails = () => {
+    navigate(`/teacher/games/${id}`);
   };
 
   // Map skill names to icons
@@ -112,8 +118,20 @@ const GameCard: React.FC<GameCardProps> = ({
         </div>
 
         {/* Button Container */}
-        <div className="opacity-100 px-6 pb-6">
-          <div className="opacity-100">
+        <div className="opacity-100 px-6 pb-6 flex gap-3">
+          <div className="opacity-100 flex-1">
+            <button
+              onClick={handleViewDetails}
+              className="w-full h-[46px] bg-white border border-gray-300 rounded-lg shadow-sm opacity-100 cursor-pointer transition-all duration-200 hover:bg-gray-50"
+            >
+              <div className="justify-center items-center opacity-100 ">
+                <p className="font-raleway font-bold text-sm leading-[14px] text-center text-[#0066FF] capitalize m-0">
+                  Lihat Detail
+                </p>
+              </div>
+            </button>
+          </div>
+          <div className="opacity-100 flex-1">
             <button
               onClick={handleStartPlaying}
               className="w-full h-[46px] bg-[#0066FF] border border-[#0066FF] rounded-lg shadow-[inset_0_8px_16px_rgba(255,255,255,0.16),inset_0_2px_0_rgba(255,255,255,0.1)] opacity-100 cursor-pointer transition-all duration-200 hover:bg-[#0052CC]"

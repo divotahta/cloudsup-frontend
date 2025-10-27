@@ -13,6 +13,8 @@ import LoginPage from './pages/Auth/LoginPage';
 import RegisterPage from './pages/Auth/RegisterPage';
 import DashboardPage from './pages/admin/DashboardPage';
 import TeacherDashboardPage from './pages/teacher/DashboardPage';
+import TeacherReportPage from './pages/teacher/ReportPage';
+import TeacherGameDetailPage from './pages/teacher/GameDetailPage';
 import './App.css';
 
 function App() {
@@ -38,7 +40,8 @@ function App() {
           {/* Teacher */}
           <Route path="/teacher" element={<MainLayout><TeacherDashboardPage /></MainLayout>} />
           <Route path="/teacher/dashboard" element={<MainLayout><TeacherDashboardPage /></MainLayout>} />
-          {/* <Route path="/teacher/game" element={<MainLayout><GameEditorContainer /></MainLayout>} /> */}
+          <Route path="/teacher/reports" element={<MainLayout><TeacherReportPage /></MainLayout>} />
+          <Route path="/teacher/games/:id" element={<MainLayout><TeacherGameDetailPage /></MainLayout>} />
           
           {/* Student */}
           {/* <Route path="/student/game" element={<MainLayout><GamePlayContainer /></MainLayout>} /> */}
