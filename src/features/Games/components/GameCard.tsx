@@ -119,7 +119,7 @@ const GameCard: React.FC<GameCardProps> = ({
 
         {/* Button Container */}
         <div className="opacity-100 px-6 pb-6 flex gap-3">
-          <div className="opacity-100 flex-1">
+          {/* <div className="opacity-100 flex-1">
             <button
               onClick={handleViewDetails}
               className="w-full h-[46px] bg-white border border-gray-300 rounded-lg shadow-sm opacity-100 cursor-pointer transition-all duration-200 hover:bg-gray-50"
@@ -130,7 +130,7 @@ const GameCard: React.FC<GameCardProps> = ({
                 </p>
               </div>
             </button>
-          </div>
+          </div> */}
           <div className="opacity-100 flex-1">
             <button
               onClick={handleStartPlaying}
