@@ -10,7 +10,6 @@ const ProgressTracker: React.FC = () => {
   // Calculate SVG arc for circular progress
   const radius = 25;
   const circumference = 2 * Math.PI * radius;
-  const strokeDasharray = circumference;
   const strokeDashoffset =
     circumference - (progressPercentage / 100) * circumference;
 

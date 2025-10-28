@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Info } from 'lucide-react';
 
 const OverallProgressReportCard: React.FC = () => {
   const [activeWeek, setActiveWeek] = useState<'week31' | 'week32'>('week31');

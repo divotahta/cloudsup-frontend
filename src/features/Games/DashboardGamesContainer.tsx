@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import GameCard from './components/GameCard';
 import FilterDropdown from './components/FilterDropdown';
-import { CameraButton, ProfileDropdown } from '../../components/Navbar';
 import PlayerProfileCard from '../Teacher/Dashboard/components/PlayerProfileCard';
 import TutorialCard from '../Teacher/Dashboard/components/TutorialCard';
 

@@ -24,8 +24,6 @@ export const EmailInput: React.FC<EmailInputProps> = ({
     onChange,
     onBlur,
     placeholder = "Enter your email",
-    label = "Email",
-    required = true,
     isInvalid = false,
     helpText = "Email harus diisi",
     invalidFormatText = "Format email tidak valid",

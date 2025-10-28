@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, Printer, Info } from 'lucide-react';
+import { Calendar, Printer } from 'lucide-react';
 
 const ReportHeader: React.FC = () => {
   return (

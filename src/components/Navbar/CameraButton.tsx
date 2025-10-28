@@ -11,7 +11,6 @@ const CameraButton: React.FC = () => {
   const [selectedCamera, setSelectedCamera] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [isPermissionGranted, setIsPermissionGranted] = useState(false); // Track if permission is granted
-  const [isHovered, setIsHovered] = useState(false); // Track if button is hovered
   const dropdownRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -180,12 +179,10 @@ const CameraButton: React.FC = () => {
           onMouseEnter={(e) => {
             e.currentTarget.style.backgroundColor = 'rgb(212, 228, 238)';
             e.currentTarget.style.transform = 'scale(1.05)';
-            setIsHovered(true);
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.backgroundColor = 'rgb(237, 248, 255)';
             e.currentTarget.style.transform = 'scale(1)';
-            setIsHovered(false);
           }}
         >
           {/* Camera Icon (kode ikon tidak diubah) */}
