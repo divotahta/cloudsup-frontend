@@ -9,7 +9,7 @@ const GamesContainer: React.FC = () => {
   // Game data
   const games = [
     {
-      id: 'gelembung-ajaib',
+      id: 'details-game-gelembung-ajaib',
       title: 'GELEMBUNG AJAIB',
       description: 'Masuki dunia yang penuh gelembung!',
       imageUrl: 'https://framerusercontent.com/images/5I3P3XAnbMenWJjscRxX24z5M.png?width=538&height=506',
@@ -17,7 +17,7 @@ const GamesContainer: React.FC = () => {
       learnMoreLink: '#'
     },
     {
-      id: 'tangkap-rasa',
+      id: 'details-game-tangkap-rasa',
       title: 'TANGKAP RASA',
       description: 'Penangkapan Es Krim Terhebat!',
       imageUrl: 'https://framerusercontent.com/images/MMaNnP62Y1mEGXox40R4JAyw.png?width=538&height=506',
@@ -25,7 +25,7 @@ const GamesContainer: React.FC = () => {
       learnMoreLink: '#'
     },
     {
-      id: 'papan-seimbang',
+      id: 'details-game-papan-seimbang',
       title: 'PAPAN SEIMBANG',
       description: 'Persiapan, Mulai, Seimbangkan!',
       imageUrl: 'https://framerusercontent.com/images/FR7BN9QpiRVUPGBwQnTS1gd1rQo.png?width=538&height=506',
@@ -33,7 +33,7 @@ const GamesContainer: React.FC = () => {
       learnMoreLink: '#'
     },
     {
-      id: 'kartu-cocok',
+      id: 'details-game-kartu-cocok',
       title: 'KARTU COCOK',
       description: 'Waktunya memanfaatkan ingatanmu!',
       imageUrl: 'https://framerusercontent.com/images/SFEfgSYbe53srnzCJKt25zMYb8.png?width=538&height=506',

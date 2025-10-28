@@ -22,12 +22,12 @@ const GameCard: React.FC<GameCardProps> = ({
 
   const handleStartPlaying = () => {
     // Redirect to game URL
-    window.open(`https://cloudsup.bayangan.xyz/${id}`, '_blank');
-  };
-
-  const handleViewDetails = () => {
     navigate(`/teacher/games/${id}`);
   };
+
+  // const handleViewDetails = () => {
+  //   navigate(`/teacher/games/${id}`);
+  // };
 
   // Map skill names to icons
   const getSkillIcon = (skill: string) => {

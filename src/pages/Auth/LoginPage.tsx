@@ -88,7 +88,7 @@ const LoginPage: React.FC = () => {
       setIsLoading(true);
       try {
         await login(formData.email, formData.password);
-        navigate('/admin/dashboard');
+        navigate('/teacher/dashboard');
       } catch (err) {
         setErrors({ password: 'Email atau kata sandi salah' });
       } finally {
@@ -112,8 +112,8 @@ const LoginPage: React.FC = () => {
       </div>
 
       {/* Right Panel - Login Form */}
-      <div className="flex-1 flex items-center justify-center px-[48px] min-w-0">
-        <div className="w-full space-y-8">
+      <div className="flex-1 flex items-center justify-center px-[40px] min-w-0">
+        <div className="w-full space-y-[30px]">
           {/* Logo */}
           <div className="flex items-center justify-start gap-1">
             <img src={logo} alt="CloudsUp" className="w-[287px]" />
@@ -144,15 +144,15 @@ const LoginPage: React.FC = () => {
           </div>
 
           {/* Login Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-0">
             {/* Email and Password - Row */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
               {/* Email */}
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-900">
                   Email<span className="text-red-600 ml-0.5">*</span>
                 </label>
-                <div className="relative w-full h-14">
+                <div className="relative w-full h-[56px]">
                   <input
                     type="email"
                     name="email"
@@ -195,7 +195,7 @@ const LoginPage: React.FC = () => {
                 <label className="text-sm font-bold text-gray-900">
                   Kata sandi<span className="text-red-600 ml-0.5">*</span>
                 </label>
-                <div className="relative w-full h-14">
+                <div className="relative w-full h-[56px]">
                   <input
                     type={showPassword ? 'text' : 'password'}
                     name="password"
@@ -265,7 +265,7 @@ const LoginPage: React.FC = () => {
             <button
               type="submit"
               disabled={!isFormValid || isLoading}
-              className={`w-full h-14 px-6 py-4 rounded-lg font-bold text-base leading-[1.5em] outline-none transition-all duration-500 ${
+              className={`w-full h-[56px] px-6 py-4 rounded-lg font-bold text-base leading-[1.5em] outline-none transition-all duration-500 ${
                 isFormValid && !isLoading
                   ? 'bg-blue-600 text-white hover:bg-blue-700 hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-blue-200 cursor-pointer'
                   : 'bg-gray-400 text-white cursor-not-allowed'

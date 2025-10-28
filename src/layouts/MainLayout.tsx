@@ -11,7 +11,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, devRole }) => {
   return (
     <div className="bg-gray-50 h-screen flex overflow-hidden">
       {/* Sidebar - Fixed di kiri */}
-      <div className="w-[288px] flex-shrink-0 z-50 lg:block hidden">
+      <div className="w-[288px] flex-shrink-0  lg:block hidden">
         <GlobalSidebar devRole={devRole} />
       </div>
 

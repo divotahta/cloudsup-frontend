@@ -219,7 +219,7 @@ const LoginForm: React.FC = () => {
             setIsLoading(true);
             try {
                 await login(email, password);
-                navigate('/admin/dashboard');
+                navigate('/teacher/dashboard');
             } catch (err) {
                 setError('Login gagal. Silakan cek kredensial Anda.');
                 console.error('Login error:', err);

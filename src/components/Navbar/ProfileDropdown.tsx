@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import LogoutModal from './LogoutModal';
 
 interface ProfileDropdownProps {
   name?: string;
@@ -6,10 +7,11 @@ interface ProfileDropdownProps {
 }
 
 const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ 
-  name = 'Dina Mustawati', 
+  name = 'Divo Tahta', 
   role = 'Tenaga Pendidik' 
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown when clicking outside
@@ -30,8 +32,15 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
   };
 
   const handleLogout = () => {
-    console.log('Logout clicked');
-    // Add logout logic here
+    setIsOpen(false);
+    setShowLogoutModal(true);
+  };
+
+  const handleConfirmLogout = () => {
+    console.log('Logout confirmed');
+    // Add logout logic here (e.g., call logout from AuthContext)
+    setShowLogoutModal(false);
+    // Redirect to login or call logout function
   };
 
   const handleSettings = () => {
@@ -40,8 +49,14 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
   };
 
   return (
-    <div style={{ position: 'relative', width: 'fit-content', zIndex: 50 }} ref={dropdownRef}>
-      {/* Profile Button */}
+    <>
+      <LogoutModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirm={handleConfirmLogout}
+      />
+      <div style={{ position: 'relative', width: 'fit-content', zIndex: 50 }} ref={dropdownRef}>
+        {/* Profile Button */}
       <div
         onClick={() => setIsOpen(!isOpen)}
         style={{
@@ -235,6 +250,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
         </div>
       )}
     </div>
+    </>
   );
 };
 

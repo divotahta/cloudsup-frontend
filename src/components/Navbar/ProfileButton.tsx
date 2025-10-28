@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import LogoutModal from './LogoutModal';
 
 interface ProfileButtonProps {
   name?: string;
@@ -8,14 +9,14 @@ interface ProfileButtonProps {
 }
 
 const ProfileButton: React.FC<ProfileButtonProps> = ({ 
-  name = 'Dina Mustawati', 
+  name = 'Divo Tahta', 
   role = 'Tenaga Pendidik',
   onLogout,
   onSettings
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -35,7 +36,8 @@ const ProfileButton: React.FC<ProfileButtonProps> = ({
 
   const handleLogout = () => {
     console.log('Logout clicked');
-    onLogout?.();
+    // onLogout?.();
+    setShowLogoutModal(true);
   };
 
   const handleSettings = () => {
@@ -44,6 +46,12 @@ const ProfileButton: React.FC<ProfileButtonProps> = ({
   };
 
   return (
+    <>
+    <LogoutModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirm={() => onLogout?.()}
+      />
     <div className="relative w-fit z-50" ref={dropdownRef}>
       {/* Profile Button */}
       <div
@@ -142,6 +150,7 @@ const ProfileButton: React.FC<ProfileButtonProps> = ({
         </div>
       )}
     </div>
+    </>
   );
 };
 

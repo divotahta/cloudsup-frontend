@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import PlayerProfileCard from "../../Teacher/Dashboard/components/PlayerProfileCard";
 
@@ -7,45 +7,140 @@ const GameDetailContainer: React.FC = () => {
   const { id } = useParams<{ id: string }>();
 
   // Mock game data - in production, this would come from an API
-  const gameData = {
-    id: id || "gelembung-game",
-    title: "GELEMBUNG AJAIB",
-    subtitle: "Masuki dunia yang penuh gelembung!",
-    description: [
-      "Masuk ke dunia mandi penuh gelembung dan bersiaplah untuk keseruan tanpa batas! 💦",
-      "Tugasmu sederhana: pecahkan sebanyak mungkin gelembung sebelum waktu habis. Tapi awas—gelembung merah siap menggagalkan misi dengan sekali sentuh!",
-      "",
-      "Kumpulkan skor tertinggi, asah refleksmu, dan jadikan rutinitas harian makin seru. Pegang tongkat gelembungmu, dan mulai ledakkan semua gelembung ajaib sekarang! ✨🫧",
-    ],
-    imageUrl:
-      "https://framerusercontent.com/images/nkLn9PjYYr2IJIaepmAH6duDgAk.png?width=1280&height=720",
-    thumbnailUrl:
-      "https://framerusercontent.com/images/998dg4YUuAe7Yc537cBJHiVCJk.png?width=301&height=214",
-    motoricSkills: [
-      "Gerakan Anggota Tubuh Atas",
-      "Kekuatan Inti",
-      "Pengendalian Postur",
-      "Koordinasi Bilateral",
-      "Waktu Reaksi",
-      "Kecepatan dan Kelincahan",
-      "Kesadaran Ruang",
-      "Jangkauan Gerak",
-    ],
-    cognitiveSkills: [
-      "Perhatian dan Konsentrasi",
-      "Pengambilan Keputusan",
-      "Pengenalan Pola",
-      "Pemahaman Sebab dan Akibat",
-      "Urutan dan Urutkan",
-    ],
-  };
+  const gameData = [
+    {
+      id: "gelembung-game",
+      title: "GELEMBUNG AJAIB",
+      subtitle: "Masuki dunia yang penuh gelembung!",
+      description: [
+        "Masuk ke dunia mandi penuh gelembung dan bersiaplah untuk keseruan tanpa batas! 💦",
+        "Tugasmu sederhana: pecahkan sebanyak mungkin gelembung sebelum waktu habis. Tapi awas—gelembung merah siap menggagalkan misi dengan sekali sentuh!",
+        "",
+        "Kumpulkan skor tertinggi, asah refleksmu, dan jadikan rutinitas harian makin seru. Pegang tongkat gelembungmu, dan mulai ledakkan semua gelembung ajaib sekarang! ✨🫧",
+      ],
+      imageUrl: "https://framerusercontent.com/images/nkLn9PjYYr2IJIaepmAH6duDgAk.png?width=1280&height=720",
+      thumbnailUrl: "https://framerusercontent.com/images/nkLn9PjYYr2IJIaepmAH6duDgAk.png?width=1280&height=720",
+      motoricSkills: [
+        "Gerakan Anggota Tubuh Atas",
+        "Kekuatan Inti",
+        "Pengendalian Postur",
+        "Koordinasi Bilateral",
+        "Waktu Reaksi",
+        "Kecepatan dan Kelincahan",
+        "Kesadaran Ruang",
+      ],
+      cognitiveSkills: [
+        "Perhatian dan Konsentrasi",
+        "Pengambilan Keputusan",
+        "Pengenalan Pola",
+        "Pemahaman Sebab dan Akibat",
+        "Urutan dan Urutkan",
+      ],
+    },
+    {
+      id: "tangkap-rasa",
+      title: "TANGKAP RASA",
+      subtitle: "Penangkapan Es Krim Terhebat!",
+      description: [
+        "Siap jadi penjaga es krim terhebat di dunia? Pakai apronmu dan tangkap semua rasa yang jatuh dari langit! Gerakkan ember ke kiri dan kanan untuk mengumpulkan scoop sebanyak-banyaknya sebelum terlambat.",
+        "",
+        "Tapi awas… bola merah pengacau siap menghancurkan mimpimu dalam satu sentuhan! Jaga fokus, kumpulkan rasa favoritmu, dan buktikan bahwa kamu adalah master penangkap es krim sejati! 🍨✨",
+      ],
+      imageUrl: "https://framerusercontent.com/images/P11HlN0vTfNfAygqJjbRmascyzk.png?width=1280&height=720",
+      thumbnailUrl: "https://framerusercontent.com/images/fjUBpDoEsbLzSFsz4hqNO06vv54.png?width=301&height=214",
+      motoricSkills: [
+        "Gerakan Anggota Tubuh Atas",
+        "Kekuatan Inti",
+        "Pengendalian Postur",
+        "Koordinasi Bilateral",
+        "Waktu Reaksi",
+        "Kecepatan dan Kelincahan",
+        "Kesadaran Ruang",
+      ],
+      cognitiveSkills: [
+        "Perhatian dan Konsentrasi",
+        "Pengambilan Keputusan",
+        "Pengenalan Pola",
+        "Pemahaman Sebab dan Akibat",
+        "Urutan dan Urutkan",
+      ],
+    },
+    {
+      id: "papan-seimbang",
+      title: "PAPAN SEIMBANG",
+      subtitle: "Persiapan, Mulai, Seimbangkan!",
+      description: [
+        "Seberapa kuat keseimbanganmu? Tantang fokus dan koordinasi tubuhmu untuk menjaga papan tetap stabil saat berbagai objek datang menyerang dari segala arah.",
+        "",
+        "Ambil posisi plank, tahan ritme tubuhmu, dan lihat seberapa lama kamu bisa bertahan tanpa jatuh! Tetap stabil, tetap fokus — dan buktikan kalau kamu adalah si penguasa keseimbangan sesungguhnya! 💪✨",
+      ],
+      imageUrl: "https://framerusercontent.com/images/7QgIgtFN8FcGccgGX6FW5zXAPn4.png?width=1280&height=720",
+      thumbnailUrl: "https://framerusercontent.com/images/7QgIgtFN8FcGccgGX6FW5zXAPn4.png?width=1280&height=720",
+      motoricSkills: [
+        "Keseimbangan",
+        "Gerakan Anggota Tubuh Atas",
+        "Gerakan Anggota Tubuh Bawah",
+        "Kesadaran Tubuh",
+        "Kekuatan Inti",
+        "Koordinasi Bilateral",
+        "Kesadaran Ruang",
+        "Pengendalian Postur",
+      ],
+      cognitiveSkills: [
+        "Perhatian dan Konsentrasi",
+        "Antisipasi dan Prediksi",
+      ],
+      academicSkills: ["Penyelesaian Tugas"],
+    },
+    {
+      id: "kartu-cocok",
+      title: "KARTU COCOK",
+      subtitle: "Waktunya memanfaatkan ingatanmu!",
+      description: [
+        "Siapkan ingatan terbaikmu! Balik setiap kartu satu per satu untuk mencari pasangan yang cocok dan kumpulkan skor setinggi mungkin. Fokus, ingat letaknya, dan buat strategi untuk menang dengan percobaan seminimal mungkin.",
+        "",
+        "Semakin banyak pasangan yang kamu temukan, semakin cepat kamu naik ke level yang lebih sulit dan menantang! Bisakah otakmu tetap tajam sampai akhir? Saatnya membuktikan kemampuan memorimu! ✨🃏",
+      ],
+      imageUrl: "https://framerusercontent.com/images/F0jhuyjdhQi5eCxjjtw4q4xPrZo.png?width=1280&height=720",
+      thumbnailUrl: "https://framerusercontent.com/images/vFgBHm42OqN7F85YyjEh4Lx5Wm8.png?width=301&height=214",
+      motoricSkills: [],
+      cognitiveSkills: [
+        "Perhatian dan Konsentrasi",
+        "Memori",
+        "Pengenalan Pola",
+        "Urutan dan Susunan",
+        "Penalaran Logis",
+      ],
+      academicSkills: [
+        "Pengelompokan",
+        "Pencocokan dan Asosiasi",
+        "Penyelesaian Tugas",
+      ],
+    },
+  ];
+
+  // Use useMemo to recalculate currentGame when id changes
+  const currentGame = useMemo(() => {
+    const found = gameData.find((g) => g.id === id);
+    console.log('URL ID:', id);
+    console.log('Current Game:', found ? found.title : 'Not found');
+    console.log('Available IDs:', gameData.map(g => g.id));
+    return found || gameData[0];
+  }, [id]);
 
   const handleBack = () => {
     navigate("/teacher/dashboard");
   };
 
   const handlePlay = () => {
-    window.open(`https://cloudsup.bayangan.xyz/${gameData.id}`, "_blank");
+    const gameUrlMap: { [key: string]: string } = {
+      "gelembung-game": "https://cloudsup.bayangan.xyz/gelembung-game",
+      "tangkap-rasa": "https://cloudsup.bayangan.xyz/tangkap-game",
+      "papan-seimbang": "https://cloudsup.bayangan.xyz/papan-game",
+      "kartu-cocok": "https://cloudsup.bayangan.xyz/kartu-game",
+    };
+    const playUrl = gameUrlMap[currentGame.id] || gameUrlMap["gelembung-game"];
+    window.open(playUrl, "_blank");
   };
 
   return (
@@ -59,8 +154,8 @@ const GameDetailContainer: React.FC = () => {
             style={{ aspectRatio: "1.7777777777777777" }}
           >
             <img
-              src={gameData.imageUrl}
-              alt={gameData.title}
+              src={currentGame.imageUrl}
+              alt={currentGame.title}
               className="w-full h-full object-cover rounded-lg"
             />
           </div>
@@ -77,8 +172,8 @@ const GameDetailContainer: React.FC = () => {
           <div className="flex-shrink-0">
             <div className="w-[301px] h-[214px] rounded-lg overflow-hidden">
               <img
-                src={gameData.thumbnailUrl}
-                alt={gameData.title}
+                src={currentGame.thumbnailUrl}
+                alt={currentGame.title}
                 className="w-full h-full object-cover"
               />
             </div>
@@ -139,10 +234,10 @@ const GameDetailContainer: React.FC = () => {
               {/* Title and Subtitle */}
               <div>
                 <h1 className="font-raleway font-bold text-[32px] leading-[40px] text-[#262626] uppercase mb-2">
-                  {gameData.title}
+                  {currentGame.title}
                 </h1>
                 <p className="font-raleway font-medium text-xl leading-6 text-[#262626] capitalize">
-                  {gameData.subtitle}
+                  {currentGame.subtitle}
                 </p>
               </div>
             </div>
@@ -157,23 +252,18 @@ const GameDetailContainer: React.FC = () => {
             </div>
             {/* Description */}
             <div className="mb-8">
-              <p className="font-raleway font-medium text-base leading-6 text-[#262626] mb-2">
-                Masuk ke dunia mandi penuh gelembung dan bersiaplah untuk
-                keseruan tanpa batas! 💦
-              </p>
-              <p className="font-raleway font-medium text-base leading-6 text-[#262626] mb-2">
-                Tugasmu sederhana: pecahkan sebanyak mungkin gelembung sebelum
-                waktu habis. Tapi awas—gelembung merah siap menggagalkan misi
-                dengan sekali sentuh!
-              </p>
-              <p className="font-raleway font-medium text-base leading-6 text-[#262626] mb-2">
-                &nbsp;
-              </p>
-              <p className="font-raleway font-medium text-base leading-6 text-[#262626]">
-                Kumpulkan skor tertinggi, asah refleksmu, dan jadikan rutinitas
-                harian makin seru. Pegang tongkat gelembungmu, dan mulai
-                ledakkan semua gelembung ajaib sekarang! ✨🫧
-              </p>
+              {currentGame.description.map((paragraph, index) => (
+                paragraph ? (
+                  <p
+                    key={index}
+                    className="font-raleway font-semibold text-base leading-6 text-[#262626] mb-2"
+                  >
+                    {paragraph}
+                  </p>
+                ) : (
+                  <p key={index} className="mb-2">&nbsp;</p>
+                )
+              ))}
             </div>
           </div>
         </div>{" "}
@@ -184,12 +274,12 @@ const GameDetailContainer: React.FC = () => {
           <div className="bg-[#edf8ff] rounded-lg p-8 flex flex-col h-full">
             {" "}
             {/* Tambahkan h-full agar background-nya mengikuti tinggi kolom terpanjang */}
-            <h2 className="font-raleway font-bold text-[20px]  text-[#0D469B] mb-8">
-              Keterampilan holistik yang akan dikembangkan oleh Game Gelembung
-              Ajaib :
+            <h2 className="font-raleway font-bold text-[20px] text-[#0D469B] mb-8">
+              Keterampilan holistik yang akan dikembangkan oleh Game {currentGame.title} :
             </h2>
-            <div className="grid grid-cols-2 gap-6">
+            <div className={`grid gap-6 ${currentGame.academicSkills && currentGame.academicSkills.length > 0 ? 'grid-cols-3' : 'grid-cols-2'}`}>
               {/* Motorik Skills */}
+              {currentGame.motoricSkills && currentGame.motoricSkills.length > 0 && (
               <div>
                 <div className="flex flex-col items-start gap-3 mb-4">
                   <div className="w-[82px] h-[82px] flex-shrink-0">
@@ -217,7 +307,7 @@ const GameDetailContainer: React.FC = () => {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  {gameData.motoricSkills.map((skill, index) => (
+                  {currentGame.motoricSkills.map((skill, index) => (
                     <p
                       key={index}
                       className="font-raleway text-base font-light leading-6 text-[#262626]"
@@ -227,8 +317,10 @@ const GameDetailContainer: React.FC = () => {
                   ))}
                 </div>
               </div>
+              )}
 
               {/* Kognitif Skills */}
+              {currentGame.cognitiveSkills && currentGame.cognitiveSkills.length > 0 && (
               <div>
                 <div className="flex flex-col items-start gap-3 mb-4">
                   <div className="w-[82px] h-[82px] flex-shrink-0">
@@ -256,16 +348,58 @@ const GameDetailContainer: React.FC = () => {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  {gameData.cognitiveSkills.map((skill, index) => (
+                  {currentGame.cognitiveSkills.map((skill, index) => (
                     <p
                       key={index}
-                      className="font-raleway text-base  font-light leading-6 text-[#262626]"
+                      className="font-raleway text-base font-light leading-6 text-[#262626]"
                     >
                       {skill}
                     </p>
                   ))}
                 </div>
               </div>
+              )}
+
+              {/* Academic Skills (if available) */}
+              {currentGame.academicSkills && currentGame.academicSkills.length > 0 && (
+                <div>
+                  <div className="flex flex-col items-start gap-3 mb-4">
+                    <div className="w-[82px] h-[82px] flex-shrink-0">
+                      <svg
+                        width="82"
+                        height="82"
+                        viewBox="0 0 82 82"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <rect width="82" height="82" rx="41" fill="white" />
+                        <path
+                          d="M41 24C30.5066 24 22 32.5066 22 43C22 53.4934 30.5066 62 41 62C51.4934 62 60 53.4934 60 43C60 32.5066 51.4934 24 41 24ZM41 56C33.268 56 27 49.732 27 42C27 34.268 33.268 28 41 28C48.732 28 55 34.268 55 42C55 49.732 48.732 56 41 56Z"
+                          fill="#E82D2F"
+                        />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="font-raleway font-bold text-base leading-[19.2px] text-[#262626]">
+                        Keterampilan
+                      </h3>
+                      <p className="font-raleway font-bold text-base leading-[19.2px] text-[#262626]">
+                        Akademik
+                      </p>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    {currentGame.academicSkills.map((skill, index) => (
+                      <p
+                        key={index}
+                        className="font-raleway text-base font-light leading-6 text-[#262626]"
+                      >
+                        {skill}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>{" "}

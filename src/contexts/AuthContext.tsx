@@ -1,10 +1,11 @@
-import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, type ReactNode } from 'react';
+// import { ReactNode } from 'react';
 
 interface User {
   id: string;
   name: string;
   email: string;
-  role: 'admin' | 'teacher' | 'student';
+  role: 'teacher' | 'admin' | 'student';
 }
 
 interface AuthContextType {
@@ -48,9 +49,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // Mock user data - replace with actual API response
     const mockUser: User = {
       id: '1',
-      name: 'John Doe',
+      name: 'Divo Tahta',
       email: email,
-      role: 'admin' // Change based on actual login logic
+      role: 'teacher' // Change based on actual login logic
     };
 
     setUser(mockUser);

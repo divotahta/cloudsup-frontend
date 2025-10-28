@@ -23,7 +23,7 @@ const GlobalNavbar: React.FC = () => {
         <div className="flex items-center gap-[10px]">
           <CameraButton />
           <ProfileButton 
-            name={user?.name || "Dina Mustawati"} 
+            name={user?.name || "Divo Tahta"} 
             role="Tenaga Pendidik"
             onLogout={handleLogout}
             onSettings={handleSettings}

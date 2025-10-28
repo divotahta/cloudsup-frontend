@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   ReportHeader,
-  SummaryCard,
   OverallProgressCard,
   PerformanceRadarChart,
   SkillCard,
@@ -14,7 +13,7 @@ import {
   AgilityDetailCard,
   MemoryDetailCard
 } from './components';
-import { Gamepad2, Clock } from 'lucide-react';
+// import { Gamepad2, Clock } from 'lucide-react';
 
 const ReportContainer: React.FC = () => {
   const skillCards = [
@@ -71,22 +70,6 @@ const ReportContainer: React.FC = () => {
         <ReportHeader />
         
         {/* Summary Cards */}
-        <div className="flex gap-4">
-          <SummaryCard 
-            title="Total Games"
-            subtitle="dimainkan"
-            value="16"
-            iconColor="bg-blue-500"
-            Icon={Gamepad2}
-          />
-          <SummaryCard 
-            title="Total Menit"
-            subtitle="dimainkan"
-            value="120"
-            iconColor="bg-green-500"
-            Icon={Clock}
-          />
-        </div>
 
         {/* Two Column Layout */}
         <div className="grid grid-cols-2 gap-6">

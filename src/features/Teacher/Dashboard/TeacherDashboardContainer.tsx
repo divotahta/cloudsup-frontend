@@ -9,7 +9,7 @@ const TeacherDashboardContainer: React.FC = () => {
   // Game data
   const games = [
     {
-      id: 'gelembung-ajaib',
+      id: 'gelembung-game',
       title: 'GELEMBUNG AJAIB',
       description: 'Masuki dunia yang penuh gelembung!',
       imageUrl: 'https://framerusercontent.com/images/5I3P3XAnbMenWJjscRxX24z5M.png?width=538&height=506',
