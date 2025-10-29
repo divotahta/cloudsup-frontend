@@ -190,7 +190,7 @@ function PasswordCell({ value }: { value: string }) {
       <span>{isEmpty ? value : display}</span>
       {!isEmpty && (
         <button
-		className="hover:border-none"
+		className="hover:border-none bg-transparent"
           type="button"
           aria-label={visible ? "Sembunyikan password" : "Lihat password"}
           title={visible ? "Sembunyikan" : "Lihat"}

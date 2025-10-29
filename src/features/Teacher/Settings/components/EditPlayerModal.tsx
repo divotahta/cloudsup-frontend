@@ -28,6 +28,7 @@ export default function EditPlayerModal({ open, player, onClose, onSave }: EditP
 
 	const [isAvatarOpen, setIsAvatarOpen] = useState(false);
 	const [avatar, setAvatar] = useState<string>(player.image);
+	const [showPassword, setShowPassword] = useState(false);
 
 	return (
 		<div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[100] opacity-100 transition-opacity duration-200 ease-in-out">
@@ -125,12 +126,27 @@ export default function EditPlayerModal({ open, player, onClose, onSave }: EditP
 										<span className="font-normal text-[12px] text-[#BFBFBF] tracking-[0.4px] leading-5 inline ml-1">(Opsional)</span>
 									</label>
 									<div className="relative w-full h-14">
-										<input defaultValue={player.password} title={player.password} type="password" placeholder="Masukkan password" className="w-full h-full pr-12 pl-5 py-4 rounded-lg border border-[#BFBFBF] box-border font-medium text-[16px] text-[#262626] leading-[1.5em] outline-none transition-all duration-[400ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] bg-white shadow-none" />
-										<button type="button" className="absolute right-5 top-1/2 -translate-y-1/2 bg-transparent border-0 cursor-pointer p-0 flex items-center justify-center text-[#BFBFBF] transition-colors duration-[400ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] w-5 h-5">
-											<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-												<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
-												<circle cx="12" cy="12" r="3"></circle>
-											</svg>
+										<input defaultValue={player.password} title={player.password} type={showPassword ? 'text' : 'password'} placeholder="Masukkan password" className="w-full h-full pr-12 pl-5 py-4 rounded-lg border border-[#BFBFBF] box-border font-medium text-[16px] text-[#262626] leading-[1.5em] outline-none transition-all duration-[400ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] bg-white shadow-none" />
+										<button
+											type="button"
+											onClick={() => setShowPassword(!showPassword)}
+											aria-label={showPassword ? "Sembunyikan password" : "Lihat password"}
+											title={showPassword ? "Sembunyikan" : "Lihat"}
+											className="hover:border-none bg-transparent absolute right-5 top-1/2 -translate-y-1/2 cursor-pointer p-0 flex items-center justify-center text-[#BFBFBF] transition-colors duration-[400ms] ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+										>
+											{showPassword ? (
+												<svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+													<path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-10-8-10-8a18.45 18.45 0 0 1 5.06-5.94" />
+													<path d="M1 1l22 22" />
+													<path d="M10.58 10.58a3 3 0 0 0 4.24 4.24" />
+													<path d="M9.88 4.12A10.94 10.94 0 0 1 12 4c7 0 10 8 10 8a18.5 18.5 0 0 1-2.18 3.95" />
+												</svg>
+											) : (
+												<svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+													<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+													<circle cx="12" cy="12" r="3"></circle>
+												</svg>
+											)}
 										</button>
 									</div>
 								</div>
