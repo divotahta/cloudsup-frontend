@@ -27,9 +27,7 @@ interface ToastProps {
   duration?: number;
 }
 
-// ========================================================================
-//  LOADING DOTS COMPONENT
-// ========================================================================
+
 const LoadingDots: React.FC<{ color?: string }> = ({ color = '#FFFFFF' }) => {
   return (
     <>
@@ -68,9 +66,7 @@ const LoadingDots: React.FC<{ color?: string }> = ({ color = '#FFFFFF' }) => {
   );
 };
 
-// ========================================================================
-//  CONFETTI COMPONENT
-// ========================================================================
+
 const ConfettiContainer: React.FC = () => {
   const confettiColors = ['#09DE1B', '#0066FF', '#E82D2F', '#FFC700', '#8A2BE2'];
 
@@ -107,9 +103,7 @@ const ConfettiContainer: React.FC = () => {
   );
 };
 
-// ========================================================================
-//  TOAST NOTIFICATION COMPONENT
-// ========================================================================
+
 const ToastNotification: React.FC<ToastProps> = ({
   isOpen,
   onClose,

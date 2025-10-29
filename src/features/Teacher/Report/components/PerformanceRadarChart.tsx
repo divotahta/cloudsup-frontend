@@ -1,6 +1,8 @@
 import React from 'react';
+import { useSelectedPlayer } from '../contexts/SelectedPlayerContext';
 
 const PerformanceRadarChart: React.FC = () => {
+  const { currentPlayer } = useSelectedPlayer();
   return (
     <div className="bg-white rounded-lg p-6 flex flex-col items-center">
       {/* Chart Container */}
@@ -94,9 +96,10 @@ const PerformanceRadarChart: React.FC = () => {
       </div>
 
       {/* Title */}
-      <h2 className="font-raleway font-bold text-[20px] leading-[20px] text-[#084EC5]">
-        Performa
-      </h2>
+      <h2 className="font-raleway font-bold text-[20px] leading-[20px] text-[#084EC5]">Performa</h2>
+      {currentPlayer && (
+        <p className="mt-1 font-raleway font-medium text-sm text-[#262626]">{currentPlayer.name}</p>
+      )}
     </div>
   );
 };

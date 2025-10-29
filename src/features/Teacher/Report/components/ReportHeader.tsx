@@ -1,7 +1,17 @@
 import React from 'react';
 import { Calendar, Printer } from 'lucide-react';
+import ChangePlayerModal from './ChangePlayerModal';
+import { useSelectedPlayer } from '../contexts/SelectedPlayerContext';
 
 const ReportHeader: React.FC = () => {
+  const { players, loading, currentPlayer, setCurrentPlayer } = useSelectedPlayer();
+  const [isChangeOpen, setIsChangeOpen] = React.useState(false);
+
+  const safeImageSrc =
+    currentPlayer?.image && currentPlayer.image.trim() !== ''
+      ? currentPlayer.image
+      : undefined;
+
   return (
     <div className="flex items-center justify-between">
       {/* Left: Player Info & Date Range */}
@@ -10,19 +20,21 @@ const ReportHeader: React.FC = () => {
         <div className="w-[312px] bg-gradient-to-r from-[#E82D2F] to-[#C21315] rounded-2xl shadow-[inset_0_8px_16px_rgba(255,255,255,0.16),inset_0_2px_rgba(255,255,255,0.1)] p-7 flex items-center gap-4">
           {/* Avatar */}
           <div className="w-[76px] h-[76px] rounded-full bg-gray-200 flex-shrink-0 overflow-hidden">
-            <img 
-              src="https://framerusercontent.com/images/QL4YPq8cbQKu96Z4VlaylTBWeM.png?width=213&height=214"
-              alt="Ananda Mikhail"
-              className="w-full h-full object-cover"
-            />
+            {safeImageSrc ? (
+              <img
+                src={safeImageSrc}
+                alt={currentPlayer?.name || 'Pemain'}
+                className="w-full h-full object-cover"
+              />
+            ) : null}
           </div>
 
           {/* Profile Info */}
           <div className="flex flex-col gap-2 flex-grow min-w-0">
             <h3 className="font-raleway font-bold text-base leading-5 text-white whitespace-nowrap overflow-hidden text-ellipsis">
-              Ananda Mikhail
+              {currentPlayer ? currentPlayer.name : (loading ? 'Memuat pemain...' : 'Pemain tidak tersedia')}
             </h3>
-            <button className="w-full h-fit p-2 bg-white rounded-lg border border-gray-800 flex items-center justify-center gap-2 cursor-pointer transition-transform duration-[450ms] hover:scale-105 active:scale-100">
+            <button onClick={() => setIsChangeOpen(true)} disabled={!players.length} className="w-full h-fit p-2 bg-white rounded-lg border border-gray-800 flex items-center justify-center gap-2 cursor-pointer transition-transform duration-[450ms] hover:scale-105 active:scale-100 disabled:opacity-60 disabled:cursor-not-allowed">
               <span className="font-raleway font-bold text-xs leading-4 text-gray-800">Ganti Pemain</span>
               <svg className="w-4 h-4 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                 <polyline points="17 1 21 5 17 9" />
@@ -55,6 +67,16 @@ const ReportHeader: React.FC = () => {
       <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
         <Printer className="w-5 h-5 text-gray-700" />
       </button>
+      <ChangePlayerModal
+        open={isChangeOpen}
+        onClose={() => setIsChangeOpen(false)}
+        players={players}
+        currentPlayer={currentPlayer ?? { name: '', absen: '', image: '' }}
+        onConfirm={(p) => {
+          setCurrentPlayer(p);
+          setIsChangeOpen(false);
+        }}
+      />
     </div>
   );
 };

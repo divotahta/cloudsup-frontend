@@ -1,13 +1,15 @@
 import React from 'react';
+import { useSelectedPlayer } from '../contexts/SelectedPlayerContext';
 import { Info } from 'lucide-react';
 
 const OverallProgressCard: React.FC = () => {
+  const { currentPlayer } = useSelectedPlayer();
   return (
     <div className="bg-white rounded-lg p-6">
       {/* Header */}
       <div className="flex items-center gap-2 mb-6">
         <h2 className="font-raleway font-bold text-[20px] leading-[22px] text-[#084EC5]">
-          Laporan kemajuan secara keseluruhan
+          Laporan kemajuan secara keseluruhan{currentPlayer ? ` — ${currentPlayer.name}` : ''}
         </h2>
         <Info className="w-6 h-6 text-gray-500" />
       </div>
