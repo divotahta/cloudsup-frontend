@@ -1,4 +1,10 @@
-function SearchBar({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+function SearchBar({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+}) {
   return (
     <div className="w-full">
       <div className="relative group">
@@ -39,7 +45,7 @@ function AddPlayerButton({ onClick }: { onClick: () => void }) {
   return (
     <button
       onClick={onClick}
-      className="flex h-14 px-6 bg-[#0066FF] border border-[#0066FF] rounded-lg items-center justify-center gap-2 text-white font-bold text-[14px] shadow-[inset_0_8px_16px_rgba(255,255,255,0.16),inset_0_2px_0_rgba(255,255,255,0.1)] transition-transform duration-[450ms] ease-[cubic-bezier(0.34,2,0.64,1)] active:scale-95"
+      className="flex h-14 px-6 bg-[#0066FF] border border-[#0066FF] rounded-lg items-center justify-center gap-2 text-white font-bold text-[14px] shadow-[inset_0_8px_16px_rgba(255,255,255,0.16),inset_0_2px_0_rgba(255,255,255,0.1)] transition-transform duration-[450ms] ease-[cubic-bezier(0.34,2,0.64,1)] active:scale-95 hover:scale-[1.04]"
     >
       <span>Tambahkan Pemain</span>
       <div className="w-4 h-4">
@@ -79,7 +85,7 @@ const PLAYERS: Player[] = [
       "https://framerusercontent.com/images/QL4YPq8cbQKu96Z4VlaylTBWeM.png?width=213&height=214",
     disability: "[ADHD] Attention Deficit Hyperactivity Disorder",
     email: "hanasharifah45@gmail.com",
-    password: "••••••••",
+    password: "divotahta",
   },
   {
     name: "Danentara Kusuma",
@@ -173,25 +179,58 @@ function ActionIcons({
 }
 
 function PasswordCell({ value }: { value: string }) {
+  const [visible, setVisible] = useState(false);
+
+  const isEmpty = value.toLowerCase() === "belum ditambahkan";
+  const masked = "•".repeat(value.length || 8);
+  const display = visible && !isEmpty ? value : masked;
+
   return (
     <div className="flex items-center gap-2">
-      <span>{value}</span>
-      <div className="w-4 h-4 text-[#8C8C8C] cursor-pointer">
-        <svg
-          width="100%"
-          height="100%"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+      <span>{isEmpty ? value : display}</span>
+      {!isEmpty && (
+        <button
+		className="hover:border-none"
+          type="button"
+          aria-label={visible ? "Sembunyikan password" : "Lihat password"}
+          title={visible ? "Sembunyikan" : "Lihat"}
+          onClick={() => setVisible((v) => !v)}
         >
-          <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
-          <circle cx="12" cy="12" r="3"></circle>
-        </svg>
-      </div>
+          {visible ? (
+            // eye-off icon
+            <svg
+              width="16px"
+              height="16px"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          ) : (
+            // eye icon
+            <svg
+              width="16px"
+              height="16px"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          )}
+        </button>
+      )}
     </div>
   );
 }
