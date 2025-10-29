@@ -4,7 +4,7 @@ import { useSelectedPlayer } from '../contexts/SelectedPlayerContext';
 const PerformanceRadarChart: React.FC = () => {
   const { currentPlayer } = useSelectedPlayer();
   return (
-    <div className="bg-[#edf8ff] rounded-lg p-6 flex flex-col items-center">
+    <div className="bg-[#edf8ff] rounded-lg p-[18px] flex flex-col items-center w-full h-full" >
       {/* Chart Container */}
       <div className="relative w-[270px] h-[270px] ">
         {/* Radar Chart Placeholder */}

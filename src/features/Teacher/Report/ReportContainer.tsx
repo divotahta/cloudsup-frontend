@@ -80,11 +80,11 @@ const ReportContainer: React.FC = () => {
           {/* Summary Cards */}
 
           {/* Two Column Layout */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-[24px] mb-[24px]">
-            <div className="max-w-[527px] max-h-[329px] w-full h-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px] mb-[24px]">
+            <div className="max-w-[527px] max-h-[329px] w-full h-full p-[18px] bg-[#edf8ff] rounded-xl">
               <OverallProgressCard />
             </div>
-            <div className="max-w-[527px] max-h-[329px] w-full h-full">
+            <div className="max-w-[527px] max-h-[329px] w-full h-full bg-[#edf8ff] rounded-xl">
               <PerformanceRadarChart />
             </div>
           </div>

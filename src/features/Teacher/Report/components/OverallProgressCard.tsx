@@ -5,7 +5,7 @@ import { Info } from "lucide-react";
 const OverallProgressCard: React.FC = () => {
   const { currentPlayer } = useSelectedPlayer();
   return (
-    <div className="bg-[#edf8ff] rounded-lg p-[18px]">
+    <div className="bg-[#edf8ff] rounded-lg">
       {/* Header */}
       <div className="flex items-center gap-[16px] ">
         <svg
@@ -149,7 +149,7 @@ const OverallProgressCard: React.FC = () => {
           Laporan kemajuan secara keseluruhan
           {currentPlayer ? ` — ${currentPlayer.name}` : ""}
         </h2>
-        <Info className="w-6 h-6 text-gray-500" />
+        <Info className="w-[100px] h-[24px] text-[#084EC5]" />
       </div>
 
       {/* Labels under progress bar */}
@@ -197,7 +197,7 @@ const OverallProgressCard: React.FC = () => {
       </div>
 
       {/* Summary Stats */}
-      <div className="flex gap-4 ">
+      <div className="flex gap-4 mt-[50px]">
         {/* Total Games Card */}
         <div className="flex bg-none">
           <div className="flex flex-row items-center gap-2">
