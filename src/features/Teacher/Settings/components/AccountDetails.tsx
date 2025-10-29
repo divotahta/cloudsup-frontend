@@ -1,6 +1,6 @@
 export default function AccountDetails() {
   return (
-    <div className="w-auto  flex-col grid grid-cols-2 gap-4 ">
+    <div className="w-auto  flex-col grid grid-cols-2 gap-[12px]">
       <div className="flex items-center justify-start bg-[#EDF8FF] rounded-xl">
         <div className="w-auto justify-center items-center ml-7 bg-[#EDF8FF] rounded-xl">
           <div className="flex flex-row items-center ">
@@ -11,7 +11,7 @@ export default function AccountDetails() {
               <p className="text-[#084EC5] text-[18px] font-medium">
                 Tenaga Pendidik
               </p>
-              <p className="text-[#262626] text-2xl font-bold">Dina Mustawati</p>
+              <p className="text-[#262626] text-[24px] font-bold">Dina Mustawati</p>
               <p className="text-[#0052CC] text-[18px] font-bold">
                 SLB Negeri Jember
               </p>
@@ -21,24 +21,24 @@ export default function AccountDetails() {
       </div>
 
       <div className="w-auto flex flex-col p-[24px] bg-[#EDF8FF] rounded-xl">
-        <p className="text-[#0066FF] font-bold text-[16px] text-left ">
+        <p className="text-[#0066FF] font-bold text-[16px] text-left mb-2">
           Detail Akun
         </p>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-[12px]">
           <div className="flex flex-row justify-between gap-1">
-            <p className="text-[#262626] font-bold text-[16px]">Nama Lengkap</p>
-            <p className="text-[#262626]">Dina Mustawati</p>
+            <p className="text-[#262626] font- text-[16px]">Nama Lengkap</p>
+            <p className="text-[#262626] font-normal text-[16px]">Dina Mustawati</p>
           </div>
           <div className="flex flex-row justify-between gap-1">
             <p className="text-[#262626] font-bold text-[16px]">Email</p>
-            <p className="text-[#262626]">dinamustawati27@gmail.com</p>
+            <p className="text-[#262626] font-normal text-[16px]">dinamustawati27@gmail.com</p>
           </div>
           <div className="flex flex-row justify-between gap-1">
             <p className="text-[#262626] font-bold text-[16px]">Password</p>
-            <p className="text-[#262626]">•••••••••••••••••</p>
+            <p className="text-[#262626] font-normal text-[16px]">•••••••••••••••••</p>
           </div>
         </div>
-        <div className="mt-4 hover:outline-none border-none items-end flex flex-col">
+        <div className=" hover:outline-none border-none items-end flex flex-col">
           <button className="w-auto text-right font-bold text-[14px] text-[#0066FF] transition-colors bg-transparent border-none hover:underline">
             Ganti Password
           </button>

@@ -6,11 +6,9 @@ export default function SettingsContainer() {
 		<div className="w-auto flex flex-col gap-8 m-[40px]">
 			{/* Account Details Section */}
 			<section className="w-auto flex flex-col ">
-				<div className="rounded-xl overflow-hidden bg-white shadow-sm">
-					<div className="flex flex-col">
+					{/* <div className="flex flex-col"> */}
 						<AccountDetails />
-					</div>
-				</div>
+					{/* </div> */}
 			</section>
 
 			{/* Players List Section */}
