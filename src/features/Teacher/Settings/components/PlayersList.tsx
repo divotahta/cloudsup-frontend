@@ -94,7 +94,7 @@ const PLAYERS: Player[] = [
       "https://framerusercontent.com/images/pOa0LEN8qPwqmyqEeykmYFAxY.png?width=213&height=213",
     disability: "[ASD] Autism Spectrum Disorder",
     email: "danentara.k@gmail.com",
-    password: "••••••••",
+    password: "password",
   },
   {
     name: "Arkana Al-Husna",
@@ -103,7 +103,7 @@ const PLAYERS: Player[] = [
       "https://framerusercontent.com/images/29tJJZ9T663Fl2ZBRqQV3NGHEs.png?width=214&height=213",
     disability: "[DS] Down Syndrome",
     email: "arkana.husna@gmail.com",
-    password: "••••••••",
+    password: "projek gabut",
   },
   {
     name: "Ananda Mikhail",
@@ -190,7 +190,7 @@ function PasswordCell({ value }: { value: string }) {
       <span>{isEmpty ? value : display}</span>
       {!isEmpty && (
         <button
-		className="hover:border-none bg-transparent"
+          className="hover:border-none bg-transparent"
           type="button"
           aria-label={visible ? "Sembunyikan password" : "Lihat password"}
           title={visible ? "Sembunyikan" : "Lihat"}
@@ -209,8 +209,10 @@ function PasswordCell({ value }: { value: string }) {
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
-              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-10-8-10-8a18.45 18.45 0 0 1 5.06-5.94"></path>
+              <path d="M1 1l22 22"></path>
+              <path d="M10.58 10.58a3 3 0 0 0 4.24 4.24"></path>
+              <path d="M9.88 4.12A10.94 10.94 0 0 1 12 4c7 0 10 8 10 8a18.5 18.5 0 0 1-2.18 3.95"></path>
             </svg>
           ) : (
             // eye icon
