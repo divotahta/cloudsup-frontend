@@ -153,7 +153,7 @@ const OverallProgressCard: React.FC = () => {
       </div>
 
       {/* Labels under progress bar */}
-      <div className="flex justify-between mt-2 mb-2">
+      <div className="flex justify-between mt-[18px] mb-2">
         <p className="font-raleway font-semibold text-[10px] leading-[10px] text-[#0E2D5D]">
           0
         </p>
