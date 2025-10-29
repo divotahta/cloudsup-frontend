@@ -15,9 +15,9 @@ const ReportHeader: React.FC = () => {
   return (
     <div className="flex items-center justify-between">
       {/* Left: Player Info & Date Range */}
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-[28px]">
         {/* Player Card */}
-        <div className="w-[312px] bg-gradient-to-r from-[#E82D2F] to-[#C21315] rounded-2xl shadow-[inset_0_8px_16px_rgba(255,255,255,0.16),inset_0_2px_rgba(255,255,255,0.1)] p-7 flex items-center gap-4">
+        <div className="w-[312px] bg-gradient-to-r from-[#E82D2F] to-[#C21315] rounded-2xl shadow-[inset_0_8px_16px_rgba(255,255,255,0.16),inset_0_2px_rgba(255,255,255,0.1)] p-[28px] flex items-center gap-4">
           {/* Avatar */}
           <div className="w-[76px] h-[76px] rounded-full bg-gray-200 flex-shrink-0 overflow-hidden">
             {safeImageSrc ? (
@@ -34,7 +34,7 @@ const ReportHeader: React.FC = () => {
             <h3 className="font-raleway font-bold text-base leading-5 text-white whitespace-nowrap overflow-hidden text-ellipsis">
               {currentPlayer ? currentPlayer.name : (loading ? 'Memuat pemain...' : 'Pemain tidak tersedia')}
             </h3>
-            <button onClick={() => setIsChangeOpen(true)} disabled={!players.length} className="w-full h-fit p-2 bg-white rounded-lg border border-gray-800 flex items-center justify-center gap-2 cursor-pointer transition-transform duration-[450ms] hover:scale-105 active:scale-100 disabled:opacity-60 disabled:cursor-not-allowed">
+            <button onClick={() => setIsChangeOpen(true)} disabled={!players.length} className="w-full h-fit p-[16px] bg-white rounded-lg border border-gray-800 flex items-center justify-center gap-2 cursor-pointer transition-transform duration-[450ms] hover:scale-105 active:scale-100 disabled:opacity-60 disabled:cursor-not-allowed">
               <span className="font-raleway font-bold text-xs leading-4 text-gray-800">Ganti Pemain</span>
               <svg className="w-4 h-4 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                 <polyline points="17 1 21 5 17 9" />
