@@ -165,11 +165,11 @@ const LoginPage: React.FC = () => {
                       setIsTouched((prev) => ({ ...prev, email: true }));
                     }}
                     placeholder="Masukkan alamat email"
-                    className={`w-full h-full px-5 py-4 rounded-lg border font-medium text-base text-gray-900 outline-none transition-all duration-[400ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
+                    className={`w-full h-full px-5 py-4 rounded-lg border font-medium text-base text-gray-600 outline-none transition-all duration-[400ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
                       errors.email || getEmailError()
-                        ? "bg-red-50 border-red-600 border-2 placeholder:text-red-600 placeholder:opacity-100"
+                        ? "bg-red-50 border-red-600 border-2 placeholder:text-red-600 placeholder:opacity-100 "
                         : isFocused.email
-                        ? "bg-blue-50 border-blue-600 border-2 shadow-[inset_0_0_0_1px_#0066FF] placeholder:text-gray-400"
+                        ? "bg-blue-50 border-blue-600 border-2 shadow-[inset_0_0_0_1px_#0066FF] placeholder:text-gray-600 "
                         : "bg-white border-gray-300 placeholder:text-gray-400"
                     }`}
                     style={{
@@ -294,7 +294,7 @@ const LoginPage: React.FC = () => {
             <button
               type="submit"
               disabled={!isFormValid || isLoading}
-              className={`w-full h-[56px] px-6 py-4 rounded-lg font-bold text-base leading-[1.5em] outline-none transition-all duration-500 ${
+              className={`w-full h-[56px]  rounded-lg font-bold text-base leading-[1.5em] outline-none transition-all duration-500 ${
                 isFormValid && !isLoading
                   ? "bg-blue-600 text-white hover:bg-blue-700 hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-blue-200 cursor-pointer"
                   : "bg-gray-400 text-white cursor-not-allowed"

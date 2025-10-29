@@ -49,3 +49,12 @@ html, body {
 ::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
 }
+
+
+
+input:-webkit-autofill {
+  -webkit-text-fill-color: #000000 !important; /* warna teks */
+  -webkit-box-shadow: 0 0 0px 1000px #EFF6FF inset !important; /* bg-blue-50 (#EFF6FF) */
+
+}
+

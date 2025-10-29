@@ -16,6 +16,7 @@ import TeacherDashboardPage from './pages/teacher/DashboardPage';
 import TeacherReportPage from './pages/teacher/ReportPage';
 import TeacherGameDetailPage from './pages/teacher/GameDetailPage';
 import AdminGamesPage from './pages/admin/Games/AdminGamesPage'
+import TeacherSettingsPage from './pages/teacher/SettingsPage';
 import './App.css';
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
           <Route path="/teacher/dashboard" element={<MainLayout devRole="teacher"><TeacherDashboardPage /></MainLayout>} />
           <Route path="/teacher/reports" element={<MainLayout devRole="teacher"><TeacherReportPage /></MainLayout>} />
           <Route path="/teacher/games/:id" element={<MainLayout devRole="teacher"><TeacherGameDetailPage /></MainLayout>} />
+          <Route path="/teacher/settings" element={<MainLayout devRole="teacher"><TeacherSettingsPage /></MainLayout>} />
           
           {/* Student */}
           {/* <Route path="/student/game" element={<MainLayout><GamePlayContainer /></MainLayout>} /> */}
