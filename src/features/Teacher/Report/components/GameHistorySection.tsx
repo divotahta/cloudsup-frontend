@@ -11,7 +11,7 @@ const GameHistorySection: React.FC = () => {
   ];
 
   return (
-    <div className="bg-white rounded-lg p-6">
+    <div className="bg-[#EDF8FF] rounded-lg p-6 mt-[48px]">
       {/* Header */}
       <div className="mb-6">
         <h2 className="font-raleway font-bold text-[20px] leading-[21.2px] text-[#084EC5] mb-4">

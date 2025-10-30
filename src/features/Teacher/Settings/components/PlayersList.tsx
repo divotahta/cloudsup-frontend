@@ -205,9 +205,9 @@ function PasswordCell({ value }: { value: string }) {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-10-8-10-8a18.45 18.45 0 0 1 5.06-5.94"></path>
               <path d="M1 1l22 22"></path>
