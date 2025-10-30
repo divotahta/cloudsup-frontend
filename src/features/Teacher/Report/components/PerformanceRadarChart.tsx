@@ -1,105 +1,197 @@
-import React from 'react';
-import { useSelectedPlayer } from '../contexts/SelectedPlayerContext';
+import React from "react";
+import { useSelectedPlayer } from "../contexts/SelectedPlayerContext";
 
 const PerformanceRadarChart: React.FC = () => {
   const { currentPlayer } = useSelectedPlayer();
+  const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
+  const chartRef = React.useRef<any>(null);
+
+  React.useEffect(() => {
+    let mounted = true;
+    const ensureChartJs = async () => {
+      if ((window as any).Chart) return (window as any).Chart;
+      await new Promise<void>((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = "https://cdn.jsdelivr.net/npm/chart.js";
+        script.async = true;
+        script.onload = () => resolve();
+        script.onerror = () => reject(new Error("Gagal memuat Chart.js"));
+        document.body.appendChild(script);
+      });
+      return (window as any).Chart;
+    };
+
+    const init = async () => {
+      try {
+        const Chart = await ensureChartJs();
+        if (!mounted || !canvasRef.current) return;
+        const ctx = canvasRef.current.getContext("2d");
+        if (!ctx) return;
+
+        const data = [85, 70, 100, 75, 80, 65];
+
+        // Custom plugin untuk spider web effect menggunakan koordinat skala radial
+        const spiderWebPlugin = {
+          id: 'spiderWeb',
+          beforeDraw(chart: any) {
+            const { ctx, scales: { r } } = chart;
+            if (!r) return;
+
+            const centerX = r.xCenter;
+            const centerY = r.yCenter;
+            const axes = chart.data.labels?.length || 6;
+
+            ctx.save();
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 0.8;
+
+            // Radial lines (pusat ke titik lingkar luar)
+            for (let i = 0; i < axes; i++) {
+              const outer = (r as any).getPointPositionForValue(i, r.max);
+              ctx.beginPath();
+              ctx.moveTo(centerX, centerY);
+              ctx.lineTo(outer.x, outer.y);
+              ctx.stroke();
+            }
+
+            // Polygon konsentris (3 level sama jarak)
+            const levels = 3;
+            const step = (r.max - r.min) / levels;
+            for (let level = 1; level <= levels; level++) {
+              const value = r.min + step * level;
+              ctx.beginPath();
+              for (let i = 0; i < axes; i++) {
+                const p = (r as any).getPointPositionForValue(i, value);
+                if (i === 0) ctx.moveTo(p.x, p.y);
+                else ctx.lineTo(p.x, p.y);
+              }
+              ctx.closePath();
+              ctx.stroke();
+            }
+
+            ctx.restore();
+          }
+        };
+
+        chartRef.current = new Chart(ctx, {
+          type: "radar",
+          plugins: [spiderWebPlugin],
+          data: {
+            labels: [
+              "Keseluruhan",
+              "Ketangkasan",
+              "Fokus",
+              "Koordinasi",
+              "Keseimbangan",
+              "Memori",
+            ],
+            datasets: [
+              {
+                label: "Performa",
+                data: data,
+                backgroundColor: "rgba(8, 78, 197, 0.1)",
+                borderColor: "rgb(8, 78, 197)",
+                borderWidth: 1.5,
+                pointBackgroundColor: "rgb(8, 78, 197)",
+                pointBorderColor: "#EDF8FF",
+                pointStyle: 'rectRot',
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                pointBorderWidth: 1.5,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              r: {
+                beginAtZero: true,
+                min: 0,
+                max: 100,
+                startAngle: -Math.PI / 2, // label pertama di atas
+                ticks: {
+                  display: false,
+                },
+                angleLines: {
+                  display: false,
+                },
+                grid: {
+                  display: false,
+                },
+                pointLabels: {
+                  // centerPointLabels: true,
+                  font: {
+                    family: "'Raleway', sans-serif",
+                    size: 14,
+                    weight: "700",
+                  },
+                  color: "#084ec5",
+                  padding: 5,
+                },
+              },
+            },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: function(context: any) {
+                    return `Skor: ${context.raw}`;
+                  }
+                }
+              }
+            },
+            elements: {
+              line: { tension: 0 },
+            },
+            layout: {
+              padding: { top: 0, bottom: 22, left: 12, right: 12 }
+            }
+          },
+        });
+
+        setTimeout(() => {
+          if (chartRef.current) {
+            chartRef.current.resize();
+          }
+        }, 100);
+
+      } catch (error) {
+        console.error("Error initializing chart:", error);
+      }
+    };
+
+    init();
+    return () => {
+      mounted = false;
+      if (chartRef.current) {
+        chartRef.current.destroy();
+        chartRef.current = null;
+      }
+    };
+  }, [currentPlayer]);
+
   return (
-    <div className="bg-[#edf8ff] rounded-lg p-[18px] flex flex-col items-center w-full h-full" >
-      {/* Chart Container */}
-      <div className="relative w-[270px] h-[270px] ">
-        {/* Radar Chart Placeholder */}
-        <div className="w-full h-full bg-gradient-to-br from-blue-50 to-blue-100 rounded-full flex items-center justify-center relative">
-          {/* Chart SVG Placeholder */}
-          <div className="absolute inset-0">
-            {/* This would be the actual radar chart SVG */}
-            <svg className="w-full h-full" viewBox="0 0 270 270" xmlns="http://www.w3.org/2000/svg">
-              {/* Grid lines */}
-              <circle cx="135" cy="135" r="100" fill="none" stroke="#CBD5E0" strokeWidth="1" />
-              <circle cx="135" cy="135" r="75" fill="none" stroke="#CBD5E0" strokeWidth="1" />
-              <circle cx="135" cy="135" r="50" fill="none" stroke="#CBD5E0" strokeWidth="1" />
-              <circle cx="135" cy="135" r="25" fill="none" stroke="#CBD5E0" strokeWidth="1" />
-              
-              {/* Axes */}
-              {[0, 60, 120, 180, 240, 300].map((angle, i) => {
-                const radians = (angle * Math.PI) / 180;
-                const x = 135 + 100 * Math.cos(radians);
-                const y = 135 + 100 * Math.sin(radians);
-                return (
-                  <line
-                    key={i}
-                    x1="135"
-                    y1="135"
-                    x2={x}
-                    y2={y}
-                    stroke="#CBD5E0"
-                    strokeWidth="1"
-                  />
-                );
-              })}
-              
-              {/* Performance area (example data) */}
-              <polygon
-                points="135,135 180,100 185,160 145,185 110,175 95,140"
-                fill="#0066FF"
-                fillOpacity="0.3"
-                stroke="#0066FF"
-                strokeWidth="2"
-              />
-            </svg>
+    <div className="bg-transparent p-4">
+      <div className="flex justify-between items-start">
+        <h2 className="font-raleway font-bold text-lg text-[#084EC5]">
+          Performa
+        </h2>
           </div>
 
-          {/* Performance icon overlay */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-[198px] h-[199px] bg-gradient-to-br from-white/50 to-transparent rounded-full flex items-center justify-center">
-              {/* Child result icon */}
-              <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center">
-                <span className="text-white text-2xl font-bold">👤</span>
-              </div>
-            </div>
+      <div className="w-full flex items-center justify-center">
+        <div className="w-full h-[270px]"> 
+          <canvas 
+            ref={canvasRef} 
+            style={{ 
+              display: 'block',
+              boxSizing: 'border-box',
+              width: '100%',
+              height: '100%'
+            }}
+          />
           </div>
         </div>
-
-        {/* Category Labels */}
-        <div className="absolute inset-0">
-          {/* Keseluruhan - Top center */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2">
-            <p className="font-raleway font-bold text-sm text-[#084EC5] text-center">Keseluruhan</p>
-          </div>
-
-          {/* Ketangkasan - Top right */}
-          <div className="absolute top-8 right-4 text-center">
-            <p className="font-raleway font-bold text-sm text-[#084EC5]">Ketang-</p>
-            <p className="font-raleway font-bold text-sm text-[#084EC5]">kasan</p>
-          </div>
-
-          {/* Fokus - Right center */}
-          <div className="absolute top-1/2 -translate-y-1/2 right-2">
-            <p className="font-raleway font-bold text-sm text-[#084EC5] text-right">Fokus</p>
-          </div>
-
-          {/* Koordinasi - Bottom right */}
-          <div className="absolute bottom-8 right-4 text-center">
-            <p className="font-raleway font-bold text-sm text-[#084EC5] text-center">Koordinasi</p>
-          </div>
-
-          {/* Keseimbangan - Bottom center */}
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 text-center">
-            <p className="font-raleway font-bold text-sm text-[#084EC5] text-right">Keseim-</p>
-            <p className="font-raleway font-bold text-sm text-[#084EC5] text-right">bangan</p>
-          </div>
-
-          {/* Memori - Left center */}
-          <div className="absolute top-1/2 -translate-y-1/2 left-2">
-            <p className="font-raleway font-bold text-sm text-[#084EC5] text-right">Memori</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Title */}
-      <h2 className="font-raleway font-bold text-[20px] leading-[20px] text-[#084EC5]">Performa</h2>
-      {currentPlayer && (
-        <p className="mt-1 font-raleway font-medium text-sm text-[#262626]">{currentPlayer.name}</p>
-      )}
     </div>
   );
 };

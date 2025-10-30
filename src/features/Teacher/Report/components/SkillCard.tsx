@@ -7,6 +7,8 @@ interface SkillCardProps {
   gradientColors: string;
   iconUrl: string;
   showClockIcon?: boolean;
+  iconSvg?: React.ReactNode; // ikon sebagai JSX/ReactNode (disarankan)
+  iconHtml?: string; // ikon sebagai string SVG mentah (fallback)
 }
 
 const SkillCard: React.FC<SkillCardProps> = ({ 
@@ -15,7 +17,9 @@ const SkillCard: React.FC<SkillCardProps> = ({
   progress, 
   gradientColors,
   iconUrl,
-  showClockIcon = false
+  showClockIcon = false,
+  iconSvg,
+  iconHtml
 }) => {
   return (
     <div className={`bg-gradient-to-r ${gradientColors} rounded-lg p-6 relative overflow-hidden`}>
@@ -34,7 +38,7 @@ const SkillCard: React.FC<SkillCardProps> = ({
         <div className="w-[70px] h-[70px] relative">
           {/* SVG Icon Container */}
           <div 
-            className="absolute inset-0"
+            className="absolute inset-0 flex items-center justify-center"
             style={{
               imageRendering: 'pixelated',
               flexShrink: 0,
@@ -43,9 +47,17 @@ const SkillCard: React.FC<SkillCardProps> = ({
             }}
           >
             <div className="w-full h-full" style={{ aspectRatio: 'inherit' }}>
-              <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 70 70" preserveAspectRatio="none">
-                {/* SVG will be rendered here */}
-              </svg>
+              {/* Prioritas: iconSvg (JSX) > iconHtml (string) > placeholder kosong */}
+              {iconSvg ? (
+                <div className="w-full h-full">{iconSvg}</div>
+              ) : iconHtml ? (
+                <div
+                  className="w-full h-full"
+                  dangerouslySetInnerHTML={{ __html: iconHtml }}
+                />
+              ) : (
+                <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 70 70" preserveAspectRatio="none" />
+              )}
             </div>
           </div>
         </div>
