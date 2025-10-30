@@ -172,7 +172,7 @@ const PerformanceRadarChart: React.FC = () => {
   }, [currentPlayer]);
 
   return (
-    <div className="bg-transparent p-4">
+    <div className="bg-transparent p-3 ml-2">
       <div className="flex justify-between items-start">
         <h2 className="font-raleway font-bold text-lg text-[#084EC5]">
           Performa
