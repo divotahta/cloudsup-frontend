@@ -46,8 +46,10 @@ function App() {
           <Route path="/teacher" element={<MainLayout devRole="teacher"><TeacherDashboardPage /></MainLayout>} />
           <Route path="/teacher/dashboard" element={<MainLayout devRole="teacher"><TeacherDashboardPage /></MainLayout>} />
           <Route path="/teacher/reports" element={<MainLayout devRole="teacher"><TeacherReportPage /></MainLayout>} />
+          <Route path="/reports" element={<MainLayout devRole="teacher"><TeacherReportPage /></MainLayout>} />
           <Route path="/teacher/games/:id" element={<MainLayout devRole="teacher"><TeacherGameDetailPage /></MainLayout>} />
           <Route path="/teacher/settings" element={<MainLayout devRole="teacher"><TeacherSettingsPage /></MainLayout>} />
+          <Route path="/settings" element={<MainLayout devRole="teacher"><TeacherSettingsPage /></MainLayout>} />
           
           {/* Student */}
           {/* <Route path="/student/game" element={<MainLayout><GamePlayContainer /></MainLayout>} /> */}
