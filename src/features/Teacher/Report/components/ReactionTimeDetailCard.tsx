@@ -46,7 +46,7 @@ const ReactionTimeDetailCard: React.FC = () => {
               <div className="flex flex-row justify-between mb-6">
                 <div className="flex gap-3 items-center">
                   <h2 className="font-raleway font-bold text-[25px] leading-[25px] text-white col-span-2">
-                    Fokus
+                    Rata-rata Waktu Reaksi
                   </h2>
                   <div className="flex items-center">
                     <LucideInfo className="text-white"></LucideInfo>
