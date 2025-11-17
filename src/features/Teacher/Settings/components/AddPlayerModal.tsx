@@ -5,7 +5,7 @@ type AddPlayerModalProps = {
   onSave?: () => void;
 };
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AvatarPickerModal from "./AvatarPickerModal";
 
 export default function AddPlayerModal({
@@ -17,6 +17,45 @@ export default function AddPlayerModal({
 
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
   const [avatar, setAvatar] = useState<string | undefined>(undefined);
+  const [classDropdownOpen, setClassDropdownOpen] = useState(false);
+  const [selectedClass, setSelectedClass] = useState<string | null>(null);
+  const [obstacleDropdownOpen, setObstacleDropdownOpen] = useState(false);
+  const [selectedObstacle, setSelectedObstacle] = useState<string | null>(null);
+
+  const classDropdownRef = useRef<HTMLDivElement | null>(null);
+  const obstacleDropdownRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        classDropdownRef.current &&
+        !classDropdownRef.current.contains(event.target as Node)
+      ) {
+        setClassDropdownOpen(false);
+      }
+      if (
+        obstacleDropdownRef.current &&
+        !obstacleDropdownRef.current.contains(event.target as Node)
+      ) {
+        setObstacleDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const classOptions = ["Kelas 1", "Kelas 2", "Kelas 3", "Kelas 4", "Kelas 5", "Kelas 6"];
+  const obstacleOptions = [
+    "[ADHD] Attention Deficit Hyperactivity Disorder",
+    "[ASD] Autism Spectrum Disorder",
+    "[DS] Down Syndrome",
+    "[DCD] Development Coordination Disorder",
+    "[CP] Cerebral Palsy",
+  ];
+
   const handleSave = () => {
     if (onSave) onSave(); // panggil callback dari parent
     onClose(); // tutup modal
@@ -46,12 +85,12 @@ export default function AddPlayerModal({
           </svg>
         </button>
         <div className="p-6 flex flex-col gap-6">
-          <div className="flex flex-col gap-4 text-center px-6">
+          <div className="flex flex-col gap-[2px] text-left px-6">
             <h3 className="font-['Raleway'] font-bold text-[24px] text-[#0066FF] leading-[31.92px] m-0">
               Tambahkan Detail Pemain
             </h3>
             <p className="font-['Raleway'] font-medium text-[14px] text-[#262626] leading-[19.6px] m-0">
-              Isi detail pemain baru di bawah ini.
+              Isi detail pemain baru di bawah ini
             </p>
           </div>
           <div className="flex flex-row gap-6 items-start">
@@ -87,12 +126,12 @@ export default function AddPlayerModal({
                 Edit Avatar
               </button>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 grow">
+            <div className="grid grid-cols-2 gap-4 grow">
               <div>
                 <div className="flex flex-col gap-2 font-['Raleway']">
                   <label>
                     <span className="font-bold text-[14px] text-[#262626] tracking-[0.4px] leading-5 inline">
-                      Nama Depan
+                      Nama Lengkap
                     </span>
                     <span className="font-bold text-[14px] text-[#E82D2F] tracking-[0.4px] leading-5 inline ml-[2px]">
                       *
@@ -101,29 +140,66 @@ export default function AddPlayerModal({
                   <div className="relative w-full h-14">
                     <input
                       type="text"
-                      placeholder="Masukkan nama depan"
-                      className="w-full h-full px-5 py-4 rounded-lg border border-[#BFBFBF] box-border font-medium text-[16px] text-[#262626] leading-[1.5em] outline-none transition-all duration-[400ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] bg-white shadow-none"
+                      placeholder="Masukkan nama lengkap"
+                      className="w-full h-full px-5 py-4 rounded-lg border border-[#BFBFBF] box-border font-medium text-[16px] text-[#262626] leading-[1.5em] outline-none transition-all duration-[400ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] bg-white shadow-none placeholder:text-[#BFBFBF] focus-visible:border-[#0066FF] focus-visible:bg-[#EDF8FF] focus-visible:shadow-[0_0_0_1px_#0066FF]"
                     />
                   </div>
                 </div>
                 <p className="m-0 font-['Raleway'] font-normal text-[12px] text-[#E82D2F] tracking-[0.4px] leading-4 pl-1 opacity-0 max-h-0 overflow-hidden transition-[opacity,max-height,margin-top] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"></p>
               </div>
-              <div>
-                <div className="flex flex-col gap-2 font-['Raleway']">
+              <div className="min-w-0 w-full">
+                <div className="flex flex-col gap-2 font-['Raleway'] relative" ref={classDropdownRef}>
                   <label>
                     <span className="font-bold text-[14px] text-[#262626] tracking-[0.4px] leading-5 inline">
-                      Nama Belakang
+                      Kelas
                     </span>
-                    <span className="font-normal text-[12px] text-[#BFBFBF] tracking-[0.4px] leading-5 inline ml-1">
-                      (Opsional)
+                    <span className="font-bold text-[14px] text-[#E82D2F] tracking-[0.4px] leading-5 inline ml-[2px]">
+                      *
                     </span>
                   </label>
                   <div className="relative w-full h-14">
-                    <input
-                      type="text"
-                      placeholder="Masukkan nama belakang"
-                      className="w-full h-full px-5 py-4 rounded-lg border border-[#BFBFBF] box-border font-medium text-[16px] text-[#262626] leading-[1.5em] outline-none transition-all duration-[400ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] bg-white shadow-none"
-                    />
+                    <button
+                      type="button"
+                      onClick={() => setClassDropdownOpen((prev) => !prev)}
+                      className={`w-full h-full pr-10 pl-5 py-4 rounded-lg border border-[#BFBFBF] box-border font-medium text-[16px] text-[#262626] leading-[1.5em] outline-none transition-all duration-[400ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] cursor-pointer bg-white overflow-hidden text-ellipsis whitespace-nowrap appearance-none text-left focus-visible:border-[#0066FF] focus-visible:bg-[#EDF8FF] focus-visible:shadow-[0_0_0_1px_#0066FF] ${
+                        classDropdownOpen ? "border-[#0066FF] shadow-[0_0_0_1px_#0066FF]" : ""
+                      }`}
+                    >
+                      <span className={selectedClass ? "text-[#262626]" : "text-[#BFBFBF]"}>
+                        {selectedClass ?? "Pilih Kelas"}
+                      </span>
+                    </button>
+                    <div className={`absolute right-5 top-1/2 -translate-y-1/2 rotate-0 w-5 h-5 pointer-events-none transition-[transform,color] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] flex items-center justify-center ${classDropdownOpen ? "text-[#0066FF]" : "text-[#0066FF]"}`}>
+                      <svg
+                        width="100%"
+                        height="100%"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className={classDropdownOpen ? "transform rotate-180 transition-transform duration-300" : ""}
+                      >
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </div>
+                    <div className={`focus-visible:border-[#0066FF] absolute left-0 right-0 top-full bg-white border border-[#0066FF] rounded-lg mt-1 max-h-[200px] overflow-y-auto z-10 shadow-[0_4px_12px_rgba(0,0,0,0.1)] ${classDropdownOpen ? "block" : "hidden"}`}>
+                      {classOptions.map((kelas) => (
+                        <button
+                          key={kelas}
+                          type="button"
+                          onClick={() => {
+                            setSelectedClass(kelas);
+                            setClassDropdownOpen(false);
+                          }}
+                          className="w-full text-left px-5 py-3 font-['Raleway'] font-medium text-[16px] text-[#262626] cursor-pointer transition-colors hover:bg-[#F5F5F5]"
+                        >
+                          {kelas}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
                 <p className="m-0 font-['Raleway'] font-normal text-[12px] text-[#E82D2F] tracking-[0.4px] leading-4 pl-1 opacity-0 max-h-0 overflow-hidden transition-[opacity,max-height,margin-top] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"></p>
@@ -142,14 +218,14 @@ export default function AddPlayerModal({
                     <input
                       type="text"
                       placeholder="Contoh: 12"
-                      className="w-full h-full px-5 py-4 rounded-lg border border-[#BFBFBF] box-border font-medium text-[16px] text-[#262626] leading-[1.5em] outline-none transition-all duration-[400ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] bg-white shadow-none"
+                      className="focus-visible:bg-[#EDF8FF] w-full h-full px-5 py-4 rounded-lg border border-[#BFBFBF] box-border font-medium text-[16px] text-[#262626] leading-[1.5em] outline-none transition-all duration-[400ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] bg-white shadow-none focus-visible:border-[#0066FF] focus-visible:shadow-[0_0_0_1px_#0066FF]"
                     />
                   </div>
                 </div>
                 <p className="m-0 font-['Raleway'] font-normal text-[12px] text-[#E82D2F] tracking-[0.4px] leading-4 pl-1 opacity-0 max-h-0 overflow-hidden transition-[opacity,max-height,margin-top] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"></p>
               </div>
               <div className="min-w-0 w-full">
-                <div className="flex flex-col gap-2 font-['Raleway'] relative">
+                <div className="flex flex-col gap-2 font-['Raleway'] relative" ref={obstacleDropdownRef}>
                   <label>
                     <span className="font-bold text-[14px] text-[#262626] tracking-[0.4px] leading-5 inline">
                       Pilih Jenis Hambatan
@@ -159,10 +235,18 @@ export default function AddPlayerModal({
                     </span>
                   </label>
                   <div className="relative w-full h-14">
-                    <div className="w-full h-full pr-10 pl-5 py-4 rounded-lg border border-[#BFBFBF] box-border font-medium text-[16px] text-[#262626] leading-[1.5em] outline-none transition-all duration-[400ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] cursor-pointer bg-white overflow-hidden text-ellipsis whitespace-nowrap">
-                      <span className="text-[#BFBFBF]">Pilih dari daftar</span>
-                    </div>
-                    <div className="absolute right-5 top-1/2 -translate-y-1/2 rotate-0 w-5 h-5 pointer-events-none text-[#BFBFBF] transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] flex items-center justify-center">
+                    <button
+                      type="button"
+                      onClick={() => setObstacleDropdownOpen((prev) => !prev)}
+                      className={`w-full h-full pr-10 pl-5 py-4 rounded-lg border border-[#BFBFBF] box-border font-medium text-[16px] text-[#262626] leading-[1.5em] outline-none transition-all duration-[400ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] cursor-pointer bg-white overflow-hidden text-ellipsis whitespace-nowrap appearance-none text-left focus-visible:border-[#0066FF] focus-visible:shadow-[0_0_0_1px_#0066FF] ${
+                        obstacleDropdownOpen ? "border-[#0066FF] shadow-[0_0_0_1px_#0066FF]" : ""
+                      }`}
+                    >
+                      <span className={selectedObstacle ? "text-[#262626]" : "text-[#BFBFBF]"}>
+                        {selectedObstacle ?? "Pilih dari daftar"}
+                      </span>
+                    </button>
+                    <div className={`absolute right-5 top-1/2 -translate-y-1/2 rotate-0 w-5 h-5 pointer-events-none transition-[transform,color] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] flex items-center justify-center ${obstacleDropdownOpen ? "text-[#0066FF]" : "text-[#BFBFBF]"}`}>
                       <svg
                         width="100%"
                         height="100%"
@@ -173,30 +257,72 @@ export default function AddPlayerModal({
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
+                        className={obstacleDropdownOpen ? "transform rotate-180 transition-transform duration-300" : ""}
                       >
                         <polyline points="6 9 12 15 18 9"></polyline>
                       </svg>
                     </div>
-                    {/* Daftar opsi disembunyikan (display: none) sesuai desain */}
+                    <div className={`absolute left-0 right-0 top-full bg-white border border-[#0066FF] rounded-lg mt-1 max-h-[200px] overflow-y-auto z-10 shadow-[0_4px_12px_rgba(0,0,0,0.1)] ${obstacleDropdownOpen ? "block" : "hidden"}`}>
+                      {obstacleOptions.map((option) => (
+                        <button
+                          key={option}
+                          type="button"
+                          onClick={() => {
+                            setSelectedObstacle(option);
+                            setObstacleDropdownOpen(false);
+                          }}
+                          className="w-full text-left px-5 py-3 font-['Raleway'] font-medium text-[16px] text-[#262626] cursor-pointer transition-colors hover:bg-[#F5F5F5]"
+                        >
+                          {option}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
                 <p className="m-0 font-['Raleway'] font-normal text-[12px] text-[#E82D2F] tracking-[0.4px] leading-4 pl-1 opacity-0 max-h-0 overflow-hidden transition-[opacity,max-height,margin-top] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"></p>
               </div>
               <div>
                 <div className="flex flex-col gap-2 font-['Raleway']">
-                  <label>
-                    <span className="font-bold text-[14px] text-[#262626] tracking-[0.4px] leading-5 inline">
-                      Alamat Email
-                    </span>
-                    <span className="font-normal text-[12px] text-[#BFBFBF] tracking-[0.4px] leading-5 inline ml-1">
-                      (Opsional)
-                    </span>
-                  </label>
+                  <div className="flex items-center">
+                    <label className="flex items-center">
+                      <span className="font-bold text-[14px] text-[#262626] tracking-[0.4px] leading-5 inline">
+                        Alamat Email
+                      </span>
+                      <span className="font-normal text-[12px] text-[#BFBFBF] tracking-[0.4px] leading-5 inline ml-1">
+                        (Opsional)
+                      </span>
+                    </label>
+                    <div className="relative inline-flex items-center justify-center ml-2 group">
+                      <div className="focus-visible:bg-[#EDF8FF]w-4 h-4 text-[#BFBFBF] cursor-pointer transition-colors flex items-center justify-center">
+                        <svg
+                          width="100%"
+                          height="100%"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <line x1="12" y1="16" x2="12" y2="12"></line>
+                          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                      </div>
+                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 pointer-events-none w-[250px] z-10">
+                        <div className="bg-[#454545] text-white font-['Raleway'] font-medium text-[14px] leading-4 px-3 py-2 rounded-md text-center shadow-[0_4px_12px_rgba(0,0,0,0.1)]">
+                          Anda bisa menambahkan akun orang tua agar anak juga dapat memainkannya dirumah
+                        </div>
+                        <div className="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-[#454545]"></div>
+                      </div>
+                    </div>
+                  </div>
                   <div className="relative w-full h-14">
                     <input
                       type="text"
                       placeholder="Contoh: email@gmail.com"
-                      className="w-full h-full px-5 py-4 rounded-lg border border-[#BFBFBF] box-border font-medium text-[16px] text-[#262626] leading-[1.5em] outline-none transition-all duration-[400ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] bg-white shadow-none"
+                      className="focus-visible:bg-[#EDF8FF] w-full h-full px-5 py-4 rounded-lg border border-[#BFBFBF] box-border font-medium text-[16px] text-[#262626] leading-[1.5em] outline-none transition-all duration-[400ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] bg-white shadow-none placeholder:text-[#BFBFBF] focus-visible:border-[#0066FF] focus-visible:shadow-[0_0_0_1px_#0066FF]"
                     />
                   </div>
                 </div>
@@ -216,7 +342,7 @@ export default function AddPlayerModal({
                     <input
                       type="password"
                       placeholder="Masukkan password"
-                      className="w-full h-full pr-12 pl-5 py-4 rounded-lg border border-[#BFBFBF] box-border font-medium text-[16px] text-[#262626] leading-[1.5em] outline-none transition-all duration-[400ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] bg-white shadow-none"
+                      className="focus-visible:bg-[#EDF8FF] w-full h-full pr-12 pl-5 py-4 rounded-lg border border-[#BFBFBF] box-border font-medium text-[16px] text-[#262626] leading-[1.5em] outline-none transition-all duration-[400ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] bg-white shadow-none placeholder:text-[#BFBFBF] focus-visible:border-[#0066FF] focus-visible:shadow-[0_0_0_1px_#0066FF]"
                     />
                     <button
                       type="button"
@@ -252,7 +378,8 @@ export default function AddPlayerModal({
             </button>
             <button
               onClick={handleSave}
-              className="flex-1 p-4 rounded-lg font-['Raleway'] font-bold text-[14px] bg-[#0066FF] text-white active:scale-95 transition-all"
+              disabled
+              className="flex-1 p-4 rounded-lg font-['Raleway'] font-bold text-[14px] bg-[#0066FF] text-white transition-[transform,opacity] duration-[450ms] ease-[cubic-bezier(0.34,2,0.64,1)] opacity-50 cursor-not-allowed"
             >
               Simpan
             </button>
