@@ -3,8 +3,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 type FaceRecognitionModalProps = {
   open: boolean;
   onClose: () => void;
-  // Callback saat pengambilan gambar selesai, meneruskan data gambar
-  onRecognitionComplete: (imageData: string) => void; 
+  // Callback saat pengambilan gambar selesai, meneruskan data gambar.
+  // Mengembalikan boolean (atau Promise) untuk menandai apakah pengenalan berhasil.
+  onRecognitionComplete: (imageData: string) => void | boolean | Promise<void | boolean>; 
 };
 
 /**
@@ -28,6 +29,8 @@ export default function FaceRecognitionModal({ open, onClose, onRecognitionCompl
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isVideoReady, setIsVideoReady] = useState(false);
   const [isInitializing, setIsInitializing] = useState(false);
+  const [isCheckingRecognition, setIsCheckingRecognition] = useState(false);
+  const [faceGuideState, setFaceGuideState] = useState<"info" | "error">("info");
 
   // === Fungsi Kamera ===
 
@@ -62,6 +65,7 @@ export default function FaceRecognitionModal({ open, onClose, onRecognitionCompl
     setIsVideoReady(false);
     setIsInitializing(true);
     isInitializingRef.current = true;
+    setFaceGuideState("info");
 
     if (typeof navigator === "undefined" || !navigator.mediaDevices?.getUserMedia) {
       setErrorMessage("Browser tidak mendukung akses kamera.");
@@ -139,6 +143,7 @@ export default function FaceRecognitionModal({ open, onClose, onRecognitionCompl
   useEffect(() => {
     if (open) {
       setCapturedImage(null); 
+      setFaceGuideState("info");
       startCamera();
     } else {
       // Cleanup saat modal ditutup
@@ -146,6 +151,8 @@ export default function FaceRecognitionModal({ open, onClose, onRecognitionCompl
       setCapturedImage(null);
       setIsVideoReady(false);
       setErrorMessage(null);
+      setFaceGuideState("info");
+      setIsCheckingRecognition(false);
       resetInitializationState();
     }
 
@@ -181,6 +188,7 @@ export default function FaceRecognitionModal({ open, onClose, onRecognitionCompl
 
     // Lanjutkan proses pengambilan gambar jika sudah siap
     setIsCapturing(true);
+    setFaceGuideState("info");
     
     const video = videoRef.current;
     const canvas = canvasRef.current;
@@ -211,16 +219,32 @@ export default function FaceRecognitionModal({ open, onClose, onRecognitionCompl
   /**
    * Menyelesaikan proses pengenalan dan menutup modal.
    */
-  const handleComplete = () => {
-    if (!capturedImage) return;
+  const handleComplete = async () => {
+    if (!capturedImage || isCheckingRecognition) return;
 
-    onRecognitionComplete(capturedImage);
-    
-    // Cleanup
-    stopCamera();
-    setCapturedImage(null);
-    setIsVideoReady(false);
-    resetInitializationState();
+    setIsCheckingRecognition(true);
+    try {
+      const result = await onRecognitionComplete(capturedImage);
+      const isSuccess = result !== false;
+
+      if (!isSuccess) {
+        setFaceGuideState("error");
+        setCapturedImage(null);
+        return;
+      }
+
+      // Cleanup ketika sukses
+      stopCamera();
+      setCapturedImage(null);
+      setIsVideoReady(false);
+      resetInitializationState();
+      setFaceGuideState("info");
+    } catch (err) {
+      console.error("Face recognition validation failed:", err);
+      setFaceGuideState("error");
+    } finally {
+      setIsCheckingRecognition(false);
+    }
   };
 
   // Jika modal tidak terbuka, jangan render apa-apa
@@ -228,7 +252,15 @@ export default function FaceRecognitionModal({ open, onClose, onRecognitionCompl
 
   const isRecognitionComplete = Boolean(capturedImage);
   // isVideoReady dihilangkan dari disable agar user bisa klik Ambil Gambar (untuk memicu play)
-  const isCaptureDisabled = Boolean(errorMessage) || isCapturing || isInitializing; 
+  const isCaptureDisabled = Boolean(errorMessage) || isCapturing || isInitializing || isCheckingRecognition; 
+  const isSubmitDisabled = !isRecognitionComplete || isCheckingRecognition;
+  const isGuideError = faceGuideState === "error";
+  const guideBackground = isGuideError ? "bg-[#FFEDED]" : "bg-[#EDF8FF]";
+  const guideBorder = isGuideError ? "border-[#E82D2F]" : "border-[#0066FF]";
+  const guideTextColor = isGuideError ? "text-[#E82D2F]" : "text-[#0066FF]";
+  const guideMessage = isGuideError
+    ? "Wajah tidak terdeteksi. Silakan ambil gambar kembali."
+    : "Posisikan wajah Anak menghadap ke DEPAN";
 
   // === Rendering JSX ===
   return (
@@ -302,8 +334,8 @@ export default function FaceRecognitionModal({ open, onClose, onRecognitionCompl
             {/* Area Kontrol & Panduan */}
             <div className="flex-1 flex flex-col gap-4 self-stretch">
               {/* Panduan Teks */}
-              <div className="font-['Raleway'] font-bold text-[16px] text-[#0066FF] text-center px-4 py-4 bg-[#EDF8FF] rounded-lg border border-[#0066FF] min-h-[50px] flex items-center justify-center">
-                Posisikan wajah Anak menghadap ke DEPAN
+              <div className={`font-['Raleway'] font-bold text-[16px] text-center px-4 py-4 rounded-lg min-h-[50px] flex items-center justify-center ${guideBackground} ${guideBorder} ${guideTextColor}`}>
+                {guideMessage}
               </div>
               
               {/* Tombol Aksi */}
@@ -325,12 +357,12 @@ export default function FaceRecognitionModal({ open, onClose, onRecognitionCompl
                 <button
                   type="button"
                   onClick={handleComplete}
-                  disabled={!isRecognitionComplete}
+                  disabled={isSubmitDisabled}
                   className={`flex-1 p-4 rounded-lg border border-[#262626] font-['Raleway'] font-bold text-[14px] bg-white text-[#262626] transition-[transform,opacity] duration-[450ms] ease-[cubic-bezier(0.34,2,0.64,1)] ${
-                    isRecognitionComplete ? "cursor-pointer active:scale-95 opacity-100" : "opacity-50 cursor-not-allowed"
+                    !isSubmitDisabled ? "cursor-pointer active:scale-95 opacity-100" : "opacity-50 cursor-not-allowed"
                   }`}
                 >
-                  Simpan &amp; Selesaikan
+                  {isCheckingRecognition ? "Memeriksa..." : "Simpan & Selesaikan"}
                 </button>
               </div>
             </div>

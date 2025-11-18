@@ -14,8 +14,9 @@ type EditPlayerModalProps = {
   onSave?: (data: PlayerData) => void;
 };
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import AvatarPickerModal from "./AvatarPickerModal";
+
 
 export default function EditPlayerModal({
   open,
@@ -31,9 +32,24 @@ export default function EditPlayerModal({
     return [parts[0], parts.slice(1).join(" ")];
   })();
 
+  const obstacleOptions = [
+    "[ADHD] Attention Deficit Hyperactivity Disorder",
+    "[ASD] Autism Spectrum Disorder",
+    "[DS] Down Syndrome",
+    "[DCD] Development Coordination Disorder",
+    "[CP] Cerebral Palsy",
+  ];
+
+  const obstacleDropdownRef = useRef<HTMLDivElement | null>(null);
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
   const [avatar, setAvatar] = useState<string>(player.image);
   const [showPassword, setShowPassword] = useState(false);
+  const [selectedClass, setSelectedClass] = useState<string | null>(null);
+  const [classDropdownOpen, setClassDropdownOpen] = useState(false);
+  const classOptions = ["Kelas 1", "Kelas 2", "Kelas 3", "Kelas 4", "Kelas 5", "Kelas 6"];
+  const classDropdownRef = useRef<HTMLDivElement | null>(null);
+  const [obstacleDropdownOpen, setObstacleDropdownOpen] = useState(false);
+  const [selectedObstacle, setSelectedObstacle] = useState<string | null>(null);
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[100] opacity-100 transition-opacity duration-200 ease-in-out">
@@ -135,9 +151,9 @@ export default function EditPlayerModal({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 grow">
               <div>
                 <div className="flex flex-col gap-2 font-['Raleway']">
-                  <label>
+                <label>
                     <span className="font-bold text-[14px] text-[#262626] tracking-[0.4px] leading-5 inline">
-                      Nama Depan
+                      Nama Lengkap
                     </span>
                     <span className="font-bold text-[14px] text-[#E82D2F] tracking-[0.4px] leading-5 inline ml-[2px]">
                       *
@@ -155,23 +171,59 @@ export default function EditPlayerModal({
                 </div>
                 <p className="m-0 font-['Raleway'] font-normal text-[12px] text-[#E82D2F] tracking-[0.4px] leading-4 pl-1 opacity-0 max-h-0 overflow-hidden transition-[opacity,max-height,margin-top] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"></p>
               </div>
-              <div>
-                <div className="flex flex-col gap-2 font-['Raleway']">
+              <div className="min-w-0 w-full">
+                <div className="flex flex-col gap-2 font-['Raleway'] relative" ref={classDropdownRef}>
                   <label>
                     <span className="font-bold text-[14px] text-[#262626] tracking-[0.4px] leading-5 inline">
-                      Nama Belakang
+                      Kelas
                     </span>
-                    <span className="font-normal text-[12px] text-[#BFBFBF] tracking-[0.4px] leading-5 inline ml-1">
-                      (Opsional)
+                    <span className="font-bold text-[14px] text-[#E82D2F] tracking-[0.4px] leading-5 inline ml-[2px]">
+                      *
                     </span>
                   </label>
                   <div className="relative w-full h-14">
-                    <input
-                      defaultValue={lastName}
-                      type="text"
-                      placeholder="Masukkan nama belakang"
-                      className="w-full h-full px-5 py-4 rounded-lg border border-[#BFBFBF] box-border font-medium text-[16px] text-[#262626] leading-[1.5em] outline-none transition-all duration-[400ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] bg-white shadow-none"
-                    />
+                    <button
+                      type="button"
+                      onClick={() => setClassDropdownOpen((prev) => !prev)}
+                      className={`w-full h-full pr-10 pl-5 py-4 rounded-lg border border-[#BFBFBF] box-border font-medium text-[16px] text-[#262626] leading-[1.5em] outline-none transition-all duration-[400ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] cursor-pointer bg-white overflow-hidden text-ellipsis whitespace-nowrap appearance-none text-left focus-visible:border-[#0066FF] focus-visible:bg-[#EDF8FF] focus-visible:shadow-[0_0_0_1px_#0066FF] ${
+                        classDropdownOpen ? " shadow-[0_0_0_1px_#0066FF]" : ""
+                      }`}
+                    >
+                      <span className={selectedClass ? "text-[#262626]" : "text-[#BFBFBF]"}>
+                        {selectedClass ?? "Pilih Kelas"}
+                      </span>
+                    </button>
+                    <div className={`absolute right-5 top-1/2 -translate-y-1/2 rotate-0 w-5 h-5 pointer-events-none transition-[transform,color] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] flex items-center justify-center ${classDropdownOpen ? "text-[#0066FF]" : "text-[#BFBFBF]"}`}>
+                      <svg
+                        width="100%"
+                        height="100%"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className={classDropdownOpen ? "transform rotate-180 transition-transform duration-300" : ""}
+                      >
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </div>
+                    <div className={`focus-visible:border-[#0066FF] absolute left-0 right-0 top-full bg-white border border-[#0066FF] rounded-lg mt-1 max-h-[200px] overflow-y-auto z-10 shadow-[0_4px_12px_rgba(0,0,0,0.1)] ${classDropdownOpen ? "block" : "hidden"}`}>
+                      {classOptions.map((kelas) => (
+                        <button
+                          key={kelas}
+                          type="button"
+                          onClick={() => {
+                            setSelectedClass(kelas);
+                            setClassDropdownOpen(false);
+                          }}
+                          className="w-full text-left px-5 py-3 font-['Raleway'] font-medium text-[16px] text-[#262626] cursor-pointer transition-colors hover:bg-[#F5F5F5]"
+                        >
+                          {kelas}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
                 <p className="m-0 font-['Raleway'] font-normal text-[12px] text-[#E82D2F] tracking-[0.4px] leading-4 pl-1 opacity-0 max-h-0 overflow-hidden transition-[opacity,max-height,margin-top] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"></p>
@@ -199,7 +251,8 @@ export default function EditPlayerModal({
                 <p className="m-0 font-['Raleway'] font-normal text-[12px] text-[#E82D2F] tracking-[0.4px] leading-4 pl-1 opacity-0 max-h-0 overflow-hidden transition-[opacity,max-height,margin-top] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"></p>
               </div>
               <div className="min-w-0 w-full">
-                <div className="flex flex-col gap-2 font-['Raleway'] relative">
+              <div className="min-w-0 w-full">
+                <div className="flex flex-col gap-2 font-['Raleway'] relative" ref={obstacleDropdownRef}>
                   <label>
                     <span className="font-bold text-[14px] text-[#262626] tracking-[0.4px] leading-5 inline">
                       Pilih Jenis Hambatan
@@ -209,13 +262,18 @@ export default function EditPlayerModal({
                     </span>
                   </label>
                   <div className="relative w-full h-14">
-                    <div
-                      title={player.disability}
-                      className="w-full h-full pr-10 pl-5 py-4 rounded-lg border border-[#BFBFBF] box-border font-medium text-[16px] text-[#262626] leading-[1.5em] outline-none transition-all duration-[400ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] cursor-pointer bg-white overflow-hidden text-ellipsis whitespace-nowrap"
+                    <button
+                      type="button"
+                      onClick={() => setObstacleDropdownOpen((prev) => !prev)}
+                      className={`w-full h-full pr-10 pl-5 py-4 rounded-lg border border-[#BFBFBF] box-border font-medium text-[16px] text-[#262626] leading-[1.5em] outline-none transition-all duration-[400ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] cursor-pointer bg-white overflow-hidden text-ellipsis whitespace-nowrap appearance-none text-left focus-visible:border-[#0066FF] focus-visible:shadow-[0_0_0_1px_#0066FF] ${
+                        obstacleDropdownOpen ? "border-[#0066FF] shadow-[0_0_0_1px_#0066FF]" : ""
+                      }`}
                     >
-                      {player.disability}
-                    </div>
-                    <div className="absolute right-5 top-1/2 -translate-y-1/2 rotate-0 w-5 h-5 pointer-events-none text-[#BFBFBF] transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] flex items-center justify-center">
+                      <span className={selectedObstacle ? "text-[#262626]" : "text-[#BFBFBF]"}>
+                        {selectedObstacle ?? "Pilih dari daftar"}
+                      </span>
+                    </button>
+                    <div className={`absolute right-5 top-1/2 -translate-y-1/2 rotate-0 w-5 h-5 pointer-events-none transition-[transform,color] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] flex items-center justify-center ${obstacleDropdownOpen ? "text-[#0066FF]" : "text-[#BFBFBF]"}`}>
                       <svg
                         width="100%"
                         height="100%"
@@ -226,12 +284,30 @@ export default function EditPlayerModal({
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
+                        className={obstacleDropdownOpen ? "transform rotate-180 transition-transform duration-300" : ""}
                       >
                         <polyline points="6 9 12 15 18 9"></polyline>
                       </svg>
                     </div>
+                    <div className={`absolute left-0 right-0 top-full bg-white border border-[#0066FF] rounded-lg mt-1 max-h-[200px] overflow-y-auto z-10 shadow-[0_4px_12px_rgba(0,0,0,0.1)] ${obstacleDropdownOpen ? "block" : "hidden"}`}>
+                      {obstacleOptions.map((option) => (
+                        <button
+                          key={option}
+                          type="button"
+                          onClick={() => {
+                            setSelectedObstacle(option);
+                            setObstacleDropdownOpen(false);
+                          }}
+                          className="w-full text-left px-5 py-3 font-['Raleway'] font-medium text-[16px] text-[#262626] cursor-pointer transition-colors hover:bg-[#F5F5F5]"
+                        >
+                          {option}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
+                <p className="m-0 font-['Raleway'] font-normal text-[12px] text-[#E82D2F] tracking-[0.4px] leading-4 pl-1 opacity-0 max-h-0 overflow-hidden transition-[opacity,max-height,margin-top] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"></p>
+              </div>
                 <p className="m-0 font-['Raleway'] font-normal text-[12px] text-[#E82D2F] tracking-[0.4px] leading-4 pl-1 opacity-0 max-h-0 overflow-hidden transition-[opacity,max-height,margin-top] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"></p>
               </div>
               <div>
