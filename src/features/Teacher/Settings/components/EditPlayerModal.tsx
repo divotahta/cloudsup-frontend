@@ -82,6 +82,55 @@ export default function EditPlayerModal({
               >
                 Edit Avatar
               </button>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  backgroundColor: "rgb(238, 255, 238)",
+                  border: "1px solid rgb(9, 222, 27)",
+                  borderRadius: "6px",
+                  padding: "8px 12px",
+                  marginTop: "8px",
+                  width: "100%",
+                  boxSizing: "border-box",
+                }}
+              >
+                <div
+                  style={{
+                    width: "16px",
+                    height: "16px",
+                    color: "rgb(9, 222, 27)",
+                    flexShrink: 0,
+                  }}
+                >
+                  <svg
+                    width="100%"
+                    height="100%"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    <path d="m9 12 2 2 4-4"></path>
+                  </svg>
+                </div>
+                <span
+                  style={{
+                    fontFamily: "Raleway",
+                    fontWeight: 600,
+                    fontSize: "12px",
+                    color: "rgb(45, 55, 72)",
+                    lineHeight: 1.4,
+                  }}
+                >
+                  Face Recognition telah ditambahkan
+                </span>
+              </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 grow">
               <div>
