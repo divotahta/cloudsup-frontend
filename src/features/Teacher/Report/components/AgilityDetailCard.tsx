@@ -479,8 +479,8 @@ const AgilityDetailCard: React.FC = () => {
               Heat map layar
             </h3>
           </div>
-          <div className="p-6 flex flex-row gap-6 w-[180px]">
-            <div className="flex flex-col">
+          <div className="p-6 flex flex-row gap-6 justify-between">
+            <div className="flex flex-col w-[180px]">
               {/* Heatmap Image Placeholder */}
               <div className="mb-4 flex justify-center">
                 <img
@@ -553,7 +553,7 @@ const AgilityDetailCard: React.FC = () => {
 
               {/* Heatmap Grid */}
               <div className="flex justify-center items-start gap-6 mb-6">
-                <div className="flex-1 max-w-[500px] flex justify-center">
+                <div className="flex-1 flex justify-center">
                   {/* Custom 4x4 Grid Heatmap */}
                   <div className="relative">
                     {/* Grid Container */}
