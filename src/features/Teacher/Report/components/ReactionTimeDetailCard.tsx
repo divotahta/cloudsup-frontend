@@ -1,4 +1,4 @@
-import React, { useState , useMemo} from "react";
+import React, { useState, useMemo } from "react";
 import { LucideInfo } from "lucide-react";
 import ReactionIcon from "../../../../assets/images/report/reaction-time.svg";
 import Highcharts from "highcharts";
@@ -264,100 +264,100 @@ const ReactionTimeDetailCard: React.FC = () => {
         </div>
         {/* Bottom Section - Week Tabs & Games Chart */}
         <div className="bg-[#EEFFEE] p-4 mt-8">
-        <div className="flex gap-6">
-          {/* Left Chart - Vertical Bar Chart (Minggu 31 & 32) */}
-          <div className="flex-1">
-            <HighchartsReact
-              highcharts={Highcharts}
-              options={verticalChartOptions}
-            />
-          </div>
-
-          {/* Right Chart - Horizontal Bar Chart with Tabs */}
-          <div className="flex-1 flex flex-col">
-            {/* Week Tabs */}
-            <div className="flex gap-2 mb-4 border-[#dedede] border-b-2">
-              <button
-                onClick={() => setActiveWeek("week31")}
-                className={`px-4 py-2 rounded-none bg-transparent font-['Raleway'] font-bold text-[14px] leading-[21px] transition-colors ${
-                  activeWeek === "week31"
-                    ? "text-[#0A5D14] border-b-2 border-b-[#0A5D14]"
-                    : "text-[#0A5D14] hover:bg-blue-50"
-                }`}
-                style={{
-                  borderBottomWidth: activeWeek === "week31" ? "2px" : "0",
-                }}
-              >
-                Minggu 31
-              </button>
-              <button
-                onClick={() => setActiveWeek("week32")}
-                className={`px-4 py-2 rounded-none bg-transparent font-['Raleway'] font-bold text-[14px] leading-[21px] transition-colors ${
-                  activeWeek === "week32"
-                    ? "text-[#0A5D14] border-b-2 border-b-[#0A5D14]"
-                    : "text-[#0A5D14] hover:bg-blue-50"
-                }`}
-                style={{
-                  borderBottomWidth: activeWeek === "week32" ? "2px" : "0",
-                }}
-              >
-                Minggu 32
-              </button>
-              
+          <div className="flex gap-6">
+            {/* Left Chart - Vertical Bar Chart (Minggu 31 & 32) */}
+            <div className="flex-1">
+              <HighchartsReact
+                highcharts={Highcharts}
+                options={verticalChartOptions}
+              />
             </div>
 
-            {/* Date Display */}
-            <div className="mb-6">
-              <p className="font-['Raleway'] font-bold text-[12px] leading-[18px] text-[#0A5D14]">
-                4 Agustus 2025 - 10 Agustus 2025
-              </p>
-            </div>
-            <div className= "flex flex-row">
-              {/* Game Icons */}
-              <div className="flex flex-col justify-between items-center mt-4 bg-transparent p-4 rounded-lg">
-                {games.map((game, index) => (
-                  <div key={index} className="flex flex-row items-center gap-2">
-                    <div className="w-9 h-9 rounded overflow-hidden">
-                      <img
-                        src={game.icon}
-                        alt={game.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div className="text-center">
-                      {game.name === "PAPAN SEIMBANG" ? (
-                        <p className="font-['Raleway'] font-bold text-[11px] leading-[13px] text-[#262626] uppercase whitespace-pre-line">
-                          PAPAN
-                          <br />
-                          SEIMBANG
-                        </p>
-                      ) : (
-                        game.name.split(" ").map((word, i) => (
-                          <p
-                            key={i}
-                            className="font-['Raleway'] font-bold text-[11px] leading-[13px] text-[#262626] uppercase"
-                          >
-                            {word}
+            {/* Right Chart - Horizontal Bar Chart with Tabs */}
+            <div className="flex-1 flex flex-col">
+              {/* Week Tabs */}
+              <div className="flex gap-2 mb-4 border-[#dedede] border-b-2">
+                <button
+                  onClick={() => setActiveWeek("week31")}
+                  className={`px-4 py-2 rounded-none bg-transparent font-['Raleway'] font-bold text-[14px] leading-[21px] transition-colors ${
+                    activeWeek === "week31"
+                      ? "text-[#0A5D14] border-b-2 border-b-[#0A5D14]"
+                      : "text-[#0A5D14] hover:bg-blue-50"
+                  }`}
+                  style={{
+                    borderBottomWidth: activeWeek === "week31" ? "2px" : "0",
+                  }}
+                >
+                  Minggu 31
+                </button>
+                <button
+                  onClick={() => setActiveWeek("week32")}
+                  className={`px-4 py-2 rounded-none bg-transparent font-['Raleway'] font-bold text-[14px] leading-[21px] transition-colors ${
+                    activeWeek === "week32"
+                      ? "text-[#0A5D14] border-b-2 border-b-[#0A5D14]"
+                      : "text-[#0A5D14] hover:bg-blue-50"
+                  }`}
+                  style={{
+                    borderBottomWidth: activeWeek === "week32" ? "2px" : "0",
+                  }}
+                >
+                  Minggu 32
+                </button>
+              </div>
+
+              {/* Date Display */}
+              <div className="mb-6">
+                <p className="font-['Raleway'] font-bold text-[12px] leading-[18px] text-[#0A5D14]">
+                  4 Agustus 2025 - 10 Agustus 2025
+                </p>
+              </div>
+              <div className="flex flex-row">
+                {/* Game Icons */}
+                <div className="flex flex-col justify-between items-center mt-4 bg-transparent p-4 rounded-lg">
+                  {games.map((game, index) => (
+                    <div
+                      key={index}
+                      className="flex flex-row items-center gap-2"
+                    >
+                      <div className="w-9 h-9 rounded overflow-hidden">
+                        <img
+                          src={game.icon}
+                          alt={game.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="text-center">
+                        {game.name === "PAPAN SEIMBANG" ? (
+                          <p className="font-['Raleway'] font-bold text-[11px] leading-[13px] text-[#262626] uppercase whitespace-pre-line">
+                            PAPAN
+                            <br />
+                            SEIMBANG
                           </p>
-                        ))
-                      )}
+                        ) : (
+                          game.name.split(" ").map((word, i) => (
+                            <p
+                              key={i}
+                              className="font-['Raleway'] font-bold text-[11px] leading-[13px] text-[#262626] uppercase"
+                            >
+                              {word}
+                            </p>
+                          ))
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+                {/* Horizontal Bar Chart */}
+                <div className="flex-1">
+                  <HighchartsReact
+                    highcharts={Highcharts}
+                    options={horizontalChartOptions}
+                  />
+                </div>
               </div>
-              {/* Horizontal Bar Chart */}
-              <div className="flex-1">
-                <HighchartsReact
-                  highcharts={Highcharts}
-                  options={horizontalChartOptions}
-                />
-              </div>
-
-              
             </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
   );
