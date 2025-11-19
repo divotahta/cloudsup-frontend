@@ -1,8 +1,10 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { LucideInfo } from "lucide-react";
 import KetangkasanIcon from "../../../../assets/images/report/ketangkasan.svg";
-import Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
+// import Highcharts from "highcharts";
+import Tungkaikiri from "../../../../assets/images/report/tungkai-kiri.svg";
+import Tungkaikanan from "../../../../assets/images/report/tungkai-kanan.png";
+import Bodyfull from "../../../../assets/images/report/Bodyfull.svg";
 
 const BoyHeatmapIllustration: React.FC = () => (
   <svg
@@ -279,116 +281,15 @@ const AgilityDetailCard: React.FC = () => {
 
   // Fungsi untuk mendapatkan warna berdasarkan nilai
   const getHeatmapColor = (value: number): string => {
-    if (value === 0) return "#90EE90"; // Green - Spot lemah
-    if (value <= 25) return "#FFB6C1"; // Light red/pink
-    if (value <= 50) return "#FF8C69"; // Brownish-red - Spot tengah
-    if (value <= 75) return "#FF6347"; // Light red
-    return "#DC143C"; // Dark red - Spot kuat (100)
+    if (value === 0) return "#63BE7B"; // Green - Spot lemah
+    if (value <= 25) return "#AD9473"; // Light red/pink
+    if (value <= 50) return "#D37D6E"; // Brownish-red - Spot tengah
+    if (value <= 75) return "#F7696B"; // Light red
+    return "#F7696B"; // Dark red - Spot kuat (100)
   };
 
   // Konfigurasi Body Usage Chart
-  const bodyUsageChartOptions = useMemo(
-    () => ({
-      chart: {
-        type: "bar",
-        height: 250,
-        backgroundColor: "transparent",
-        spacing: [10, 10, 10, 10],
-      },
-      title: {
-        text: null,
-      },
-      credits: {
-        enabled: false,
-      },
-      xAxis: {
-        categories: [
-          "Tangan Kiri",
-          "Tangan Kanan",
-          "Tungkai kiri",
-          "Tungkai kanan",
-        ],
-        labels: {
-          style: {
-            fontFamily: "Raleway",
-            fontWeight: "700",
-            fontSize: "14px",
-            color: "#262626",
-          },
-        },
-        lineWidth: 0,
-        tickWidth: 0,
-      },
-      yAxis: {
-        min: 0,
-        max: 100,
-        title: {
-          text: null,
-        },
-        labels: {
-          style: {
-            fontFamily: "Raleway",
-            fontWeight: "700",
-            fontSize: "20px",
-            color: "#0B1E59",
-          },
-          formatter: function (
-            this: Highcharts.AxisLabelsFormatterContextObject
-          ) {
-            return `${this.value}%`;
-          },
-        },
-        gridLineWidth: 0,
-      },
-      plotOptions: {
-        bar: {
-          borderRadius: 4,
-          borderWidth: 0,
-          dataLabels: {
-            enabled: false,
-          },
-          states: {
-            hover: {
-              enabled: false,
-            },
-          },
-          pointWidth: 40,
-        },
-      },
-      series: [
-        {
-          name: "Penggunaan",
-          data: [
-            {
-              y: 43.4,
-              color: "#084EC5", // Blue for left hand
-            },
-            {
-              y: 56.6,
-              color: "#FF8C69", // Brown/orange for right hand
-            },
-            {
-              y: 0,
-              color: "#084EC5", // Blue for left leg
-            },
-            {
-              y: 0,
-              color: "#FF8C69", // Brown/orange for right leg
-            },
-          ],
-          pointPadding: 0.3,
-          groupPadding: 0.2,
-        },
-      ],
-      tooltip: {
-        enabled: false,
-      },
-      legend: {
-        enabled: false,
-      },
-    }),
-    []
-  );
+  
 
   return (
     <div className="bg-white rounded-lg p-6">
@@ -440,7 +341,7 @@ const AgilityDetailCard: React.FC = () => {
               {/* Progress Bar */}
               <div className="mb-6">
                 {/* Progress Bar Container */}
-                <div className="h-[9px] bg-white rounded-full relative">
+                <div className="h-[9px] bg-white relative">
                   {/* Progress Fill */}
                   <div
                     className="absolute top-0 left-0 h-[9px] bg-[#084EC5]"
@@ -504,9 +405,9 @@ const AgilityDetailCard: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex flex-col ">
+            <div className="flex flex-col w-full ">
               {/* Tabs */}
-              <div className="flex gap-2 mb-6 justify-center border-b-2 border-gray-200">
+              <div className="flex gap-2 mb-6 justify-start border-b-2 border-gray-200">
                 <button
                   onClick={() => setActiveHeatmapTab("week31")}
                   className={`bg-transparent rounded-none px-4 py-2 font-raleway font-bold text-sm leading-[21px] transition-colors ${
@@ -553,11 +454,11 @@ const AgilityDetailCard: React.FC = () => {
 
               {/* Heatmap Grid */}
               <div className="flex justify-center items-start gap-6 mb-6">
-                <div className="flex-1 flex justify-center">
+                <div className="flex-1 flex justify-center  h-full">
                   {/* Custom 4x4 Grid Heatmap */}
-                  <div className="relative">
+                  <div className="relative w-full">
                     {/* Grid Container */}
-                    <div className="grid grid-cols-4 border-solid border-black border-[1px] w-96 h-64">
+                    <div className="grid grid-cols-4 border-solid border-black border-[1px] w-full h-full">
                       {heatmapData[activeHeatmapTab].map((row, rowIndex) =>
                         row.map((value, colIndex) => (
                           <div
@@ -574,7 +475,7 @@ const AgilityDetailCard: React.FC = () => {
                         ))
                       )}
                     </div>
-                    <div className="absolute inset-0 flex items-end">
+                    <div className="absolute inset-0 flex items-end justify-center">
                       <BoyHeatmapIllustration />
                     </div>
                   </div>
@@ -583,10 +484,10 @@ const AgilityDetailCard: React.FC = () => {
                 {/* Color Legend */}
                 <div className="flex  items-center gap-2">
                   <div
-                    className="w-12 h-64 rounded "
+                    className="w-2 h-64 "
                     style={{
                       background:
-                        "linear-gradient(to bottom, #90EE90 0%, #FFB6C1 25%, #FF8C69 50%, #FF6347 75%, #DC143C 100%)",
+                        "linear-gradient(to bottom, #63BE7B 0%, #AD9473 25%, #D37D6E 50%, #D37D6E 75%, #F7696B 100%)",
                     }}
                   />
                   <div className="flex flex-col gap-y-12 text-center ">
@@ -641,14 +542,13 @@ const AgilityDetailCard: React.FC = () => {
         </div>
 
         {/* Penggunaan Bagian Tubuh Section */}
-        <div className="mt-8 bg-white rounded-lg p-6">
+        <div className=" bg-[#FFFAEB] rounded-lg p-6">
           {/* Title */}
-          <div className="mb-6 text-center">
+          <div className="mb-6 text-left">
             <h3 className="font-raleway font-bold text-[20px] leading-[20px] text-[#B64C07]">
               Penggunaan bagian tubuh
             </h3>
           </div>
-
           {/* Body Illustration and Chart Container */}
           <div className="flex flex-col items-center gap-6">
             {/* Body Illustration Placeholder */}
@@ -665,72 +565,78 @@ const AgilityDetailCard: React.FC = () => {
             </div>
 
             {/* Body Usage Chart */}
-            <div className="w-full">
+            {/* <div className="w-full">
               <HighchartsReact
                 highcharts={Highcharts}
                 options={bodyUsageChartOptions}
               />
-            </div>
+            </div> */}
 
             {/* Usage Percentages Display */}
-            <div className="w-full grid grid-cols-2 gap-6">
+            <div className="w-full relative">
+              {/* SVG Overlay di tengah */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+               <img src={Bodyfull}/>
+              </div>
+
+              <div className="grid grid-rows-2 gap-6">
               {/* Hands Section */}
-              <div className="space-y-6">
+              <div className="grid grid-cols-2 ">
                 {/* Left Hand */}
-                <div className="flex items-center gap-4">
-                  <div className="w-20 h-14 flex items-center justify-center flex-shrink-0">
-                    <img
-                      src="https://framerusercontent.com/images/PST5BOjGP2IX4MQ0L0REnaBjujA.png?width=140&height=73"
-                      alt="Left Hand"
-                      className="w-full h-full object-contain"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).style.display = "none";
-                      }}
-                    />
-                  </div>
+                <div className="flex items-center">
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-2">
-                      <p className="font-raleway font-bold text-sm text-[#262626]">
-                        Tangan Kiri
-                      </p>
                       <p className="font-raleway font-bold text-[20px] leading-[20px] text-[#0B1E59]">
                         43.4%
                       </p>
                     </div>
-                    <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
+                    <div className="h-[18px] border-black border-[1px] rounded bg-gray-200 overflow-hidden flex justify-end">
                       <div
-                        className="h-full bg-[#084EC5] rounded-full transition-all"
+                        className="h-full bg-[#084EC5] transition-all"
                         style={{ width: "43.4%" }}
                       />
+                    </div>
+                    <div className="flex items-left flex-shrink-0">
+                      <img
+                        src="https://framerusercontent.com/images/PST5BOjGP2IX4MQ0L0REnaBjujA.png?width=140&height=73"
+                        alt="Left Hand"
+                        className="w-[35px] h-[18px]  object-contain"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = "none";
+                        }}
+                      />
+                      <p className="font-raleway font-bold text-sm text-[#262626]">
+                        Tangan Kiri
+                      </p>
                     </div>
                   </div>
                 </div>
 
                 {/* Right Hand */}
                 <div className="flex items-center gap-4">
-                  <div className="w-20 h-14 flex items-center justify-center flex-shrink-0">
-                    <img
-                      src="https://framerusercontent.com/images/CReAogrudvYneWG5cOE0sD39s94.png?width=104&height=73"
-                      alt="Right Hand"
-                      className="w-full h-full object-contain"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).style.display = "none";
-                      }}
-                    />
-                  </div>
                   <div className="flex-1">
-                    <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-right justify-end mb-2">
+                      <p className="font-raleway font-bold text-[20px] leading-[20px] text-[#0B1E59]">
+                        43.4%
+                      </p>
+                    </div>
+                    <div className="h-[18px] border-black border-[1px] rounded bg-gray-200 overflow-hidden flex justify-start">
+                      <div
+                        className="h-full bg-[#B64C07] transition-all"
+                        style={{ width: "43.4%" }}
+                      />
+                    </div>
+                    <div className="flex items-right justify-end flex-shrink-0">
                       <p className="font-raleway font-bold text-sm text-[#262626]">
                         Tangan Kanan
                       </p>
-                      <p className="font-raleway font-bold text-[20px] leading-[20px] text-[#0B1E59]">
-                        56.6%
-                      </p>
-                    </div>
-                    <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-[#FF8C69] rounded-full transition-all"
-                        style={{ width: "56.6%" }}
+                      <img
+                        src="https://framerusercontent.com/images/PST5BOjGP2IX4MQ0L0REnaBjujA.png?width=140&height=73"
+                        alt="Left Hand"
+                        className="w-[35px] h-[18px]  object-contain"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = "none";
+                        }}
                       />
                     </div>
                   </div>
@@ -738,66 +644,67 @@ const AgilityDetailCard: React.FC = () => {
               </div>
 
               {/* Legs Section */}
-              <div className="space-y-6">
+              <div className="grid grid-cols-2">
                 {/* Left Leg */}
                 <div className="flex items-center gap-4">
-                  <div className="w-20 h-14 flex items-center justify-center flex-shrink-0">
-                    <img
-                      src="https://framerusercontent.com/images/JL9HNtBdLEirVCIdRUrh0hrdAmA.png?width=120&height=77"
-                      alt="Left Leg"
-                      className="w-full h-full object-contain"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).style.display = "none";
-                      }}
-                    />
-                  </div>
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-2">
-                      <p className="font-raleway font-bold text-sm text-[#262626]">
-                        Tungkai kiri
-                      </p>
                       <p className="font-raleway font-bold text-[20px] leading-[20px] text-[#0B1E59]">
-                        0%
+                        43.4%
                       </p>
                     </div>
-                    <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
+                    <div className="h-[18px] border-black border-[1px] rounded bg-gray-200 overflow-hidden flex justify-end">
                       <div
-                        className="h-full bg-[#084EC5] rounded-full transition-all"
-                        style={{ width: "0%" }}
+                        className="h-full bg-[#084EC5] transition-all"
+                        style={{ width: "43.4%" }}
                       />
+                    </div>
+                    <div className="flex items-left flex-shrink-0">
+                      <img
+                        src={Tungkaikiri}
+                        alt="Left Hand"
+                        className="w-[35px] h-[18px]  object-contain"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = "none";
+                        }}
+                      />
+                      <p className="font-raleway font-bold text-sm text-[#262626]">
+                        Tungkai Kiri
+                      </p>
                     </div>
                   </div>
                 </div>
 
                 {/* Right Leg */}
                 <div className="flex items-center gap-4">
-                  <div className="w-20 h-14 flex items-center justify-center flex-shrink-0">
-                    <img
-                      src="https://framerusercontent.com/images/QqtFJQsn2jorXqvlcXWp5WGY.png?width=108&height=77"
-                      alt="Right Leg"
-                      className="w-full h-full object-contain"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).style.display = "none";
-                      }}
-                    />
-                  </div>
                   <div className="flex-1">
-                    <div className="flex items-center justify-between mb-2">
-                      <p className="font-raleway font-bold text-sm text-[#262626]">
-                        Tungkai kanan
-                      </p>
+                    <div className="flex items-right justify-end mb-2">
                       <p className="font-raleway font-bold text-[20px] leading-[20px] text-[#0B1E59]">
-                        0%
+                        43.4%
                       </p>
                     </div>
-                    <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
+                    <div className="h-[18px] border-black border-[1px] rounded bg-gray-200 overflow-hidden flex justify-start">
                       <div
-                        className="h-full bg-[#FF8C69] rounded-full transition-all"
-                        style={{ width: "0%" }}
+                        className="h-full bg-[#B64C07] transition-all"
+                        style={{ width: "43.4%" }}
+                      />
+                    </div>
+                    <div className="flex items-right justify-end flex-shrink-0">
+                      <p className="font-raleway font-bold text-sm text-[#262626]">
+                        Tungkai Kanan
+                      </p>
+                      <img
+                        src={Tungkaikanan}
+                        alt="Left Hand"
+                        className="w-[35px] h-[18px]  object-contain"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = "none";
+                        }}
                       />
                     </div>
                   </div>
                 </div>
+              </div>
               </div>
             </div>
           </div>
