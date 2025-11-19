@@ -399,7 +399,7 @@ const AgilityDetailCard: React.FC = () => {
           <div className="flex gap-6 mb-6 ">
             {/* Right Column - Chart SVG */}
             <div className=" flex-shrink-0">
-              <div data-framer-component-type="SVG" className="w-full h-full">
+              <div className="w-full h-full">
                 <div
                   className="w-full h-full flex items-center"
                   style={{ aspectRatio: "inherit" }}
