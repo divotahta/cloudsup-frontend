@@ -254,12 +254,12 @@ const GameHistorySection: React.FC = () => {
         </h2>
         
         {/* Tabs */}
-        <div className="flex gap-0 border-b border-[#084EC5]">
+        <div className="flex gap-0  border-[#dedede] border-b-2">
           <button
             onClick={() => setActiveTab('games')}
-            className={`px-4 py-2 font-['Raleway'] font-bold text-[14px] leading-[21px] transition-colors ${
+            className={`px-4 py-2 rounded-none font-['Raleway']  font-bold text-[14px] transition-colors  bg-transparent ${
               activeTab === 'games'
-                ? 'text-[#084EC5] border-b-2 border-[#084EC5]'
+                ? 'text-[#084EC5] border-b-2 border-b-[#084EC5]'
                 : 'text-[#084EC5] opacity-70 hover:opacity-100'
             }`}
             style={{ borderBottomWidth: activeTab === 'games' ? '2px' : '0' }}
@@ -268,10 +268,10 @@ const GameHistorySection: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('time')}
-            className={`px-4 py-2 font-['Raleway'] font-bold text-[14px] leading-[21px] transition-colors ${
+            className={`px-4 py-2 rounded-none font-['Raleway'] font-bold text-[14px] transition-colors bg-transparent ${
               activeTab === 'time'
-                ? 'text-[#084EC5] border-b-2 border-[#084EC5]'
-                : 'text-[#084EC5] opacity-70 hover:opacity-100'
+                ? 'text-[#084EC5]  border-b-2 border-b-[#084EC5] '
+                : 'text-[#084EC5] opacity-70 hover:opacity-100 '
             }`}
             style={{ borderBottomWidth: activeTab === 'time' ? '2px' : '0' }}
           >
