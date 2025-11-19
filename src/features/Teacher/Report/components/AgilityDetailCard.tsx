@@ -398,7 +398,7 @@ const AgilityDetailCard: React.FC = () => {
           {/* Left Column - Text & Progress */}
           <div className="flex gap-6 mb-6 ">
             {/* Right Column - Chart SVG */}
-            <div className=" flex-shrink-0">
+            <div className=" flex-shrink-0 ">
               <div className="w-full h-full">
                 <div
                   className="w-full h-full flex items-center"
@@ -554,15 +554,15 @@ const AgilityDetailCard: React.FC = () => {
               {/* Heatmap Grid */}
               <div className="flex justify-center items-start gap-6 mb-6">
                 <div className="flex-1 max-w-[500px] flex justify-center">
-                  {/* Custom 3x3 Grid Heatmap */}
+                  {/* Custom 4x4 Grid Heatmap */}
                   <div className="relative">
                     {/* Grid Container */}
-                    <div className="grid grid-cols-4 gap-2 w-96 h-64">
+                    <div className="grid grid-cols-4 border-solid border-black border-[1px] w-96 h-64">
                       {heatmapData[activeHeatmapTab].map((row, rowIndex) =>
                         row.map((value, colIndex) => (
                           <div
                             key={`${rowIndex}-${colIndex}`}
-                            className="flex items-center justify-center border-2 border-white rounded"
+                            className="flex items-center justify-center border-[1px] border-black "
                             style={{
                               backgroundColor: getHeatmapColor(value),
                             }}
@@ -574,7 +574,7 @@ const AgilityDetailCard: React.FC = () => {
                         ))
                       )}
                     </div>
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="absolute inset-0 flex items-end">
                       <BoyHeatmapIllustration />
                     </div>
                   </div>
