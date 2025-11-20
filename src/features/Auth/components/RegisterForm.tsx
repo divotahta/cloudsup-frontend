@@ -375,7 +375,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit }) => {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className={`absolute right-5 top-1/2 -translate-y-1/2 transition-colors duration-[400ms] ${
+              className={`absolute right-5 top-1/2 -translate-y-1/2 transition-colors duration-[400ms] bg-transparent ${
                 errors.password || getPasswordError()
                   ? 'text-red-600' 
                   : isFocused.password 
