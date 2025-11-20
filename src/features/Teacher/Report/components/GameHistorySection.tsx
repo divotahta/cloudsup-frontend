@@ -440,21 +440,28 @@ const GameHistorySection: React.FC = () => {
                   ))}
                 </div>
               </div>
-
-              {/* Y-axis: Nilai (0, 5, 10, 15) - Vertical */}
-              <div className="flex flex-col justify-between py-2 pl-2 min-w-[30px]">
-                <p className="font-['Raleway'] text-[9.6px] text-[#333333] h-[calc(100%/4)] flex items-start">
-                  15
-                </p>
-                <p className="font-['Raleway'] text-[9.6px] text-[#333333] h-[calc(100%/4)] flex items-center">
-                  10
-                </p>
-                <p className="font-['Raleway'] text-[9.6px] text-[#333333] h-[calc(100%/4)] flex items-center">
-                  5
-                </p>
-                <p className="font-['Raleway'] text-[9.6px] text-[#333333] h-[calc(100%/4)] flex items-end">
-                  0
-                </p>
+              <div className="flex  gap-2">
+                <div
+                  className="w-3 h-60 rounded-sm "
+                  style={{
+                    background:
+                      "linear-gradient(to bottom, #EDF8FF 0%, #EDF8FF 25%, #B5E4FF 50%, #83D5FF 75%, #0066FF 100%)",
+                  }}
+                />
+                <div className="flex flex-col gap-y-16 text-center ">
+                  <div className="font-raleway font-medium text-[9.6px] text-[#333333]">
+                    0
+                  </div>
+                  <div className="font-raleway font-medium text-[9.6px] text-[#333333]">
+                    5
+                  </div>
+                  <div className="font-raleway font-medium text-[9.6px] text-[#333333]">
+                    10
+                  </div>
+                  <div className="font-raleway font-medium text-[9.6px] text-[#333333]">
+                    15
+                  </div>
+                </div>
               </div>
             </div>
           </div>
