@@ -1,17 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { uploadPlayerFace } from "../api/players";
 
 type FaceRecognitionModalProps = {
   open: boolean;
   onClose: () => void;
-  // Callback saat pengambilan gambar selesai, meneruskan data gambar.
-  // Mengembalikan boolean (atau Promise) untuk menandai apakah pengenalan berhasil.
-  onRecognitionComplete: (imageData: string) => void | boolean | Promise<void | boolean>; 
+  playerId: string | null;
+  onSuccess?: () => void;
 };
 
 /**
  * Modal untuk mengambil gambar wajah menggunakan kamera depan.
  */
-export default function FaceRecognitionModal({ open, onClose, onRecognitionComplete }: FaceRecognitionModalProps) {
+export default function FaceRecognitionModal({ open, onClose, playerId, onSuccess }: FaceRecognitionModalProps) {
   // === Refs dan State ===
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -31,6 +31,7 @@ export default function FaceRecognitionModal({ open, onClose, onRecognitionCompl
   const [isInitializing, setIsInitializing] = useState(false);
   const [isCheckingRecognition, setIsCheckingRecognition] = useState(false);
   const [faceGuideState, setFaceGuideState] = useState<"info" | "error">("info");
+  const [apiError, setApiError] = useState<string | null>(null);
 
   // === Fungsi Kamera ===
 
@@ -144,6 +145,7 @@ export default function FaceRecognitionModal({ open, onClose, onRecognitionCompl
     if (open) {
       setCapturedImage(null); 
       setFaceGuideState("info");
+      setApiError(null);
       startCamera();
     } else {
       // Cleanup saat modal ditutup
@@ -152,6 +154,7 @@ export default function FaceRecognitionModal({ open, onClose, onRecognitionCompl
       setIsVideoReady(false);
       setErrorMessage(null);
       setFaceGuideState("info");
+      setApiError(null);
       setIsCheckingRecognition(false);
       resetInitializationState();
     }
@@ -222,26 +225,32 @@ export default function FaceRecognitionModal({ open, onClose, onRecognitionCompl
   const handleComplete = async () => {
     if (!capturedImage || isCheckingRecognition) return;
 
+    if (!playerId) {
+      setApiError("Pemain belum tersimpan. Tutup dan simpan ulang data pemain.");
+      setFaceGuideState("error");
+      return;
+    }
+
     setIsCheckingRecognition(true);
+    setApiError(null);
     try {
-      const result = await onRecognitionComplete(capturedImage);
-      const isSuccess = result !== false;
-
-      if (!isSuccess) {
-        setFaceGuideState("error");
-        setCapturedImage(null);
-        return;
-      }
-
+      await uploadPlayerFace({ playerId, imageData: capturedImage });
       // Cleanup ketika sukses
       stopCamera();
       setCapturedImage(null);
       setIsVideoReady(false);
       resetInitializationState();
       setFaceGuideState("info");
+      onSuccess?.();
     } catch (err) {
       console.error("Face recognition validation failed:", err);
       setFaceGuideState("error");
+      const message =
+        err instanceof Error
+          ? err.message
+          : "Gagal menyimpan data Face Recognition. Coba lagi.";
+      setApiError(message);
+      setCapturedImage(null);
     } finally {
       setIsCheckingRecognition(false);
     }
@@ -253,7 +262,7 @@ export default function FaceRecognitionModal({ open, onClose, onRecognitionCompl
   const isRecognitionComplete = Boolean(capturedImage);
   // isVideoReady dihilangkan dari disable agar user bisa klik Ambil Gambar (untuk memicu play)
   const isCaptureDisabled = Boolean(errorMessage) || isCapturing || isInitializing || isCheckingRecognition; 
-  const isSubmitDisabled = !isRecognitionComplete || isCheckingRecognition;
+  const isSubmitDisabled = !isRecognitionComplete || isCheckingRecognition || !playerId;
   const isGuideError = faceGuideState === "error";
   const guideBackground = isGuideError ? "bg-[#FFEDED]" : "bg-[#EDF8FF]";
   const guideBorder = isGuideError ? "border-[#E82D2F]" : "border-[#0066FF]";
@@ -353,7 +362,7 @@ export default function FaceRecognitionModal({ open, onClose, onRecognitionCompl
                   {isCapturing ? "Mengambil..." : isVideoReady ? "Ambil Gambar" : (isInitializing ? "Memuat Kamera..." : "Ambil Gambar")}
                 </button>
                 
-                {/* Tombol Simpan & Selesaikan */}
+              {/* Tombol Simpan & Selesaikan */}
                 <button
                   type="button"
                   onClick={handleComplete}
@@ -364,6 +373,11 @@ export default function FaceRecognitionModal({ open, onClose, onRecognitionCompl
                 >
                   {isCheckingRecognition ? "Memeriksa..." : "Simpan & Selesaikan"}
                 </button>
+              {apiError && (
+                <p className="text-center text-[#E82D2F] font-['Raleway'] text-[12px] font-medium">
+                  {apiError}
+                </p>
+              )}
               </div>
             </div>
           </div>

@@ -6,6 +6,7 @@ type AddPlayerModalProps = {
 };
 
 import { useEffect, useRef, useState } from "react";
+import { createPlayer } from "../api/players";
 import AvatarPickerModal from "./AvatarPickerModal";
 import FaceRecognitionModal from "./FaceRecognitionModal"; // Pastikan import ini ada
 
@@ -25,6 +26,9 @@ export default function AddPlayerModal({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [createdPlayerId, setCreatedPlayerId] = useState<string | null>(null);
 
   // State untuk FaceRecognitionModal
   const [isFaceRecognitionOpen, setIsFaceRecognitionOpen] = useState(false); 
@@ -82,15 +86,59 @@ export default function AddPlayerModal({
     selectedClass !== null &&
     selectedObstacle !== null;
 
-  const handleSave = () => {
-    if (!isFormValid) return;
-    
-    // ⚠️ PERBAIKAN: JANGAN PANGGIL onClose() DI SINI.
-    // Kita hanya membuka FaceRecognitionModal di atas modal ini.
-    // onSave(); // Ini bisa dipanggil di sini jika save ke DB tidak tergantung face recognition
-    setIsAvatarOpen(false);
-    setIsAddPlayerVisible(false);
-    setIsFaceRecognitionOpen(true); 
+  const resetForm = () => {
+    setAvatar(undefined);
+    setClassDropdownOpen(false);
+    setObstacleDropdownOpen(false);
+    setSelectedClass(null);
+    setSelectedObstacle(null);
+    setFullName("");
+    setAttendanceNumber("");
+    setEmail("");
+    setPassword("");
+    setCreatedPlayerId(null);
+    setSaveError(null);
+  };
+
+  const handleSave = async () => {
+    if (!isFormValid || isSaving) return;
+
+    try {
+      setIsSaving(true);
+      setSaveError(null);
+
+      const payload = {
+        fullName: fullName.trim(),
+        attendanceNumber: attendanceNumber.trim(),
+        className: selectedClass as string,
+        obstacle: selectedObstacle as string,
+        email: email.trim() || undefined,
+        password: password || undefined,
+        avatar,
+      };
+
+      const response = await createPlayer(payload);
+      const playerId =
+        (response?.id && String(response.id)) ||
+        (response as Record<string, unknown>)?.playerId;
+
+      if (!playerId) {
+        throw new Error("ID pemain tidak ditemukan pada respons API.");
+      }
+
+      setCreatedPlayerId(String(playerId));
+      setIsAvatarOpen(false);
+      setIsAddPlayerVisible(false);
+      setIsFaceRecognitionOpen(true);
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Terjadi kesalahan saat menyimpan pemain baru.";
+      setSaveError(message);
+    } finally {
+      setIsSaving(false);
+    }
   };
   
   // Fungsi untuk menutup FaceRecognitionModal SAJA
@@ -100,9 +148,10 @@ export default function AddPlayerModal({
   }
 
   // Fungsi yang dipanggil ketika Face Recognition selesai (dari tombol Simpan & Selesaikan di modal kedua)
-  const handleFaceRecognitionComplete = () => {
+  const handleFaceRecognitionSuccess = () => {
       setIsFaceRecognitionOpen(false); // Tutup FaceRecognitionModal
       setIsAddPlayerVisible(true);
+      resetForm();
       if (onSave) onSave(); // Panggil onSave (jika diperlukan)
       onClose(); // Tutup AddPlayerModal (selesai total)
   }
@@ -111,6 +160,7 @@ export default function AddPlayerModal({
       setIsFaceRecognitionOpen(false);
       setIsAddPlayerVisible(true);
       setIsAvatarOpen(false);
+      resetForm();
       onClose();
   }
 
@@ -455,6 +505,11 @@ export default function AddPlayerModal({
               </div>
             </div>
           </div>
+          {saveError && (
+            <p className="mt-2 text-[#E82D2F] font-['Raleway'] text-[12px] font-medium text-center">
+              {saveError}
+            </p>
+          )}
           <div className="flex gap-6 mt-4">
             <button
               onClick={handleAddPlayerClose}
@@ -464,12 +519,12 @@ export default function AddPlayerModal({
             </button>
             <button
               onClick={handleSave}
-              disabled={!isFormValid}
+              disabled={!isFormValid || isSaving}
               className={`flex-1 p-4 rounded-lg font-['Raleway'] font-bold text-[14px] bg-[#0066FF] text-white transition-[transform,opacity] duration-[450ms] ease-[cubic-bezier(0.34,2,0.64,1)] ${
-                isFormValid ? "opacity-100 cursor-pointer active:scale-95" : "opacity-50 cursor-not-allowed"
+                isFormValid && !isSaving ? "opacity-100 cursor-pointer active:scale-95" : "opacity-50 cursor-not-allowed"
               }`}
             >
-              Simpan
+              {isSaving ? "Menyimpan..." : "Simpan"}
             </button>
           </div>
         </div>
@@ -488,7 +543,8 @@ export default function AddPlayerModal({
       <FaceRecognitionModal
         open={isFaceRecognitionOpen}
         onClose={handleFaceRecognitionClose} // Menutup hanya FaceRecognitionModal
-        onRecognitionComplete={handleFaceRecognitionComplete} // Menutup kedua modal
+        playerId={createdPlayerId}
+        onSuccess={handleFaceRecognitionSuccess} // Menutup kedua modal
       />
     </>
   );
