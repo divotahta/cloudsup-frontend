@@ -101,7 +101,7 @@ function PasswordInput({
     return (
         <div className="w-full flex flex-col gap-2">
             <label className="font-bold text-sm text-gray-900">
-                Password <span className="text-red-500 ml-1">*</span>
+                Kata sandi <span className="text-red-500 ml-1">*</span>
             </label>
             <div className="relative">
                 <input
@@ -249,7 +249,7 @@ const LoginForm: React.FC = () => {
                         value={email}
                         onChange={setEmail}
                         isInvalid={isEmailInvalid}
-                        placeholder="Enter your email"
+                        placeholder="Masukkan alamat email"
                     />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -257,7 +257,7 @@ const LoginForm: React.FC = () => {
                         value={password}
                         onChange={setPassword}
                         isInvalid={isPasswordInvalid}
-                        placeholder="Enter your password"
+                        placeholder="Masukkan kata sandi"
                     />
                 </div>
             </div>
