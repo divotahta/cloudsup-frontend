@@ -116,7 +116,7 @@ function PasswordInput({
                 <button
                     type="button"
                     onClick={() => setIsVisible(!isVisible)}
-                    className={`absolute right-4 top-1/2 -translate-y-1/2 transition-colors ${
+                    className={`absolute right-4 top-1/2 -translate-y-1/2 transition-colors bg-transparent ${
                         isInvalid
                             ? 'text-red-500'
                             : isFocused
