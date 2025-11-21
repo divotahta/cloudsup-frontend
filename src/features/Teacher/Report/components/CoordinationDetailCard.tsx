@@ -1,8 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import { LucideInfo } from "lucide-react";
+import CoordinationIcon from "../../../../assets/images/report/coordination.svg";
 const CoordinationDetailCard: React.FC = () => {
-  const [activeWeek, setActiveWeek] = useState<'week31' | 'week32'>('week31');
+  const [activeWeek, setActiveWeek] = useState<"week31" | "week32">("week31");
   const games = [
     {
       name: "GELEMBUNG AJAIB",
@@ -215,89 +217,79 @@ const CoordinationDetailCard: React.FC = () => {
   return (
     <div className="bg-white rounded-lg p-6">
       {/* Top Section - Background Image with Content */}
-      <div className="relative w-full h-[246px] rounded-lg overflow-hidden mb-6">
-        {/* Background Image */}
-        <img 
-          src="https://framerusercontent.com/images/yqBjNPvUS03ZXIlGOkjaQ2Kk.png?width=3648&height=984"
-          alt="Coordination background"
-          className="w-full h-full object-cover object-center"
-          style={{ objectFit: 'fill' }}
-        />
-        
-        {/* Content Overlay */}
-        <div className="absolute inset-0 flex flex-col justify-between p-6">
-          {/* Top Content */}
-          <div className="flex items-start gap-3">
-            <div>
-              <h2 className="font-raleway font-bold text-[25px] leading-[25px] text-white">
-                Koordinasi
-              </h2>
-              <h2 className="font-raleway font-bold text-[25px] leading-[25px] text-white">
-                Tangan & Mata
-              </h2>
-            </div>
-            {/* Info Icon SVG */}
-            <div 
-              className="w-[22px] h-[25px] flex-shrink-0"
-              style={{
-                imageRendering: 'pixelated',
-                flexShrink: 0,
-                fill: 'rgb(0, 0, 0)',
-                color: 'rgb(0, 0, 0)'
-              }}
-            >
-              <div className="w-full h-full" style={{ aspectRatio: 'inherit' }}>
-                <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 22 25" preserveAspectRatio="none">
-                  {/* Info Icon SVG */}
-                </svg>
+      <div className="bg-gradient-to-tr from-[#E82D2F] to-[#ff5052] rounded-lg p-6 mt-8 h-[221px]">
+        {/* Left Column - Text & Progress */}
+        <div className="flex gap-6 mb-6 ">
+          {/* Right Column - Chart SVG */}
+          <div className=" flex-shrink-0">
+            <div data-framer-component-type="SVG" className="w-full h-full">
+              <div
+                className="w-full h-full flex items-center"
+                style={{ aspectRatio: "inherit" }}
+              >
+                <img src={CoordinationIcon} alt="" />
               </div>
             </div>
           </div>
+          <div className="flex-1">
+            {/* Title */}
+            <div className="flex flex-col justi">
+              <div className="flex gap-3 items-center justify-start">
+                <h2 className="font-raleway font-bold text-[25px] leading-[25px] text-white col-span-2">
+                  Koordinasi Tangan & Mata
+                </h2>
+                <div className="flex items-center">
+                  <LucideInfo className="text-white"></LucideInfo>
+                </div>
+                {/* Percentage Display */}
+                <div className=" flex items-end">
+                  <p className="font-raleway font-bold text-[30px]  text-white">
+                    5.2 %
+                  </p>
+                </div>
+              </div>
 
-          {/* Percentage Display */}
-          <div className="mb-4">
-            <p className="font-raleway font-bold text-[30px] leading-[40px] text-white">
-              55.4%
-            </p>
-          </div>
+              <div className="">
+                {/* Labels under progress bar */}
+                <div className="flex justify-between mt-[18px] mb-2">
+                  <p className="font-raleway font-semibold text-[10px] leading-[10px] text-white">
+                    0
+                  </p>
+                  <p className="font-raleway font-semibold text-[10px] leading-[10px] text-white">
+                    100
+                  </p>
+                </div>
 
-          {/* Progress Bar */}
-          <div className="flex items-center gap-2">
-            <p className="font-raleway font-semibold text-[10px] leading-[10px] text-white">0</p>
-            <div className="flex-1 relative">
-              <div className="h-2 bg-white/30 rounded-full">
-                <div 
-                  className="absolute left-0 top-0 h-full bg-white rounded-full"
-                  style={{ width: '55.4%' }}
-                >
-                  {/* Marker */}
-                  <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 flex items-center gap-1">
-                    <div className="w-px h-3 bg-white" />
-                    <p className="font-raleway font-semibold text-[10px] leading-[10px] text-white whitespace-nowrap">
-                      55.4
-                    </p>
+                {/* Progress Bar */}
+                <div className="">
+                  {/* Progress Bar Container */}
+                  <div className="h-[9px] bg-white relative">
+                    {/* Progress Fill */}
+                    <div
+                      className="absolute top-0 left-0 h-[9px] bg-[#084EC5]"
+                      style={{ width: "81.1%" }}
+                    >
+                      {/* Marker at 81.1 */}
+                      <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2">
+                        <div className="flex flex-col items-center">
+                          <p className="font-raleway font-semibold text-[10px] leading-[10px] text-white bg-transparent mt-7 whitespace-nowrap">
+                            81.1
+                          </p>
+                          <div className="w-px bg-[#0D469B] mt-1" />
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            <p className="font-raleway font-semibold text-[10px] leading-[10px] text-white">100</p>
-          </div>
-
-          {/* Description */}
-          <div className="mt-4">
-            <p className="font-raleway font-semibold text-[15px] leading-[18px] text-white">
-              Kemampuan tubuh untuk mengintegrasikan informasi visual secara mulus dengan gerakan tangan, memungkinkan tindakan yang presisi dan terkoordinasi dalam permainan.
-            </p>
-          </div>
-        </div>
-
-        {/* Chart SVG Overlay */}
-        <div className="absolute top-4 right-4 w-[433px] h-[196px] opacity-80">
-          <div data-framer-component-type="SVG" className="w-full h-full">
-            <div className="w-full h-full" style={{ aspectRatio: 'inherit' }}>
-              <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 433 196" preserveAspectRatio="none">
-                {/* Chart SVG will be rendered here */}
-              </svg>
+            {/* Description */}
+            <div className="mt-6">
+              <p className="font-raleway font-semibold text-[15px] leading-[18px] text-white">
+                Kemampuan tubuh untuk mengintegrasikan informasi visual secara
+                mulus dengan gerakan tangan, memungkinkan tindakan yang presisi
+                dan terkoordinasi dalam permainan.
+              </p>
             </div>
           </div>
         </div>
@@ -344,7 +336,6 @@ const CoordinationDetailCard: React.FC = () => {
               >
                 Minggu 32
               </button>
-              
             </div>
 
             {/* Date Display */}
@@ -353,7 +344,7 @@ const CoordinationDetailCard: React.FC = () => {
                 4 Agustus 2025 - 10 Agustus 2025
               </p>
             </div>
-            <div className= "flex flex-row">
+            <div className="flex flex-row">
               {/* Game Icons */}
               <div className="flex flex-col justify-between items-center mt-4 bg-transparent p-4 rounded-lg">
                 {games.map((game, index) => (
@@ -393,8 +384,6 @@ const CoordinationDetailCard: React.FC = () => {
                   options={horizontalChartOptions}
                 />
               </div>
-
-              
             </div>
           </div>
         </div>
@@ -404,4 +393,3 @@ const CoordinationDetailCard: React.FC = () => {
 };
 
 export default CoordinationDetailCard;
-

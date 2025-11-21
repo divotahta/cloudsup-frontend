@@ -263,7 +263,7 @@ const FocusDetailCard: React.FC = () => {
             {/* Progress Bar */}
             <div className="mb-6">
               {/* Progress Bar Container */}
-              <div className="h-[9px] bg-white rounded-full relative">
+              <div className="h-[9px] bg-white  relative">
                 {/* Progress Fill */}
                 <div
                   className="absolute top-0 left-0 h-[9px] bg-[#084EC5]"
@@ -292,7 +292,6 @@ const FocusDetailCard: React.FC = () => {
           </div>
         </div>
       </div>
-      {/* Bottom Section - Week Tabs & Games Chart */}
       {/* Bottom Section - Week Tabs & Games Chart */}
       <div className="bg-[#EDF8FF] p-4 mt-8">
         <div className="flex gap-6">

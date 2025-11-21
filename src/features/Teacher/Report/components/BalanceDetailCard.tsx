@@ -265,7 +265,7 @@ const BalanceDetailCard: React.FC = () => {
               {/* Progress Bar */}
               <div className="mb-6">
                 {/* Progress Bar Container */}
-                <div className="h-[9px] bg-white rounded-full relative">
+                <div className="h-[9px] bg-white relative">
                   {/* Progress Fill */}
                   <div
                     className="absolute top-0 left-0 h-[9px] bg-[#084EC5]"
