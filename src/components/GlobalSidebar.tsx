@@ -144,10 +144,10 @@ const GlobalSidebar: React.FC<GlobalSidebarProps> = ({ devRole }) => {
             {/* Games */}
             <Link
               to="/teacher/dashboard"
-              className={`flex items-center h-[40px] w-[240px] px-4 py-3 text-[18px] font-semibold rounded-[32.63px] transition-all duration-300 ${
+              className={`  flex items-center h-[40px] w-[240px] px-4 py-3 text-[18px] font-semibold rounded-[32.63px] transition-all duration-300 ${
                 isActive("/teacher/dashboard")
-                  ? "bg-white text-[#E82D2F] shadow-md"
-                  : "text-white hover:bg-white hover:bg-opacity-10"
+                  ? "bg-white text-[#E82D2F] hover:text-[#E82D2F] shadow-md"
+                  : "text-white hover:text-white hover:bg-white hover:bg-opacity-10"
               }`}
             >
               <svg
@@ -181,9 +181,9 @@ const GlobalSidebar: React.FC<GlobalSidebarProps> = ({ devRole }) => {
             {/* Reports */}
             <Link
               to="/teacher/reports"
-              className={`flex items-center h-[40px] w-[240px] px-4 py-3 text-[18px] font-semibold rounded-[32.63px] transition-all duration-300 ${
+              className={` hover:text-white flex items-center h-[40px] w-[240px] px-4 py-3 text-[18px] font-semibold rounded-[32.63px] transition-all duration-300 ${
                 isActive("/teacher/reports")
-                  ? "bg-white text-[#E82D2F] shadow-md"
+                  ? "bg-white text-[#E82D2F] shadow-md hover:text-[#E82D2F]"
                   : "text-white hover:bg-white hover:bg-opacity-10"
               }`}
             >
@@ -214,9 +214,9 @@ const GlobalSidebar: React.FC<GlobalSidebarProps> = ({ devRole }) => {
             {/* Settings */}
             <Link
               to="/teacher/settings"
-              className={`flex items-center h-[40px] w-[240px] px-4 py-3 text-[18px] font-semibold rounded-[32.63px] transition-all duration-300 ${
+              className={`hover:text-white flex items-center h-[40px] w-[240px] px-4 py-3 text-[18px] font-semibold rounded-[32.63px] transition-all duration-300 ${
                 isActive("/teacher/settings")
-                  ? "bg-white text-[#E82D2F] shadow-md"
+                  ? "bg-white text-[#E82D2F] hover:text-[#E82D2F] shadow-md"
                   : "text-white hover:bg-white hover:bg-opacity-10"
               }`}
             >

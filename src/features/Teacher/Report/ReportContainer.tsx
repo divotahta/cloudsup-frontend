@@ -15,11 +15,13 @@ import {
 } from "./components";
 // import { Gamepad2, Clock } from 'lucide-react';
 import { SelectedPlayerProvider } from "./contexts/SelectedPlayerContext";
+import { ReportFilterProvider } from "./contexts/ReportFilterContext";
 
 const ReportContainer: React.FC = () => {
 
   return (
     <SelectedPlayerProvider>
+      <ReportFilterProvider>
       <div className="flex gap-6">
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col m-[40px]">
@@ -67,6 +69,7 @@ const ReportContainer: React.FC = () => {
           <MemoryDetailCard />
         </div>
       </div>
+      </ReportFilterProvider>
     </SelectedPlayerProvider>
   );
 };
