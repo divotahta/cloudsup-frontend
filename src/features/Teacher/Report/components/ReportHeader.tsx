@@ -1,13 +1,13 @@
 import React from "react";
-import { Calendar, Printer } from "lucide-react";
+import {  Printer } from "lucide-react";
 import ChangePlayerModal from "./ChangePlayerModal";
 import { useSelectedPlayer } from "../contexts/SelectedPlayerContext";
 import {
-  createLastNDaysRange,
   useReportFilter,
   REPORT_DEFAULT_RANGE_DAYS,
 } from "../contexts/ReportFilterContext";
 import type { DateRange } from "../contexts/ReportFilterContext";
+import DateRangePicker from "./DateRangePicker.tsx";
 
 const ReportHeader: React.FC = () => {
   const { players, loading, currentPlayer, setCurrentPlayer } =
@@ -15,19 +15,12 @@ const ReportHeader: React.FC = () => {
   const [isChangeOpen, setIsChangeOpen] = React.useState(false);
   const { dateRange, setDateRange, resetToDefault } = useReportFilter();
   const [isPickerOpen, setIsPickerOpen] = React.useState(false);
-  const [draftRange, setDraftRange] = React.useState<DateRange>(dateRange);
   const pickerRef = React.useRef<HTMLDivElement | null>(null);
 
   const safeImageSrc =
     currentPlayer?.image && currentPlayer.image.trim() !== ""
       ? currentPlayer.image
       : undefined;
-
-  React.useEffect(() => {
-    if (isPickerOpen) {
-      setDraftRange(dateRange);
-    }
-  }, [isPickerOpen, dateRange]);
 
   React.useEffect(() => {
     if (!isPickerOpen) return;
@@ -52,21 +45,6 @@ const ReportHeader: React.FC = () => {
       document.removeEventListener("keydown", handleEscape);
     };
   }, [isPickerOpen]);
-
-  const handleInputChange = (key: keyof DateRange, value: string) => {
-    if (!value) return;
-    const parsed = parseDateInput(value);
-    setDraftRange((prev) => ({ ...prev, [key]: parsed }));
-  };
-
-  const handleApplyRange = () => {
-    const normalized =
-      draftRange.start <= draftRange.end
-        ? draftRange
-        : { start: draftRange.end, end: draftRange.start };
-    setDateRange(normalized);
-    setIsPickerOpen(false);
-  };
 
   const rangeLabel = formatRangeLabel(dateRange);
   const summaryLabel = buildSummaryLabel(dateRange);
@@ -134,75 +112,102 @@ const ReportHeader: React.FC = () => {
                 className="px-4 py-2 bg-white border border-black rounded-lg flex items-center gap-2 cursor-pointer hover:bg-gray-50"
                 aria-label="Pilih rentang tanggal"
               >
-                <Calendar className="w-5 h-5 text-black" />
+                <svg
+                  width="15"
+                  height="18"
+                  viewBox="0 0 15 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g clip-path="url(#clip0_1715_634)">
+                    <g clip-path="url(#clip1_1715_634)">
+                      <g clip-path="url(#clip2_1715_634)">
+                        <path
+                          d="M12.0498 2.83349H11.2998V2.01293C11.2998 1.79531 11.2208 1.5866 11.0801 1.43272C10.9395 1.27883 10.7487 1.19238 10.5498 1.19238C10.3509 1.19238 10.1601 1.27883 10.0195 1.43272C9.87882 1.5866 9.7998 1.79531 9.7998 2.01293V2.83349H5.2998V2.01293C5.2998 1.79531 5.22078 1.5866 5.08013 1.43272C4.93948 1.27883 4.74871 1.19238 4.5498 1.19238C4.35089 1.19238 4.16012 1.27883 4.01947 1.43272C3.87882 1.5866 3.7998 1.79531 3.7998 2.01293V2.83349H3.0498C2.45306 2.83349 1.88077 3.09284 1.45881 3.55449C1.03686 4.01614 0.799805 4.64227 0.799805 5.29515V15.1418C0.799805 15.7947 1.03686 16.4208 1.45881 16.8825C1.88077 17.3441 2.45306 17.6035 3.0498 17.6035H12.0498C12.6465 17.6035 13.2188 17.3441 13.6408 16.8825C14.0627 16.4208 14.2998 15.7947 14.2998 15.1418V5.29515C14.2998 4.64227 14.0627 4.01614 13.6408 3.55449C13.2188 3.09284 12.6465 2.83349 12.0498 2.83349ZM12.7998 8.57736H2.2998V5.29515C2.2998 5.07752 2.37882 4.86881 2.51947 4.71493C2.66012 4.56104 2.85089 4.47459 3.0498 4.47459H3.7998V5.29515C3.7998 5.51277 3.87882 5.72148 4.01947 5.87537C4.16012 6.02925 4.35089 6.1157 4.5498 6.1157C4.74871 6.1157 4.93948 6.02925 5.08013 5.87537C5.22078 5.72148 5.2998 5.51277 5.2998 5.29515V4.47459H9.7998V5.29515C9.7998 5.51277 9.87882 5.72148 10.0195 5.87537C10.1601 6.02925 10.3509 6.1157 10.5498 6.1157C10.7487 6.1157 10.9395 6.02925 11.0801 5.87537C11.2208 5.72148 11.2998 5.51277 11.2998 5.29515V4.47459H12.0498C12.2487 4.47459 12.4395 4.56104 12.5801 4.71493C12.7208 4.86881 12.7998 5.07752 12.7998 5.29515V8.57736Z"
+                          fill="#1F1F1F"
+                        />
+                      </g>
+                    </g>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_1715_634">
+                      <rect
+                        width="14"
+                        height="17"
+                        fill="white"
+                        transform="translate(0.799805 0.799805)"
+                      />
+                    </clipPath>
+                    <clipPath id="clip1_1715_634">
+                      <rect
+                        width="14"
+                        height="17"
+                        fill="white"
+                        transform="translate(0.799805 0.799805)"
+                      />
+                    </clipPath>
+                    <clipPath id="clip2_1715_634">
+                      <rect
+                        width="14"
+                        height="17"
+                        fill="white"
+                        transform="translate(0.799805 0.799805)"
+                      />
+                    </clipPath>
+                  </defs>
+                </svg>
+
                 <span className="font-raleway font-normal text-sm text-gray-700">
                   {rangeLabel}
                 </span>
+                <svg
+                  width="14"
+                  height="9"
+                  viewBox="0 0 14 9"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g clip-path="url(#clip0_1715_639)">
+                    <g clip-path="url(#clip1_1715_639)">
+                      <path
+                        d="M12.4665 1.63281L8.26451 5.83477C7.63967 6.45961 6.62661 6.45961 6.00177 5.83477L1.7998 1.63281"
+                        stroke="#1F1F1F"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </g>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_1715_639">
+                      <rect
+                        width="13.3333"
+                        height="8"
+                        fill="white"
+                        transform="translate(0.466797 0.299805)"
+                      />
+                    </clipPath>
+                    <clipPath id="clip1_1715_639">
+                      <rect
+                        width="13.3333"
+                        height="8"
+                        fill="white"
+                        transform="translate(0.466797 0.299805)"
+                      />
+                    </clipPath>
+                  </defs>
+                </svg>
               </button>
 
               {isPickerOpen && (
-                <div className="absolute right-0 mt-2 w-[320px] bg-white border border-[#d9d9d9] rounded-xl shadow-lg p-4 z-10">
-                  <div className="flex flex-col gap-3">
-                    <div className="flex flex-col gap-1">
-                      <label className="text-xs font-semibold text-gray-600">
-                        Tanggal Mulai
-                      </label>
-                      <input
-                        type="date"
-                        value={toDateInputValue(draftRange.start)}
-                        onChange={(event) =>
-                          handleInputChange("start", event.target.value)
-                        }
-                        className="w-full border border-[#bfbfbf] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#084EC5]"
-                      />
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <label className="text-xs font-semibold text-gray-600">
-                        Tanggal Akhir
-                      </label>
-                      <input
-                        type="date"
-                        value={toDateInputValue(draftRange.end)}
-                        onChange={(event) =>
-                          handleInputChange("end", event.target.value)
-                        }
-                        className="w-full border border-[#bfbfbf] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#084EC5]"
-                      />
-                    </div>
-
-                    <div className="flex flex-wrap gap-2">
-                      {[7, 14, 30, 60].map((days) => (
-                        <button
-                          key={days}
-                          type="button"
-                          onClick={() => setDraftRange(createLastNDaysRange(days))}
-                          className="flex-1 min-w-[70px] px-3 py-2 text-xs font-semibold border border-[#d9d9d9] rounded-lg hover:border-[#084EC5] hover:text-[#084EC5] transition-colors"
-                        >
-                          {days} Hari
-                        </button>
-                      ))}
-                    </div>
-
-                    <div className="flex gap-2 pt-1">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setDraftRange(dateRange);
-                          setIsPickerOpen(false);
-                        }}
-                        className="flex-1 px-3 py-2 text-sm font-semibold border border-[#262626] rounded-lg hover:bg-gray-50"
-                      >
-                        Batal
-                      </button>
-                      <button
-                        type="button"
-                        onClick={handleApplyRange}
-                        className="flex-1 px-3 py-2 text-sm font-semibold text-white bg-[#084EC5] rounded-lg hover:bg-[#063d99]"
-                      >
-                        Terapkan
-                      </button>
-                    </div>
-                  </div>
+                <div className="absolute mt-2 z-20">
+                  <DateRangePicker
+                    initialRange={dateRange}
+                    onApply={(nextRange: DateRange) => {
+                      setDateRange(nextRange);
+                      setIsPickerOpen(false);
+                    }}
+                    onCancel={() => setIsPickerOpen(false)}
+                  />
                 </div>
               )}
             </div>
@@ -259,22 +264,12 @@ const formatDisplayDate = (date: Date) => {
 const buildSummaryLabel = (range: DateRange) => {
   const startMs = new Date(range.start).setHours(0, 0, 0, 0);
   const endMs = new Date(range.end).setHours(0, 0, 0, 0);
-  const diffDays = Math.abs(Math.round((endMs - startMs) / (1000 * 60 * 60 * 24)));
+  const diffDays = Math.abs(
+    Math.round((endMs - startMs) / (1000 * 60 * 60 * 24))
+  );
   const totalDays = diffDays + 1;
   if (totalDays === REPORT_DEFAULT_RANGE_DAYS) {
     return `Menampilkan kemajuan selama ${REPORT_DEFAULT_RANGE_DAYS} hari terakhir`;
   }
   return `Menampilkan kemajuan selama ${totalDays} hari terpilih`;
-};
-
-const toDateInputValue = (date: Date) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-};
-
-const parseDateInput = (value: string) => {
-  const [year, month, day] = value.split("-").map(Number);
-  return new Date(year, month - 1, day);
 };

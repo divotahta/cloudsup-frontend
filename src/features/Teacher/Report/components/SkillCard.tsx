@@ -101,7 +101,7 @@ const IconTooltip: React.FC<IconTooltipProps> = ({
     <>
       <div
         ref={triggerRef}
-        className="relative z-50 flex items-center justify-center cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-full transition-transform duration-200"
+        className="flex items-center justify-center cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-full transition-transform duration-200"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onFocus={() => setIsHovered(true)}
