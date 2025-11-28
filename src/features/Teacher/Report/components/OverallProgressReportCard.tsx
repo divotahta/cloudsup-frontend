@@ -4,8 +4,12 @@ import { LucideInfo } from "lucide-react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
+// Definisikan tipe untuk minggu yang aktif
+type ActiveWeek = "week1" | "week2" | "week3" | "week4";
+
 const OverallProgressReportCard: React.FC = () => {
-  const [activeWeek, setActiveWeek] = useState<"week31" | "week32">("week31");
+  // 1. Perbarui state activeWeek untuk mencakup minggu 33 dan 34
+  const [activeWeek, setActiveWeek] = useState<ActiveWeek>("week1");
 
   const games = [
     {
@@ -26,34 +30,58 @@ const OverallProgressReportCard: React.FC = () => {
     },
   ];
 
-  // Data untuk vertical bar chart (Minggu 31 & 32)
-  const weekComparisonData = {
-    week31: 70.7,
-    week32: 79.4,
+  // 2. Tambahkan data dummy untuk Minggu 33 & 34
+  // Data untuk vertical bar chart (Minggu 31 s/d 34)
+  const weekComparisonData: Record<ActiveWeek, number> = {
+    week1: 70.7,
+    week2: 79.4,
+    week3: 85.0, // Data dummy
+    week4: 90.5, // Data dummy
   };
 
   // Data untuk horizontal bar chart berdasarkan minggu
-  const gameProgressData = {
-    week31: {
+  const gameProgressData: Record<ActiveWeek, Record<string, number>> = {
+    week1: {
       "GELEMBUNG AJAIB": 75,
       "PAPAN SEIMBANG": 45,
       "TANGKAP RASA": 80,
       "KARTU COCOK": 95,
     },
-    week32: {
+    week2: {
       "GELEMBUNG AJAIB": 85,
       "PAPAN SEIMBANG": 50,
       "TANGKAP RASA": 85,
       "KARTU COCOK": 100,
     },
+    week3: {
+      "GELEMBUNG AJAIB": 90, // Data dummy
+      "PAPAN SEIMBANG": 60, // Data dummy
+      "TANGKAP RASA": 90, // Data dummy
+      "KARTU COCOK": 100, // Data dummy
+    },
+    week4: {
+      "GELEMBUNG AJAIB": 95, // Data dummy
+      "PAPAN SEIMBANG": 70, // Data dummy
+      "TANGKAP RASA": 95, // Data dummy
+      "KARTU COCOK": 100, // Data dummy
+    },
   };
 
-  // Konfigurasi Vertical Bar Chart (Minggu 31 & 32)
+  // Data tanggal untuk setiap minggu (contoh)
+  const weekDates: Record<ActiveWeek, string> = {
+    week1: "28 Juli 2025 - 3 Agustus 2025",
+    week2: "4 Agustus 2025 - 10 Agustus 2025",
+    week3: "11 Agustus 2025 - 17 Agustus 2025", // Tanggal dummy
+    week4: "18 Agustus 2025 - 24 Agustus 2025", // Tanggal dummy
+  };
+
+  // 3. Perbarui Konfigurasi Vertical Bar Chart (Minggu 31 s/d 34)
   const verticalChartOptions = useMemo(
     () => ({
       chart: {
         type: "column",
         height: 401,
+        // width: 433,
         backgroundColor: "transparent",
         spacing: [0, 0, 0, 0],
       },
@@ -64,12 +92,13 @@ const OverallProgressReportCard: React.FC = () => {
         enabled: false,
       },
       xAxis: {
-        categories: ["Minggu 31", "Minggu 32"],
+        // Perbarui categories untuk mencakup Minggu 33 dan 34
+        categories: ["Minggu 1", "Minggu 2", "Minggu 3", "Minggu 4"],
         labels: {
           style: {
             fontFamily: "Raleway",
             fontWeight: "700",
-            fontSize: "14px",
+            fontSize: "12px",
             color: "rgb(8, 78, 197)",
           },
         },
@@ -121,8 +150,11 @@ const OverallProgressReportCard: React.FC = () => {
         {
           name: "Progress",
           data: [
-            { y: weekComparisonData.week31, color: "rgb(8, 78, 197)" },
-            { y: weekComparisonData.week32, color: "rgb(8, 78, 197)" },
+            { y: weekComparisonData.week1, color: "rgb(8, 78, 197)" },
+            { y: weekComparisonData.week2, color: "rgb(8, 78, 197)" },
+            // Tambahkan data untuk Minggu 33 dan 34
+            { y: weekComparisonData.week3, color: "rgb(8, 78, 197)" },
+            { y: weekComparisonData.week4, color: "rgb(8, 78, 197)" },
           ],
           pointPadding: 0.2,
           groupPadding: 0.3,
@@ -135,7 +167,7 @@ const OverallProgressReportCard: React.FC = () => {
         enabled: false,
       },
     }),
-    []
+    [weekComparisonData] // Perbarui dependensi
   );
 
   // Konfigurasi Horizontal Bar Chart (Games)
@@ -198,7 +230,7 @@ const OverallProgressReportCard: React.FC = () => {
           name: "Progress",
           data: games.map((game) => ({
             y: gameProgressData[activeWeek][
-              game.name as keyof typeof gameProgressData.week31
+              game.name as keyof typeof gameProgressData.week1
             ],
             color: "rgb(8, 78, 197)",
           })),
@@ -213,7 +245,24 @@ const OverallProgressReportCard: React.FC = () => {
         enabled: false,
       },
     }),
-    [activeWeek, games]
+    [activeWeek, games, gameProgressData] // Perbarui dependensi
+  );
+
+  // Helper untuk membuat tombol tab
+  const renderWeekTab = (week: ActiveWeek, label: string) => (
+    <button
+      onClick={() => setActiveWeek(week)}
+      className={`px-4 py-2 rounded-none bg-transparent font-['Raleway'] font-bold text-[14px] leading-[21px] transition-colors ${
+        activeWeek === week
+          ? "text-[#084EC5] border-b-2 border-b-[#084EC5]"
+          : "text-[#084EC5] hover:bg-blue-50"
+      }`}
+      style={{
+        borderBottomWidth: activeWeek === week ? "2px" : "0",
+      }}
+    >
+      {label}
+    </button>
   );
 
   return (
@@ -245,7 +294,7 @@ const OverallProgressReportCard: React.FC = () => {
               </div>
               {/* Percentage Display */}
               <div className=" flex items-end">
-                <p className="font-raleway font-bold text-[30px]  text-[#084EC5]">
+                <p className="font-raleway font-bold text-[30px]  text-[#084EC5]">
                   81.1%
                 </p>
               </div>
@@ -303,7 +352,7 @@ const OverallProgressReportCard: React.FC = () => {
       {/* Bottom Section - Week Tabs & Games Chart */}
       <div className="bg-[#EDF8FF] p-4 mt-8">
         <div className="flex gap-6">
-          {/* Left Chart - Vertical Bar Chart (Minggu 31 & 32) */}
+          {/* Left Chart - Vertical Bar Chart (Minggu 31 s/d 34) */}
           <div className="flex-1">
             <HighchartsReact
               highcharts={Highcharts}
@@ -315,42 +364,19 @@ const OverallProgressReportCard: React.FC = () => {
           <div className="flex-1 flex flex-col">
             {/* Week Tabs */}
             <div className="flex gap-2 mb-4 border-[#dedede] border-b-2">
-              <button
-                onClick={() => setActiveWeek("week31")}
-                className={`px-4 py-2 rounded-none bg-transparent font-['Raleway'] font-bold text-[14px] leading-[21px] transition-colors ${
-                  activeWeek === "week31"
-                    ? "text-[#084EC5] border-b-2 border-b-[#084EC5]"
-                    : "text-[#084EC5] hover:bg-blue-50"
-                }`}
-                style={{
-                  borderBottomWidth: activeWeek === "week31" ? "2px" : "0",
-                }}
-              >
-                Minggu 31
-              </button>
-              <button
-                onClick={() => setActiveWeek("week32")}
-                className={`px-4 py-2 rounded-none bg-transparent font-['Raleway'] font-bold text-[14px] leading-[21px] transition-colors ${
-                  activeWeek === "week32"
-                    ? "text-[#084EC5] border-b-2 border-b-[#084EC5]"
-                    : "text-[#084EC5] hover:bg-blue-50"
-                }`}
-                style={{
-                  borderBottomWidth: activeWeek === "week32" ? "2px" : "0",
-                }}
-              >
-                Minggu 32
-              </button>
-              
+              {renderWeekTab("week1", "Minggu 1")}
+              {renderWeekTab("week2", "Minggu 2")}
+              {renderWeekTab("week3", "Minggu 3")}
+              {renderWeekTab("week4", "Minggu 4")}
             </div>
 
-            {/* Date Display */}
+            {/* Date Display (diperbarui agar dinamis) */}
             <div className="mb-6">
               <p className="font-['Raleway'] font-bold text-[12px] leading-[18px] text-[#0B1E59]">
-                4 Agustus 2025 - 10 Agustus 2025
+                {weekDates[activeWeek]}
               </p>
             </div>
-            <div className= "flex flex-row">
+            <div className="flex flex-row">
               {/* Game Icons */}
               <div className="flex flex-col justify-between items-center mt-4 bg-transparent p-4 rounded-lg">
                 {games.map((game, index) => (
@@ -391,7 +417,7 @@ const OverallProgressReportCard: React.FC = () => {
                 />
               </div>
 
-              
+
             </div>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {  } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { DateRange } from "../contexts/ReportFilterContext";
 
@@ -177,22 +177,50 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
 
   React.useEffect(() => {
     const normalizedInitial = normalizeRange(initialRange);
-    setDraftRange(normalizedInitial);
-    setSelectionPhase("start");
-    setVisibleMonth(startOfMonth(normalizedInitial.start));
-
-    const matchingQuick = quickRanges.find(
+    
+    let matchingQuick = quickRanges.find(
       (quick) =>
         !quick.requiresPicker &&
         quick.getRange &&
         rangesEqual(normalizedInitial, normalizeRange(quick.getRange()))
     );
-    setActiveQuickKey(matchingQuick ? matchingQuick.key : "custom");
+
+    let defaultKey: string;
+    let defaultRange: DateRange;
+
+    // Jika initialRange cocok dengan preset, gunakan itu.
+    if (matchingQuick) {
+      defaultKey = matchingQuick.key;
+      defaultRange = normalizedInitial;
+    } else {
+      // Jika tidak ada yang cocok, atur default ke "Bulan Ini"
+      // Kemudian, periksa apakah initialRange berada di Bulan Ini.
+      const thisMonthPreset = quickRanges.find(q => q.key === 'thisMonth');
+      defaultRange = thisMonthPreset!.getRange!(); 
+      defaultKey = 'thisMonth';
+    }
+
+    // Terapkan default/matched state
+    setDraftRange(defaultRange);
+    setActiveQuickKey(defaultKey);
+    setSelectionPhase("start");
+    
+    // Atur visibleMonth ke bulan yang relevan:
+    // Jika default-nya adalah "Bulan Ini" atau "Rentang Khusus", 
+    // tampilkan bulan saat ini. Jika preset lain, gunakan bulan start.
+    const monthToDisplay = (defaultKey === 'thisMonth' || defaultKey === 'custom')
+        ? startOfMonth(new Date())
+        : startOfMonth(defaultRange.start);
+        
+    setVisibleMonth(monthToDisplay);
+
   }, [initialRange, quickRanges, rangesEqual]);
 
   const handleQuickSelect = (quick: QuickRange) => {
     if (quick.requiresPicker) {
       setActiveQuickKey(quick.key);
+      // Pindahkan kalender ke bulan yang relevan (misalnya bulan mulai draftRange)
+      setVisibleMonth(startOfMonth(draftRange.start));
       return;
     }
     if (quick.getRange) {
@@ -203,6 +231,8 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
   const handleDayClick = (day: Date) => {
     setActiveQuickKey("custom");
     const normalizedDay = stripTime(day);
+    
+    // Logika asli untuk memilih rentang
     if (selectionPhase === "start") {
       setDraftRange({ start: normalizedDay, end: normalizedDay });
       setSelectionPhase("end");
@@ -265,59 +295,59 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
 
         {showCustomView && (
           <div className="flex-1">
-          <div className="flex items-center justify-between mb-4">
-            <button
-              type="button"
-              onClick={() => setVisibleMonth(addMonths(visibleMonth, -1))}
-              className="p-2 rounded-full border border-gray-200 hover:bg-gray-50"
-              aria-label="Bulan sebelumnya"
-            >
-              <ChevronLeft className="w-4 h-4 text-gray-600" />
-            </button>
-            <div className="flex gap-8">
-              {monthViews.map((monthDate) => (
-                <MonthView
-                  key={`${monthDate.getFullYear()}-${monthDate.getMonth()}`}
-                  monthDate={monthDate}
-                  draftRange={draftRange}
-                  onDayClick={handleDayClick}
-                />
-              ))}
+            <div className="flex items-center justify-between mb-4">
+              <button
+                type="button"
+                onClick={() => setVisibleMonth(addMonths(visibleMonth, -1))}
+                className="p-2 rounded-full border border-gray-200 hover:bg-gray-50"
+                aria-label="Bulan sebelumnya"
+              >
+                <ChevronLeft className="w-4 h-4 text-gray-600" />
+              </button>
+              <div className="flex gap-8">
+                {monthViews.map((monthDate) => (
+                  <MonthView
+                    key={`${monthDate.getFullYear()}-${monthDate.getMonth()}`}
+                    monthDate={monthDate}
+                    draftRange={draftRange}
+                    onDayClick={handleDayClick}
+                  />
+                ))}
+              </div>
+              <button
+                type="button"
+                onClick={() => setVisibleMonth(addMonths(visibleMonth, 1))}
+                className="p-2 rounded-full border border-gray-200 hover:bg-gray-50"
+                aria-label="Bulan berikutnya"
+              >
+                <ChevronRight className="w-4 h-4 text-gray-600" />
+              </button>
             </div>
-            <button
-              type="button"
-              onClick={() => setVisibleMonth(addMonths(visibleMonth, 1))}
-              className="p-2 rounded-full border border-gray-200 hover:bg-gray-50"
-              aria-label="Bulan berikutnya"
-            >
-              <ChevronRight className="w-4 h-4 text-gray-600" />
-            </button>
-          </div>
 
-          <div className="mt-6 pt-4 border-t border-gray-200 flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <DateDisplay label="Start date" date={draftRange.start} />
-              <span className="text-gray-400 font-semibold">—</span>
-              <DateDisplay label="End date" date={draftRange.end} />
-            </div>
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={onCancel}
-                className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={handleApply}
-                className="px-5 py-2 rounded-lg text-sm font-semibold text-white bg-[#0066FF] hover:bg-[#0066FF]"
-              >
-                Apply
-              </button>
+            <div className="mt-6 pt-4 border-t border-gray-200 flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <DateDisplay label="Start date" date={draftRange.start} />
+                <span className="text-gray-400 font-semibold">—</span>
+                <DateDisplay label="End date" date={draftRange.end} />
+              </div>
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={onCancel}
+                  className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleApply}
+                  className="px-5 py-2 rounded-lg text-sm font-semibold text-white bg-[#0066FF] hover:bg-[#0066FF]"
+                >
+                  Apply
+                </button>
+              </div>
             </div>
           </div>
-        </div>
         )}
       </div>
     </div>
@@ -409,4 +439,3 @@ const DateDisplay: React.FC<DateDisplayProps> = ({ label, date }) => (
 );
 
 export default DateRangePicker;
-

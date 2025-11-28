@@ -18,7 +18,7 @@ import { SelectedPlayerProvider } from "./contexts/SelectedPlayerContext";
 import { ReportFilterProvider } from "./contexts/ReportFilterContext";
 
 const ReportContainer: React.FC = () => {
-
+  
   return (
     <SelectedPlayerProvider>
       <ReportFilterProvider>

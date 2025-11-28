@@ -48,6 +48,9 @@ const ReportHeader: React.FC = () => {
 
   const rangeLabel = formatRangeLabel(dateRange);
   const summaryLabel = buildSummaryLabel(dateRange);
+  // const handlePrint = () => {
+  //   handlePrint();
+  // };
 
   return (
     <div className="flex items-center justify-between">

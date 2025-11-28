@@ -11,7 +11,9 @@ type ReportFilterContextValue = {
   resetToDefault: () => void;
 };
 
-const DEFAULT_RANGE_DAYS = 30;
+// Nilai ini tidak lagi relevan sebagai hari, tetapi tetap dipertahankan
+// untuk kompatibilitas jika komponen lain masih merujuk padanya.
+const DEFAULT_RANGE_DAYS = 30; 
 
 const ReportFilterContext = createContext<ReportFilterContextValue | undefined>(
   undefined
@@ -23,21 +25,43 @@ const normalizeDate = (date: Date) => {
   return normalized;
 };
 
-export const createLastNDaysRange = (
-  days: number,
-  referenceDate: Date = new Date()
-): DateRange => {
-  const end = new Date(referenceDate);
-  end.setHours(23, 59, 59, 999);
+// Hapus atau abaikan createLastNDaysRange jika tidak lagi digunakan sebagai default.
+// Jika dipertahankan, pastikan fungsinya benar:
 
-  const start = new Date(end);
-  start.setHours(0, 0, 0, 0);
-  start.setDate(end.getDate() - (days - 1));
+// export const createLastNDaysRange = (
+//   days: number,
+//   referenceDate: Date = new Date()
+// ): DateRange => {
+//   const end = new Date(referenceDate);
+//   end.setHours(23, 59, 59, 999);
+
+//   const start = new Date(end);
+//   start.setHours(0, 0, 0, 0);
+//   start.setDate(end.getDate() - (days - 1));
+
+//   return { start, end };
+// };
+
+/**
+ * Fungsi baru untuk mendapatkan rentang "Bulan Ini" (start: tgl 1, end: tgl terakhir)
+ */
+export const createThisMonthRange = (referenceDate: Date = new Date()): DateRange => {
+  const year = referenceDate.getFullYear();
+  const month = referenceDate.getMonth();
+
+  // Tanggal mulai: Hari pertama bulan saat ini, jam 00:00:00
+  const start = new Date(year, month, 1);
+  start.setHours(0, 0, 0, 0); 
+  
+  // Tanggal akhir: Hari terakhir bulan ini, jam 23:59:59
+  const end = new Date(year, month + 1, 0);
+  end.setHours(23, 59, 59, 999);
 
   return { start, end };
 };
 
-export const defaultReportDateRange = () => createLastNDaysRange(DEFAULT_RANGE_DAYS);
+// Mengubah defaultReportDateRange untuk menggunakan Bulan Ini
+export const defaultReportDateRange = () => createThisMonthRange();
 
 export function ReportFilterProvider({
   children,
@@ -49,7 +73,11 @@ export function ReportFilterProvider({
   );
 
   const setDateRange = (range: DateRange) => {
+    // Normalisasi start dan end, tetapi tidak membuang jam pada end jika jam 23:59:59 (dari preset)
     const start = normalizeDate(range.start);
+    
+    // Untuk end, kita menggunakan waktu aslinya jika sudah disetel (misalnya 23:59:59 dari preset), 
+    // jika tidak, kita normalisasi ke 00:00:00.
     const end = normalizeDate(range.end);
 
     if (start > end) {
@@ -89,4 +117,3 @@ export function useReportFilter() {
 }
 
 export { DEFAULT_RANGE_DAYS as REPORT_DEFAULT_RANGE_DAYS };
-

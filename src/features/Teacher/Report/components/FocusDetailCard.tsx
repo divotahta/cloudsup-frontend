@@ -4,8 +4,13 @@ import { LucideInfo } from "lucide-react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
+// Definisikan tipe untuk minggu yang aktif: Minggu 1, 2, 3, 4
+type ActiveWeek = "week1" | "week2" | "week3" | "week4";
+
 const FocusDetailCard: React.FC = () => {
-  const [activeWeek, setActiveWeek] = useState<"week31" | "week32">("week31");
+  // Ubah state awal ke "week1" dan tipenya
+  const [activeWeek, setActiveWeek] = useState<ActiveWeek>("week1");
+
   const games = [
     {
       name: "GELEMBUNG AJAIB",
@@ -25,10 +30,48 @@ const FocusDetailCard: React.FC = () => {
     },
   ];
 
-   // Data untuk vertical bar chart (Minggu 31 & 32)
-   const weekComparisonData = {
-    week31: 70.7,
-    week32: 79.4,
+  // Data untuk vertical bar chart (Minggu 1 s/d 4)
+  const weekComparisonData: Record<ActiveWeek, number> = {
+    week1: 70.7, // Data Awal
+    week2: 79.4,
+    week3: 85.0, // Data dummy baru
+    week4: 90.5, // Data dummy baru
+  };
+
+  // Data untuk horizontal bar chart berdasarkan minggu
+  const gameProgressData: Record<ActiveWeek, Record<string, number>> = {
+    week1: {
+      "GELEMBUNG AJAIB": 75,
+      "PAPAN SEIMBANG": 45,
+      "TANGKAP RASA": 80,
+      "KARTU COCOK": 95,
+    },
+    week2: {
+      "GELEMBUNG AJAIB": 85,
+      "PAPAN SEIMBANG": 50,
+      "TANGKAP RASA": 85,
+      "KARTU COCOK": 100,
+    },
+    week3: {
+      "GELEMBUNG AJAIB": 90,
+      "PAPAN SEIMBANG": 60,
+      "TANGKAP RASA": 90,
+      "KARTU COCOK": 100,
+    },
+    week4: {
+      "GELEMBUNG AJAIB": 95,
+      "PAPAN SEIMBANG": 70,
+      "TANGKAP RASA": 95,
+      "KARTU COCOK": 100,
+    },
+  };
+
+  // Data tanggal untuk setiap minggu (contoh)
+  const weekDates: Record<ActiveWeek, string> = {
+    week1: "4 Maret 2025 - 10 Maret 2025",
+    week2: "11 Maret 2025 - 17 Maret 2025",
+    week3: "18 Maret 2025 - 24 Maret 2025",
+    week4: "25 Maret 2025 - 31 Maret 2025",
   };
 
   const verticalChartOptions = useMemo(
@@ -46,7 +89,8 @@ const FocusDetailCard: React.FC = () => {
         enabled: false,
       },
       xAxis: {
-        categories: ["Minggu 31", "Minggu 32"],
+        // Update kategori ke Minggu 1 s/d 4
+        categories: ["Minggu 1", "Minggu 2", "Minggu 3", "Minggu 4"],
         labels: {
           style: {
             fontFamily: "Raleway",
@@ -103,8 +147,11 @@ const FocusDetailCard: React.FC = () => {
         {
           name: "Progress",
           data: [
-            { y: weekComparisonData.week31, color: "rgb(8, 78, 197)" },
-            { y: weekComparisonData.week32, color: "rgb(8, 78, 197)" },
+            // Update data series
+            { y: weekComparisonData.week1, color: "rgb(8, 78, 197)" },
+            { y: weekComparisonData.week2, color: "rgb(8, 78, 197)" },
+            { y: weekComparisonData.week3, color: "rgb(8, 78, 197)" },
+            { y: weekComparisonData.week4, color: "rgb(8, 78, 197)" },
           ],
           pointPadding: 0.2,
           groupPadding: 0.3,
@@ -117,24 +164,8 @@ const FocusDetailCard: React.FC = () => {
         enabled: false,
       },
     }),
-    []
+    [weekComparisonData] // Tambahkan weekComparisonData ke dependensi
   );
-
-  // Data untuk horizontal bar chart berdasarkan minggu
-  const gameProgressData = {
-    week31: {
-      "GELEMBUNG AJAIB": 75,
-      "PAPAN SEIMBANG": 45,
-      "TANGKAP RASA": 80,
-      "KARTU COCOK": 95,
-    },
-    week32: {
-      "GELEMBUNG AJAIB": 85,
-      "PAPAN SEIMBANG": 50,
-      "TANGKAP RASA": 85,
-      "KARTU COCOK": 100,
-    },
-  };
 
   // Konfigurasi Horizontal Bar Chart (Games)
   const horizontalChartOptions = useMemo(
@@ -196,7 +227,7 @@ const FocusDetailCard: React.FC = () => {
           name: "Progress",
           data: games.map((game) => ({
             y: gameProgressData[activeWeek][
-              game.name as keyof typeof gameProgressData.week31
+              game.name as keyof typeof gameProgressData.week1
             ],
             color: "rgb(8, 78, 197)",
           })),
@@ -211,7 +242,24 @@ const FocusDetailCard: React.FC = () => {
         enabled: false,
       },
     }),
-    [activeWeek, games]
+    [activeWeek, games, gameProgressData]
+  );
+
+  // Helper untuk membuat tombol tab
+  const renderWeekTab = (week: ActiveWeek, label: string) => (
+    <button
+      onClick={() => setActiveWeek(week)}
+      className={`px-4 py-2 rounded-none bg-transparent font-['Raleway'] font-bold text-[14px] leading-[21px] transition-colors ${
+        activeWeek === week
+          ? "text-[#084EC5] border-b-2 border-b-[#084EC5]"
+          : "text-[#084EC5] hover:bg-blue-50"
+      }`}
+      style={{
+        borderBottomWidth: activeWeek === week ? "2px" : "0",
+      }}
+    >
+      {label}
+    </button>
   );
 
   return (
@@ -243,7 +291,7 @@ const FocusDetailCard: React.FC = () => {
               </div>
               {/* Percentage Display */}
               <div className=" flex items-end">
-                <p className="font-raleway font-bold text-[30px]  text-white">
+                <p className="font-raleway font-bold text-[30px] text-white">
                   81.1%
                 </p>
               </div>
@@ -263,10 +311,10 @@ const FocusDetailCard: React.FC = () => {
             {/* Progress Bar */}
             <div className="mb-6">
               {/* Progress Bar Container */}
-              <div className="h-[9px] bg-white  relative">
+              <div className="h-[9px] bg-white  relative">
                 {/* Progress Fill */}
                 <div
-                  className="absolute top-0 left-0 h-[9px] bg-[#084EC5]"
+                  className=" top-0 left-0 h-[9px] bg-[#084EC5]"
                   style={{ width: "81.1%" }}
                 >
                   {/* Marker at 81.1 */}
@@ -295,7 +343,7 @@ const FocusDetailCard: React.FC = () => {
       {/* Bottom Section - Week Tabs & Games Chart */}
       <div className="bg-[#EDF8FF] p-4 mt-8">
         <div className="flex gap-6">
-          {/* Left Chart - Vertical Bar Chart (Minggu 31 & 32) */}
+          {/* Left Chart - Vertical Bar Chart (Minggu 1 s/d 4) */}
           <div className="flex-1">
             <HighchartsReact
               highcharts={Highcharts}
@@ -307,42 +355,19 @@ const FocusDetailCard: React.FC = () => {
           <div className="flex-1 flex flex-col">
             {/* Week Tabs */}
             <div className="flex gap-2 mb-4 border-[#dedede] border-b-2">
-              <button
-                onClick={() => setActiveWeek("week31")}
-                className={`px-4 py-2 rounded-none bg-transparent font-['Raleway'] font-bold text-[14px] leading-[21px] transition-colors ${
-                  activeWeek === "week31"
-                    ? "text-[#084EC5] border-b-2 border-b-[#084EC5]"
-                    : "text-[#084EC5] hover:bg-blue-50"
-                }`}
-                style={{
-                  borderBottomWidth: activeWeek === "week31" ? "2px" : "0",
-                }}
-              >
-                Minggu 31
-              </button>
-              <button
-                onClick={() => setActiveWeek("week32")}
-                className={`px-4 py-2 rounded-none bg-transparent font-['Raleway'] font-bold text-[14px] leading-[21px] transition-colors ${
-                  activeWeek === "week32"
-                    ? "text-[#084EC5] border-b-2 border-b-[#084EC5]"
-                    : "text-[#084EC5] hover:bg-blue-50"
-                }`}
-                style={{
-                  borderBottomWidth: activeWeek === "week32" ? "2px" : "0",
-                }}
-              >
-                Minggu 32
-              </button>
-              
+              {renderWeekTab("week1", "Minggu 1")}
+              {renderWeekTab("week2", "Minggu 2")}
+              {renderWeekTab("week3", "Minggu 3")}
+              {renderWeekTab("week4", "Minggu 4")}
             </div>
 
-            {/* Date Display */}
+            {/* Date Display (diperbarui agar dinamis) */}
             <div className="mb-6">
               <p className="font-['Raleway'] font-bold text-[12px] leading-[18px] text-[#0B1E59]">
-                4 Agustus 2025 - 10 Agustus 2025
+                {weekDates[activeWeek]}
               </p>
             </div>
-            <div className= "flex flex-row">
+            <div className="flex flex-row">
               {/* Game Icons */}
               <div className="flex flex-col justify-between items-center mt-4 bg-transparent p-4 rounded-lg">
                 {games.map((game, index) => (
@@ -382,8 +407,6 @@ const FocusDetailCard: React.FC = () => {
                   options={horizontalChartOptions}
                 />
               </div>
-
-              
             </div>
           </div>
         </div>
