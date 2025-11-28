@@ -6,6 +6,7 @@ import KetangkasanIcon from "../../../../assets/images/skillcard/ketangkasan.svg
 import KoordinasiIcon from "../../../../assets/images/skillcard/koordinasi.svg";
 import MemoriIcon from "../../../../assets/images/skillcard/memori.svg";
 import WaktuIcon from "../../../../assets/images/skillcard/waktureaksi.svg";
+import ClockIcon from "../../../../assets/images/skillcard/Clock.svg";
 
 // import { Info, LucideInfo } from "lucide-react";
 
@@ -27,10 +28,12 @@ const IconTooltip: React.FC<IconTooltipProps> = ({
   tooltipTextColor = "#FFFFFF",
 }) => {
   const [isHovered, setIsHovered] = React.useState(false);
-  const [position, setPosition] = React.useState<{ top: number; left: number }>({
-    top: 0,
-    left: 0,
-  });
+  const [position, setPosition] = React.useState<{ top: number; left: number }>(
+    {
+      top: 0,
+      left: 0,
+    }
+  );
   const triggerRef = React.useRef<HTMLDivElement>(null);
 
   const updatePosition = React.useCallback(() => {
@@ -330,7 +333,7 @@ const SkillCard: React.FC = () => {
       </div>
 
       {/* Rata Rata Waktu Reaksi */}
-      <div className="w-full h-full">
+      <div className="w-full h-full bg-gradient-to-tr from-[#00B510] to-[#59f366] rounded-lg">
         {/* Fokus Card */}
         <div className="bg-gradient-to-tr from-[#00B510] to-[#59f366] rounded-lg p-[18px] relative overflow-hidden">
           {/* Icon Container */}
@@ -382,45 +385,19 @@ const SkillCard: React.FC = () => {
             </div>
           </div>
 
-          {/* Progress Bar */}
-          <div className="relative mb-3">
-            {/* Labels under progress bar */}
-            <div className="flex justify-between mt-[18px] mb-2">
-              <p className="font-raleway font-semibold text-[10px] leading-[10px] text-white">
-                0
-              </p>
-              <p className="font-raleway font-semibold text-[10px] leading-[10px] text-white">
-                100
-              </p>
-            </div>
-
+          <div className="flex flex-row items-center justify-between">
             {/* Progress Bar */}
-            <div className="mb-6">
-              {/* Progress Bar Container */}
-              <div className="h-[9px] bg-white  relative">
-                {/* Progress Fill */}
-                <div
-                  className="absolute top-0 left-0 h-[9px] bg-[#084EC5]"
-                  style={{ width: "81.1%" }}
-                >
-                  {/* Marker at 81.1 */}
-                  <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2">
-                    <div className="flex flex-col items-center">
-                      <p className="font-raleway font-semibold text-[10px] leading-[10px] text-white bg-transparent mt-5 whitespace-nowrap">
-                        81.1
-                      </p>
-                      <div className="w-px bg-[#0D469B] mt-1" />
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div className=" font-raleway text-[30px] text-white font-bold">
+              90 Points
+            </div>
+            <div className="relative mb-3">
+              <img
+                src={ClockIcon}
+                alt="clock"
+                className="w-auto h-[84px] mt-[20px] object-cover object-center"
+              />
             </div>
           </div>
-
-          <div className=" font-raleway text-[30px] mb-[16px] text-white font-bold">
-            90 Points
-          </div>
-
           {/* Button */}
           <button className="px-4 py-2 bg-white rounded-md border border-black  hover:scale-[1.04] transition-colors">
             <p className="font-raleway font-bold text-[12px] leading-[12px] text-[#212529] capitalize text-center">
