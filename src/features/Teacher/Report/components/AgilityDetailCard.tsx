@@ -260,10 +260,10 @@ const AgilityDetailCard: React.FC = () => {
   // Format: [baris][kolom] = nilai
   const heatmapData = {
     week31: [
-      [50, 100, 100, 50],
+      [0, 100, 100, 0],
       [100, 100, 100, 100],
       [100, 100, 100, 100],
-      [50, 10, 100, 50],
+      [0, 10, 100, 0],
     ],
     week32: [
       [60, 90, 90, 60],
